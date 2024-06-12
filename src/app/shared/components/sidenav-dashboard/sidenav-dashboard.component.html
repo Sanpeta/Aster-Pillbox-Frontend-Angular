@@ -1,0 +1,93 @@
+<mat-drawer-container class="grid-sidenav-container" autosize>
+	<div class="sidenav-content">
+		<app-button-menu
+			[description]="'Dashboard'"
+			[selected]="menuSelected === 'Home'"
+			(click)="onMenuSelected('Home')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				dashboard
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Perfil'"
+			[selected]="menuSelected === 'Perfil'"
+			(click)="onMenuSelected('Perfil')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				person
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Adicionar Medicamentos'"
+			[selected]="menuSelected === 'Add Medication'"
+			(click)="onMenuSelected('Add Medication')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				add_circle
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Ajustar Medicamentos'"
+			[selected]="menuSelected === 'Edit Medication'"
+			(click)="onMenuSelected('Edit Medication')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				edit
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Informações Gerais'"
+			[selected]="menuSelected === 'Info'"
+			(click)="onMenuSelected('Info')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				info
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Feedback'"
+			[selected]="menuSelected === 'Feedback'"
+			(click)="onMenuSelected('Feedback')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				feedback
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Configurações'"
+			[selected]="menuSelected === 'Settings'"
+			(click)="onMenuSelected('Settings')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				settings
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Suporte'"
+			[selected]="menuSelected === 'Help'"
+			(click)="onMenuSelected('Help')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				help
+			</mat-icon>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Sair'"
+			[selected]="menuSelected === 'Logout'"
+			(click)="onMenuSelected('Logout')"
+		>
+			<mat-icon style="width: 25px; height: 25px; margin: 0 16px">
+				logout
+			</mat-icon>
+		</app-button-menu>
+	</div>
+</mat-drawer-container>
