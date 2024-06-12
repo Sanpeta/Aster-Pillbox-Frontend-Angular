@@ -1,0 +1,16 @@
+@import "variables";
+
+.grid-sidenav-title {
+	grid-area: ST;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $primary-color;
+	text-align: center;
+	height: 100%;
+	width: 100%;
+
+	img {
+		height: 36px;
+	}
+}
