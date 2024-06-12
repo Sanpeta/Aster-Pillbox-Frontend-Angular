@@ -1,0 +1,56 @@
+<div class="grid-toolbar-container">
+	<div class="toolbar-group-start">
+		<button
+			mat-icon-button
+			class=""
+			aria-label="Example icon-button with menu icon"
+		>
+			<mat-icon>menu</mat-icon>
+		</button>
+		<div class="group-header-title">
+			<h1>Dashboard</h1>
+		</div>
+	</div>
+	<div class="toolbar-group-end">
+		<!-- Notifications -->
+		<button
+			mat-icon-button
+			class="example-icon"
+			aria-label="Example icon-button with menu icon"
+		>
+			<mat-icon>notifications</mat-icon>
+		</button>
+
+		<!-- Theme -->
+		<button
+			mat-icon-button
+			class="example-icon"
+			aria-label="Example icon-button with menu icon"
+			(click)="toggleTheme()"
+		>
+			<mat-icon>{{ isDarkTheme ? "light_mode" : "dark_mode" }}</mat-icon>
+		</button>
+
+		<!-- Settings -->
+		<button
+			mat-icon-button
+			class="example-icon"
+			aria-label="Example icon-button with menu icon"
+		>
+			<mat-icon>settings</mat-icon>
+		</button>
+
+		<!-- Info User  -->
+		<div class="info-user-container">
+			<img
+				class="info-user-container-img"
+				src="assets/images/logo.png"
+				alt=""
+			/>
+			<div class="info-user-container-text">
+				<span class="name">Sidnei de Souza Junior</span>
+				<span class="role">Admin</span>
+			</div>
+		</div>
+	</div>
+</div>
