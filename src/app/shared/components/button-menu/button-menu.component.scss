@@ -1,0 +1,39 @@
+@import "variables";
+
+:host {
+	display: block;
+	width: 100%;
+
+	button {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		width: 100%;
+		border: 0;
+		padding: 16px 10px;
+		text-align: left;
+		font-size: 14px;
+		font-weight: 600;
+		cursor: pointer;
+		background-color: $background-menu-color;
+		color: $secondary-color;
+	}
+
+	span {
+		display: inline-block;
+		vertical-align: middle;
+		width: 260;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&.selecionado {
+		color: white;
+	}
+
+	:hover {
+		color: white;
+	}
+}
