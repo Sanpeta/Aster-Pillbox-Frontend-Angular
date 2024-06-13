@@ -1,8 +1,33 @@
-<div class="grid-template-container">
-	<app-sidenav-title-dashboard></app-sidenav-title-dashboard>
-	<app-toolbar-dashboard></app-toolbar-dashboard>
-	<app-sidenav-dashboard></app-sidenav-dashboard>
-	<div class="grid-dashboard-content">
-		<h1>OLA</h1>
+<app-dashboard-layout>
+	<div class="grid-container">
+		<h1 class="mat-h1">Dashboard</h1>
+		<mat-grid-list cols="2" rowHeight="350px">
+			@for (card of cards | async; track card) {
+			<mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
+				<mat-card class="dashboard-card">
+					<mat-card-header>
+						<mat-card-title>
+							{{ card.title }}
+							<button
+								mat-icon-button
+								class="more-button"
+								[matMenuTriggerFor]="menu"
+								aria-label="Toggle menu"
+							>
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<mat-menu #menu="matMenu" xPosition="before">
+								<button mat-menu-item>Expand</button>
+								<button mat-menu-item>Remove</button>
+							</mat-menu>
+						</mat-card-title>
+					</mat-card-header>
+					<mat-card-content class="dashboard-card-content">
+						<div>Card Content Here</div>
+					</mat-card-content>
+				</mat-card>
+			</mat-grid-tile>
+			}
+		</mat-grid-list>
 	</div>
-</div>
+</app-dashboard-layout>
