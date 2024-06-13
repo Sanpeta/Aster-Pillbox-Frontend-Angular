@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { ButtonMenuComponent } from '../button-menu/button-menu.component';
 
 @Component({
 	selector: 'app-sidenav-dashboard',
 	standalone: true,
-	imports: [MatSidenavModule, MatButtonModule, MatIcon, ButtonMenuComponent],
+	imports: [ButtonMenuComponent],
 	templateUrl: './sidenav-dashboard.component.html',
 	styleUrl: './sidenav-dashboard.component.scss',
 })
