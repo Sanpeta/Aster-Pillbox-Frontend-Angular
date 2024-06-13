@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ButtonMenuComponent } from '../button-menu/button-menu.component';
+import { IconComponent } from '../icon/icon.component';
 
 @Component({
 	selector: 'app-sidenav-dashboard',
 	standalone: true,
-	imports: [ButtonMenuComponent],
+	imports: [ButtonMenuComponent, IconComponent],
 	templateUrl: './sidenav-dashboard.component.html',
 	styleUrl: './sidenav-dashboard.component.scss',
 })
