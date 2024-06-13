@@ -5,9 +5,13 @@
 			class=""
 			aria-label="Example icon-button with menu icon"
 		>
-			<!-- <mat-icon>menu</mat-icon> -->
+			<app-icon
+				[src]="'/assets/images/menu-icon.svg'"
+				[alt]="'menu icon'"
+				[classes]="'h-6 w-6 ml-4 mr-2'"
+			/>
 		</button>
-		<div class="group-header-title">
+		<div class="group-header-title col">
 			<h1>Dashboard</h1>
 		</div>
 	</div>
@@ -18,7 +22,11 @@
 			class="example-icon"
 			aria-label="Example icon-button with menu icon"
 		>
-			<!-- <mat-icon>notifications</mat-icon> -->
+			<app-icon
+				[src]="'/assets/images/notification-icon.svg'"
+				[alt]="'notification icon'"
+				[classes]="'h-6 w-6 ml-4 mr-2'"
+			/>
 		</button>
 
 		<!-- Theme -->
@@ -28,7 +36,11 @@
 			aria-label="Example icon-button with menu icon"
 			(click)="toggleTheme()"
 		>
-			<!-- <mat-icon>{{ isDarkTheme ? "light_mode" : "dark_mode" }}</mat-icon> -->
+			<app-icon
+				[src]="srcImage"
+				[alt]="'menu icon'"
+				[classes]="'h-6 w-6 ml-4 mr-2'"
+			/>
 		</button>
 
 		<!-- Settings -->
@@ -38,14 +50,19 @@
 			aria-label="Example icon-button with menu icon"
 		>
 			<!-- <mat-icon>settings</mat-icon> -->
+			<app-icon
+				[src]="'/assets/images/settings-icon.svg'"
+				[alt]="'settings icon'"
+				[classes]="'h-6 w-6 ml-4 mr-2'"
+			/>
 		</button>
 
 		<!-- Info User  -->
 		<div class="info-user-container">
 			<img
 				class="info-user-container-img"
-				src="assets/images/logo.png"
-				alt=""
+				src="assets/images/perfil-icon.svg"
+				alt="image perfil"
 			/>
 			<div class="info-user-container-text">
 				<span class="name">Sidnei de Souza Junior</span>
