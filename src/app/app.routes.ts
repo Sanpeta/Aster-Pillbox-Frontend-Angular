@@ -1,13 +1,30 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { LoginComponent } from './modules/login/login.component';
-import { RecoverPasswordComponent } from './modules/recover-password/recover-password.component';
-import { RegisterComponent } from './modules/register/register.component';
+import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-	{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-	{ path: 'dashboard', component: DashboardComponent },
+	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent },
-	{ path: 'recover-password', component: RecoverPasswordComponent },
-	{ path: 'register', component: RegisterComponent },
+	{
+		path: 'register',
+		loadComponent: () =>
+			import('./modules/register/register.component').then(
+				(m) => m.RegisterComponent
+			),
+	},
+	{
+		path: 'recover-password',
+		loadComponent: () =>
+			import(
+				'./modules/recover-password/recover-password.component'
+			).then((m) => m.RecoverPasswordComponent),
+	},
+	{
+		path: 'dashboard',
+		loadComponent: () =>
+			import('./modules/dashboard/dashboard.component').then(
+				(m) => m.DashboardComponent
+			),
+	},
+	{ path: '**', component: PageNotFoundComponent },
 ];
