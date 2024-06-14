@@ -1,0 +1,135 @@
+<div class="flex h-screen flex-row justify-center items-center">
+	<div class="w-0 h-0 lg:w-7/12 lg:h-screen">
+		<img
+			class="h-full w-full"
+			src="/assets/images/medical-image-login.jpeg"
+			alt="Aster Pillbox"
+		/>
+	</div>
+
+	<div class="mt-10 lg:mx-auto lg:w-full lg:max-w-sm">
+		<img
+			class="h-10 w-auto mx-auto my-4 fill-black"
+			src="/assets/images/logo.svg"
+			alt="Aster Pillbox"
+		/>
+		<div class="my-4 text-left">
+			<h3 class="text-xl font-semibold leading-6 text-gray-900">
+				Cadastra-se
+			</h3>
+			<p class="mt-2 text-sm font-light leading-5 text-gray-600">
+				Você não tem uma conta? Cadastre-se agora, leva menos de um
+				minuto.
+			</p>
+		</div>
+		<form class="space-y-6" action="#" method="POST">
+			<!-- Name -->
+			<div>
+				<div>
+					<label
+						for="name"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Nome Completo</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="name"
+						name="name"
+						type="text"
+						autocomplete="name"
+						placeholder="Digite seu nome completo"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<!-- Email Address -->
+			<div>
+				<div>
+					<label
+						for="email"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>E-mail</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="email"
+						name="email"
+						type="text"
+						autocomplete="email"
+						placeholder="Digite seu email"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<!-- Password -->
+			<div>
+				<div>
+					<label
+						for="password"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Senha</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="password"
+						name="password"
+						type="password"
+						placeholder="Digite uma senha"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<!-- Checked Terms and Conditions -->
+			<div class="flex items-center">
+				<input
+					type="checkbox"
+					name="terms"
+					id="terms"
+					class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+				/>
+				<label
+					for="terms"
+					class="ml-2 block text-sm font-semibold leading-5 text-gray-900"
+				>
+					Eu aceito os
+					<a href="#" class="text-blue-600 hover:text-blue-500"
+						>termos e condições</a
+					>
+				</label>
+			</div>
+
+			<!-- Register Account -->
+			<div>
+				<button
+					type="submit"
+					class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+				>
+					<app-icon
+						[src]="'/assets/images/perfil-circle-icon.svg'"
+						[alt]="'icon-register-account'"
+						[classes]="'mr-2 h-6 w-6'"
+					></app-icon>
+					Cadastrar
+				</button>
+			</div>
+		</form>
+
+		<p class="mt-10 text-center text-sm text-gray-500">
+			Já tem uma conta?
+			<a
+				href="login"
+				class="font-semibold leading-6 text-blue-700 hover:text-blue-600"
+				>Entrar.</a
+			>
+		</p>
+	</div>
+</div>
