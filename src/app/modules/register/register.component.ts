@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	registerForm = this.formBuilder.group({
 		email: ['', Validators.required],
 		password: ['', Validators.required],
+		terms: ['', Validators.required],
 	});
 
 	constructor(
