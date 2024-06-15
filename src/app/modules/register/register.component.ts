@@ -18,9 +18,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 
 	registerForm = this.formBuilder.group({
-		email: ['', Validators.required],
-		password: ['', Validators.required],
-		terms: ['', Validators.required],
+		email: ['', Validators.required, Validators.email],
+		password: ['', Validators.required, Validators.minLength(8)],
+		terms: ['', Validators.required, Validators.requiredTrue],
 	});
 
 	constructor(
