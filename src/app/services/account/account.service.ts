@@ -33,6 +33,18 @@ export class AccountService {
 		);
 	}
 
+	createTokenAccountActivate(email: string): Observable<string> {
+		return this.http.post<string>(
+			`${this.API_URL}/create-activation-account?email=${email}`,
+			{},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+	}
+
 	loginAccount(
 		loginRequest: LoginAccountRequest
 	): Observable<LoginAccountResponse> {

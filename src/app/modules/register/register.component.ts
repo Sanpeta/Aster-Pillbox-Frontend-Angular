@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { AccountRequest } from '../../models/interfaces/account/CreateAccount';
 import { AccountService } from '../../services/account/account.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
@@ -16,12 +16,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
-
-	registerForm = this.formBuilder.group({
-		email: ['', [Validators.required, Validators.email]],
-		password: ['', [Validators.required, Validators.minLength(8)]],
-		terms: ['', [Validators.required, Validators.requiredTrue]],
-	});
+	private emailAccount = '';
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -29,6 +24,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		private cookieService: CookieService,
 		private router: Router
 	) {}
+
+	registerForm = this.formBuilder.group({
+		email: ['', [Validators.required, Validators.email]],
+		password: ['', [Validators.required, Validators.minLength(8)]],
+		terms_and_conditions: [
+			'',
+			[Validators.required, Validators.requiredTrue],
+		],
+	});
 
 	ngOnInit(): void {
 		this.registerForm.reset();
@@ -44,20 +48,25 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			console.log(this.registerForm.value);
 			this.accountService
 				.registerAccount(this.registerForm.value as AccountRequest)
-				.pipe(takeUntil(this.destroy$))
+				.pipe(
+					switchMap((response) => {
+						this.cookieService.set(
+							'ACCOUNT_ID',
+							response.id.toString()
+						);
+						this.cookieService.set('ACCOUNT_EMAIL', response.email);
+						this.emailAccount = response.email;
+						return this.accountService.createTokenAccountActivate(
+							this.emailAccount
+						);
+					}),
+					takeUntil(this.destroy$)
+				)
 				.subscribe({
 					next: (response) => {
 						if (response) {
-							this.cookieService.set(
-								'ACCOUNT_ID',
-								response.id.toString()
-							);
-							this.cookieService.set(
-								'ACCOUNT_EMAIL',
-								response.email
-							);
 							this.registerForm.reset();
-							this.router.navigate(['/login']);
+							this.router.navigate(['/check-email']);
 						}
 					},
 					error: (err) => {
