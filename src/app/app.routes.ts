@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './modules/login/login.component';
+import { PageCheckYourEmailComponent } from './modules/page-check-your-email/page-check-your-email.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
@@ -26,5 +27,6 @@ export const routes: Routes = [
 				(m) => m.DashboardComponent
 			),
 	},
+	{ path: 'check-your-email', component: PageCheckYourEmailComponent },
 	{ path: '**', component: PageNotFoundComponent },
 ];

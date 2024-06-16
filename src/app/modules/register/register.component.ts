@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 					next: (response) => {
 						if (response) {
 							this.registerForm.reset();
-							this.router.navigate(['/check-email']);
+							this.router.navigate(['/check-your-email']);
 						}
 					},
 					error: (err) => {
