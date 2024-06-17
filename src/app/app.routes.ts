@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './modules/login/login.component';
+import { PageActivateAccountComponent } from './modules/page-activate-account/page-activate-account.component';
 import { PageCheckYourEmailComponent } from './modules/page-check-your-email/page-check-your-email.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
@@ -28,5 +29,6 @@ export const routes: Routes = [
 			),
 	},
 	{ path: 'check-your-email', component: PageCheckYourEmailComponent },
+	{ path: 'activate-account', component: PageActivateAccountComponent },
 	{ path: '**', component: PageNotFoundComponent },
 ];
