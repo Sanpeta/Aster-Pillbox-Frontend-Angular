@@ -1,8 +1,8 @@
 <main
 	class="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
 >
-	<app-loader [isLoading]="loader"></app-loader>
 	<div class="text-center">
+		<app-loader [isLoading]="loader"></app-loader>
 		<!-- <img
 			src="../../../assets/images/image-email.png"
 			class="bg-blue-400 h-32 w-32 mx-auto my-5"
@@ -23,6 +23,15 @@
 				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
 				>Fazer login
 			</a>
+			@if(showResendButton) {
+			<button
+				(click)="resendEmail()"
+				routerLinkActive="active"
+				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+			>
+				Reenviar email
+			</button>
+			}
 			<a
 				routerLink="/contact"
 				routerLinkActive="active"
