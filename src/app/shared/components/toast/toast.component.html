@@ -1,0 +1,6 @@
+@if (showToast) {
+<div class="toast" [ngClass]="'toast-' + type">
+	<span class="toast-message">{{ mensage }}</span>
+	<button class="toast-close" (click)="close()">X</button>
+</div>
+}
