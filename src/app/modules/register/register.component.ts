@@ -6,17 +6,24 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { AccountRequest } from '../../models/interfaces/account/CreateAccount';
 import { AccountService } from '../../services/account/account.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
 	selector: 'app-register',
 	standalone: true,
-	imports: [IconComponent, ReactiveFormsModule, RouterModule],
+	imports: [
+		IconComponent,
+		ReactiveFormsModule,
+		RouterModule,
+		LoaderComponent,
+	],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	private emailAccount = '';
+	loading = false; // Inicialmente, a página está carregando
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -44,6 +51,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	}
 
 	onSubmitRegisterForm(): void {
+		this.loading = true;
 		if (this.registerForm.value && this.registerForm.valid) {
 			console.log(this.registerForm.value);
 			this.accountService
@@ -67,10 +75,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
 						if (response) {
 							this.registerForm.reset();
 							this.router.navigate(['/check-your-email']);
+							this.loading = false;
 						}
+					},
+					complete: () => {
+						this.loading = false;
 					},
 					error: (err) => {
 						console.log(err);
+						this.loading = false;
 					},
 				});
 		}
