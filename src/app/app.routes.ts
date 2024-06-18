@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuardService } from './guards/auth-guard.service';
 import { LoginComponent } from './modules/login/login.component';
 import { PageActivateAccountComponent } from './modules/page-activate-account/page-activate-account.component';
 import { PageCheckYourEmailComponent } from './modules/page-check-your-email/page-check-your-email.component';
@@ -28,6 +29,7 @@ export const routes: Routes = [
 			import('./modules/dashboard/dashboard.component').then(
 				(m) => m.DashboardComponent
 			),
+		canActivate: [AuthGuardService],
 	},
 	{ path: 'check-your-email', component: PageCheckYourEmailComponent },
 	{ path: 'activate-account', component: PageActivateAccountComponent },

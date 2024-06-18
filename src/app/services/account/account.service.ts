@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+import { CookieService } from 'ngx-cookie-service';
 import {
 	UpdateAccountActivationRequest,
 	UpdateAccountActivationResponse,
@@ -26,7 +27,12 @@ import {
 export class AccountService {
 	private API_URL = environment.API_URL;
 
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private cookie: CookieService) {}
+
+	isLoggedIn(): boolean {
+		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
+		return AUTH_TOKEN ? true : false;
+	}
 
 	registerAccount(
 		accountRequest: AccountRequest
