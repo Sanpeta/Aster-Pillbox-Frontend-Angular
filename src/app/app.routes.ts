@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { LoginComponent } from './modules/login/login.component';
-import { PageActivateAccountComponent } from './modules/page-activate-account/page-activate-account.component';
-import { PageCheckYourEmailComponent } from './modules/page-check-your-email/page-check-your-email.component';
-import { PageConfirmRecoverPasswordComponent } from './modules/page-confirm-recover-password/page-confirm-recover-password.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
+	{ path: '**', component: PageNotFoundComponent },
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent },
 	{
@@ -24,6 +22,27 @@ export const routes: Routes = [
 			).then((m) => m.RecoverPasswordComponent),
 	},
 	{
+		path: 'reset-account-password',
+		loadComponent: () =>
+			import(
+				'./modules/page-confirm-recover-password/page-confirm-recover-password.component'
+			).then((m) => m.PageConfirmRecoverPasswordComponent),
+	},
+	{
+		path: 'check-your-email',
+		loadComponent: () =>
+			import(
+				'./modules/page-check-your-email/page-check-your-email.component'
+			).then((m) => m.PageCheckYourEmailComponent),
+	},
+	{
+		path: 'activate-account',
+		loadComponent: () =>
+			import(
+				'./modules/page-activate-account/page-activate-account.component'
+			).then((m) => m.PageActivateAccountComponent),
+	},
+	{
 		path: 'dashboard',
 		loadComponent: () =>
 			import('./modules/dashboard/dashboard.component').then(
@@ -31,11 +50,4 @@ export const routes: Routes = [
 			),
 		canActivate: [AuthGuardService],
 	},
-	{ path: 'check-your-email', component: PageCheckYourEmailComponent },
-	{ path: 'activate-account', component: PageActivateAccountComponent },
-	{
-		path: 'reset-account-password',
-		component: PageConfirmRecoverPasswordComponent,
-	},
-	{ path: '**', component: PageNotFoundComponent },
 ];
