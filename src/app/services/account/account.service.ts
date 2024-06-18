@@ -61,7 +61,7 @@ export class AccountService {
 			`${this.API_URL}/activate-account`,
 			{
 				token: data.token,
-				account_id: data.account_id,
+				email: data.email,
 			},
 			{
 				headers: {

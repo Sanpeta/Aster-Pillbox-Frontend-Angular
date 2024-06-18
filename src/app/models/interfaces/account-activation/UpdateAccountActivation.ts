@@ -1,9 +1,9 @@
 export interface UpdateAccountActivationRequest {
-	account_id: number;
+	email: string;
 	token: string;
 }
 
 export interface UpdateAccountActivationResponse {
-	account_id: number;
+	email: string;
 	active: boolean;
 }

@@ -24,7 +24,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	private emailAccount: string = '';
 	private accActivateRequest: UpdateAccountActivationRequest = {
 		token: '',
-		account_id: 0,
+		email: '',
 	};
 
 	constructor(
@@ -49,7 +49,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 		}
 		this.accActivateRequest = {
 			token: this.token,
-			account_id: Number(this.accountID),
+			email: this.emailAccount,
 		};
 		this.activateAccount();
 	}
@@ -71,15 +71,15 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 				error: (err) => {
 					this.loader = false;
 					this.showResendButton = true;
-					console.log(err.error.code);
-					switch (err.error.code) {
+					console.log(err.error);
+					switch (err.status) {
 						case 400:
 							this.title = 'Token inválido';
 							this.description = 'O token é inválido.';
 							break;
 						case 403:
 							this.title = 'Não autorizado';
-							this.description = 'Token Expirado.';
+							this.description = 'Token expirado ou já ativado.';
 							break;
 						case 404:
 							this.title = 'Conta não encontrada';
