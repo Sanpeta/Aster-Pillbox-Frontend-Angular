@@ -106,11 +106,23 @@ export class PageConfirmRecoverPasswordComponent {
 						this.showLoader = false;
 						console.log(err.error.code);
 						console.log(err.error);
-						this.openDialog(
-							'Erro',
-							'Não foi possível alterar sua senha! Token expirado ou inválido.',
-							'Continuar'
-						);
+						switch (err.status) {
+							case 409:
+								this.openDialog(
+									'Token já utilizado',
+									'O token pode ter expirado ou já ter sido utilizado. Por favor, solicite um novo token para redefinir sua senha.',
+									'Ok',
+									'Cancelar',
+									() => {}
+								);
+								break;
+							default:
+								this.openDialog(
+									'Erro',
+									'Não foi possível alterar sua senha! Token expirado ou inválido.',
+									'Continuar'
+								);
+						}
 					},
 				});
 		}
