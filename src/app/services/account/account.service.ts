@@ -2,10 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
 import {
 	UpdateAccountActivationRequest,
 	UpdateAccountActivationResponse,
 } from '../../models/interfaces/account-activation/UpdateAccountActivation';
+import {
+	UpdateAccountResetPasswordRequest,
+	UpdateAccountResetPasswordResponse,
+} from '../../models/interfaces/account-reset-password/UpdateAccountResetPassword';
 import {
 	LoginAccountRequest,
 	LoginAccountResponse,
@@ -57,6 +62,36 @@ export class AccountService {
 			{
 				token: data.token,
 				account_id: data.account_id,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+	}
+
+	createTokenResetPassword(email: string): Observable<string> {
+		return this.http.post<string>(
+			`${this.API_URL}/create-token-account-password-reset?email=${email}`,
+			{},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+	}
+
+	updateAccountPassword(
+		data: UpdateAccountResetPasswordRequest
+	): Observable<UpdateAccountResetPasswordResponse> {
+		return this.http.put<UpdateAccountResetPasswordResponse>(
+			`${this.API_URL}/reset-account-password`,
+			{
+				token: data.token,
+				account_id: data.account_id,
+				password: data.password,
 			},
 			{
 				headers: {
