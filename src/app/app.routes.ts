@@ -4,7 +4,6 @@ import { LoginComponent } from './modules/login/login.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-	{ path: '**', component: PageNotFoundComponent },
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent },
 	{
@@ -50,4 +49,5 @@ export const routes: Routes = [
 			),
 		canActivate: [AuthGuardService],
 	},
+	{ path: '**', component: PageNotFoundComponent },
 ];
