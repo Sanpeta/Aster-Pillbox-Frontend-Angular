@@ -56,7 +56,6 @@ export class AccountService {
 			)
 			.pipe(
 				map((response: any) => {
-					console.log('response' + response);
 					return true;
 				}),
 				catchError((error) => {
@@ -153,9 +152,10 @@ export class AccountService {
 		);
 	}
 
-	logout() {
+	logoutAccount() {
 		// Limpar dados de autenticação (token, informações do usuário, etc.)
 		this.cookie.deleteAll();
-		// Notificar outros componentes sobre o logout (se necessário)
+		// Redirecione para a página de login
+		this.router.navigate(['/login']);
 	}
 }
