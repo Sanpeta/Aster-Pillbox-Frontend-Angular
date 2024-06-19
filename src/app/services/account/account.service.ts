@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 import { CookieService } from 'ngx-cookie-service';
@@ -27,11 +28,31 @@ import {
 export class AccountService {
 	private API_URL = environment.API_URL;
 
-	constructor(private http: HttpClient, private cookie: CookieService) {}
+	constructor(
+		private http: HttpClient,
+		private cookie: CookieService,
+		private router: Router
+	) {}
 
-	isLoggedIn(): boolean {
+	isLoggedIn(): Observable<boolean> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
-		return AUTH_TOKEN ? true : false;
+		const ACCOUNT_ID = this.cookie.get('ACCOUNT_ID');
+
+		// Check if token exists
+		if (!AUTH_TOKEN || !ACCOUNT_ID) {
+			return of(false); // Return false as Observable if no token
+		}
+
+		return this.http.post<boolean>(
+			`${this.API_URL}/check-auth/${ACCOUNT_ID}`,
+			{},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `bearer ${AUTH_TOKEN}`,
+				},
+			}
+		);
 	}
 
 	registerAccount(
@@ -119,5 +140,11 @@ export class AccountService {
 				},
 			}
 		);
+	}
+
+	logout() {
+		// Limpar dados de autenticação (token, informações do usuário, etc.)
+		this.cookie.deleteAll();
+		// Notificar outros componentes sobre o logout (se necessário)
 	}
 }
