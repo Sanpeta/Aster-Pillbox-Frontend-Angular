@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 import { CookieService } from 'ngx-cookie-service';
@@ -43,16 +43,27 @@ export class AccountService {
 			return of(false); // Return false as Observable if no token
 		}
 
-		return this.http.post<boolean>(
-			`${this.API_URL}/check-auth/${ACCOUNT_ID}`,
-			{},
-			{
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `bearer ${AUTH_TOKEN}`,
-				},
-			}
-		);
+		return this.http
+			.post<boolean>(
+				`${this.API_URL}/check-auth/${ACCOUNT_ID}`,
+				{},
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `bearer ${AUTH_TOKEN}`,
+					},
+				}
+			)
+			.pipe(
+				map((response: any) => {
+					console.log('response' + response);
+					return true;
+				}),
+				catchError((error) => {
+					this.cookie.deleteAll();
+					return of(false);
+				})
+			);
 	}
 
 	registerAccount(
