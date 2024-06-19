@@ -1,17 +1,23 @@
 import { Routes } from '@angular/router';
-import { AuthGuardService } from './guards/auth-guard.service';
+import { AuthGuardService } from './guards/auth/auth-guard.service';
+import { LoggedGuardService } from './guards/logged/logged-guard.service';
 import { LoginComponent } from './modules/login/login.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
-	{ path: 'login', component: LoginComponent },
+	{
+		path: 'login',
+		component: LoginComponent,
+		canActivate: [LoggedGuardService],
+	},
 	{
 		path: 'register',
 		loadComponent: () =>
 			import('./modules/register/register.component').then(
 				(m) => m.RegisterComponent
 			),
+		canActivate: [LoggedGuardService],
 	},
 	{
 		path: 'recover-password',
@@ -19,6 +25,7 @@ export const routes: Routes = [
 			import(
 				'./modules/recover-password/recover-password.component'
 			).then((m) => m.RecoverPasswordComponent),
+		canActivate: [LoggedGuardService],
 	},
 	{
 		path: 'reset-account-password',
