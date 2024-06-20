@@ -1,0 +1,119 @@
+.container {
+	display: flex;
+	flex-shrink: 0; /* Impede que o card-info seja comprimido */
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	position: relative;
+
+	background-color: red;
+	border-radius: 20px;
+	border: 1px solid gray;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	width: 300px;
+	height: 300px;
+}
+
+.card-info-user-image {
+	display: block;
+	align-self: center;
+	margin: 8px 0;
+	border-radius: 50%;
+	width: 40%;
+	height: 40%;
+}
+
+.card-info-user-name {
+	flex: 0 1 auto;
+	justify-self: center;
+	align-self: center;
+	padding: 8px 16px;
+	font-size: small;
+	font-weight: bold;
+	color: black;
+	text-align: center;
+}
+
+/* CardInfoUserDivider */
+.card-info-user-divider {
+	flex: 0 1 auto;
+	width: 80%;
+	align-self: center;
+	border-bottom: 1px solid #ddd; /* Substituindo theme.colors.gray3 */
+}
+
+/* CardInfoUserDescription */
+.card-info-user-description {
+	flex: 0 1 auto;
+	padding: 8px 16px;
+	text-align: center;
+	font-size: 12px; /* Substituindo theme.font.sizes.xsmall */
+}
+
+/* CardInfoUserStats */
+.card-info-user-stats {
+	flex: 1;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	padding: 8px 0;
+	width: 100%;
+}
+
+@media (max-width: 768px) {
+	.card-info-user-stats {
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: center;
+		padding: 8px 0;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+/* StatItem */
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 0px;
+	border-radius: 20px;
+	padding: 8px 20px;
+	border: 1px solid #ddd; /* Substituindo theme.colors.gray3 */
+}
+
+/* StatLabel */
+.stat-label {
+	font-size: 12px; /* Substituindo theme.font.sizes.xsmall */
+	font-weight: bold;
+}
+
+/* StatValue */
+.stat-value {
+	font-size: 12px; /* Substituindo theme.font.sizes.xsmall */
+	color: #6c757d; /* Substituindo theme.colors.gray6 */
+	font-weight: bold;
+}
+
+/* ActionButton */
+.action-button {
+	display: fixed;
+	padding: 8px 16px;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 8px;
+}
+
+.action-button:hover {
+	opacity: 0.8;
+}
+.edit-icon {
+	filter: invert(100%);
+}
