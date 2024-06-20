@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 	standalone: true,
 	imports: [],
 	templateUrl: './button-menu.component.html',
-	styleUrl: './button-menu.component.scss',
+	styleUrl: './button-menu.component.css',
 })
 export class ButtonMenuComponent implements OnInit {
 	@Input() description = '';
