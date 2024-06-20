@@ -6,7 +6,7 @@ import { IconComponent } from '../icon/icon.component';
 	standalone: true,
 	imports: [IconComponent],
 	templateUrl: './toolbar-dashboard.component.html',
-	styleUrl: './toolbar-dashboard.component.scss',
+	styleUrl: './toolbar-dashboard.component.css',
 })
 export class ToolbarDashboardComponent {
 	isDarkTheme = false;

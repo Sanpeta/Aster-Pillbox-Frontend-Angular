@@ -8,7 +8,7 @@ import { AccountService } from './../../../services/account/account.service';
 	standalone: true,
 	imports: [ButtonMenuComponent, IconComponent],
 	templateUrl: './sidenav-dashboard.component.html',
-	styleUrl: './sidenav-dashboard.component.scss',
+	styleUrl: './sidenav-dashboard.component.css',
 })
 export class SidenavDashboardComponent {
 	menuSelected = 'Home';

@@ -7,8 +7,8 @@
 	text-align: center;
 	height: 100%;
 	width: 100%;
+}
 
-	img {
-		height: 40px;
-	}
+.grid-sidenav-title img {
+	height: 40px;
 }
