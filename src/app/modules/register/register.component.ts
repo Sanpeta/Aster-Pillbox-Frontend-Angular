@@ -1,10 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	ViewContainerRef,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { AccountRequest } from '../../models/interfaces/account/CreateAccount';
 import { AccountService } from '../../services/account/account.service';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
@@ -24,6 +31,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	private emailAccount = '';
 	loading = false; // Inicialmente, a página está carregando
+	@ViewChild('dialogContainer', { read: ViewContainerRef })
+	dialogContainer!: ViewContainerRef;
 
 	constructor(
 		private formBuilder: FormBuilder,
@@ -74,18 +83,85 @@ export class RegisterComponent implements OnInit, OnDestroy {
 					next: (response) => {
 						if (response) {
 							this.registerForm.reset();
-							this.router.navigate(['/check-your-email']);
 							this.loading = false;
+							this.router.navigate(['/check-your-email']);
 						}
 					},
 					complete: () => {
 						this.loading = false;
 					},
-					error: (err) => {
-						console.log(err);
+					error: (error) => {
+						console.log(error);
 						this.loading = false;
+						switch (error.status) {
+							case 401:
+								this.openDialog(
+									'Não Autorizado',
+									'E-Mail ou senha inválido.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 404:
+								this.openDialog(
+									'Email não cadastrado',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 500:
+								this.openDialog(
+									'Email já cadastrado',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							default:
+								this.openDialog(
+									'Ocorreu um erro',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+						}
 					},
 				});
 		}
+	}
+
+	openDialog(
+		title: string,
+		mensage: string,
+		buttonTextConfirm: string,
+		buttonTextClose?: any | undefined,
+		funcConfirmButton?: any | null
+	): void {
+		const componentRef =
+			this.dialogContainer.createComponent(DialogComponent);
+
+		componentRef.instance.data = {
+			title: title,
+			mensage: mensage,
+			buttonTextConfirm: buttonTextConfirm,
+			buttonTextClose: buttonTextClose,
+		};
+
+		componentRef.instance.close.subscribe(() => {
+			this.dialogContainer.clear(); // Fecha o diálogo
+		});
+
+		componentRef.instance.confirm.subscribe(() => {
+			// Ação a ser executada se o usuário clicar em "Continuar"
+			if (funcConfirmButton) {
+				funcConfirmButton();
+			}
+		});
 	}
 }
