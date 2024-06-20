@@ -1,0 +1,29 @@
+.list-item {
+	border: 1px solid #ddd; /* Substituindo theme.colors.gray3 */
+	display: flex;
+	position: relative;
+	padding: 10px;
+	margin: 16px 0;
+	flex-direction: column;
+	border-radius: 10px;
+	height: 60px;
+	margin-bottom: 20px;
+}
+
+.list-item-title {
+	font-size: 18px;
+	color: #212529; /* Substituindo theme.colors.gray9 */
+}
+
+.list-item-subtitle {
+	font-size: 12px;
+	color: #6c757d; /* Substituindo theme.colors.gray5 */
+}
+
+.check-icon {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
