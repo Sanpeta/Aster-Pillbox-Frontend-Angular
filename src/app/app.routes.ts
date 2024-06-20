@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuardService } from './guards/auth/auth-guard.service';
 import { LoggedGuardService } from './guards/logged/logged-guard.service';
+import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
 import { LoginComponent } from './modules/login/login.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
@@ -50,11 +51,18 @@ export const routes: Routes = [
 	},
 	{
 		path: 'dashboard',
-		loadComponent: () =>
-			import('./modules/dashboard/dashboard.component').then(
-				(m) => m.DashboardComponent
-			),
+		component: DashboardLayoutComponent,
 		canActivate: [AuthGuardService],
+		children: [
+			{
+				path: '',
+				loadComponent: () =>
+					import('./modules/dashboard/dashboard.component').then(
+						(m) => m.DashboardComponent
+					),
+			},
+			// ... outras rotas aninhadas para o dashboard
+		],
 	},
 	{ path: '**', component: PageNotFoundComponent },
 ];
