@@ -1,24 +1,6 @@
-.container {
-	padding: 16px 20px;
-	height: auto;
+.dashboard-container {
+	height: calc(100vh - 70px);
 	width: calc(100vw - 260px);
+	background-color: red;
 	overflow: scroll;
-}
-
-.dashboard-card {
-	position: absolute;
-	top: 15px;
-	left: 15px;
-	right: 15px;
-	bottom: 15px;
-}
-
-.more-button {
-	position: absolute;
-	top: 5px;
-	right: 10px;
-}
-
-.dashboard-card-content {
-	text-align: center;
 }

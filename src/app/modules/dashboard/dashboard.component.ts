@@ -5,15 +5,21 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import { DashboardLayoutComponent } from '../../layouts/dashboard-layout/dashboard-layout.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
+import { CardReminderComponent } from './components/card-reminder/card-reminder.component';
 
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
 	styleUrl: './dashboard.component.scss',
 	standalone: true,
-	imports: [AsyncPipe, DashboardLayoutComponent, ToastComponent],
+	imports: [
+		AsyncPipe,
+		ToastComponent,
+		CardInfoUserComponent,
+		CardReminderComponent,
+	],
 })
 export class DashboardComponent {
 	@ViewChild('toastContainer', { read: ViewContainerRef })

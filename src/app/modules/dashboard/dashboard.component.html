@@ -1,4 +1,7 @@
-<div class="container">
-	<h1 class="">Dashboard</h1>
-	<ng-template #toastContainer></ng-template>
+<div class="dashboard-container flex flex-col p-4">
+	<div #toastContainer></div>
+	<div class="flex flex-row h-auto gap-4">
+		<app-card-info-user></app-card-info-user>
+		<app-card-reminder></app-card-reminder>
+	</div>
 </div>
