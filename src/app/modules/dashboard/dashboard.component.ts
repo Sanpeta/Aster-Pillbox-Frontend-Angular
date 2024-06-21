@@ -6,6 +6,7 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
+import { CalendarWeekComponent } from './components/calendar-week/calendar-week.component';
 import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
 import { CardReminderComponent } from './components/card-reminder/card-reminder.component';
 
@@ -19,6 +20,7 @@ import { CardReminderComponent } from './components/card-reminder/card-reminder.
 		ToastComponent,
 		CardInfoUserComponent,
 		CardReminderComponent,
+		CalendarWeekComponent,
 	],
 })
 export class DashboardComponent {
