@@ -1,11 +1,21 @@
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Reminder</h3>
-		<button class="action-button">
-			<i class="fas fa-plus"></i>
-		</button>
+<div class="card-reminder flex flex-col items-center justify-center px-4 py-2">
+	<div class="flex flex-row items-center justify-between w-full">
+		<h3 class="text-start text-lg font-bold">Reminder</h3>
 	</div>
+	<button
+		class="action-button"
+		[routerLink]="'/reminder'"
+		routerLinkActive="activate"
+	>
+		<app-icon
+			src="../../../../../assets/images/notification-icon.svg"
+			[alt]="'icon-register-account'"
+		></app-icon>
+	</button>
 	<div class="card-body">
+		<app-card-reminder-item></app-card-reminder-item>
+		<app-card-reminder-item></app-card-reminder-item>
+		<app-card-reminder-item></app-card-reminder-item>
 		<app-card-reminder-item></app-card-reminder-item>
 		<app-card-reminder-item></app-card-reminder-item>
 	</div>
