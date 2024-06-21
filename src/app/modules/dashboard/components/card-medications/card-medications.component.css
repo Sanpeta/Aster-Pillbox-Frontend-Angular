@@ -1,0 +1,89 @@
+/* Widget Container */
+.widget-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 20px;
+	border-radius: 20px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	color: #212529;
+	height: 100%;
+	width: 100%;
+}
+
+/* Media queries (manter as mesmas do código original) */
+@media (max-width: 1200px) {
+	/* ... */
+}
+@media (max-width: 992px) {
+	/* ... */
+}
+@media (max-width: 768px) {
+	/* ... */
+}
+@media (max-width: 576px) {
+	/* ... */
+}
+
+/* Widget Title */
+.widget-title {
+	margin: 0;
+	padding-bottom: 24px;
+	color: #000; /* Substitua pela cor desejada */
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+}
+
+/* Header */
+.header {
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+	color: #000; /* Substitua pela cor desejada */
+}
+
+/* Column Styles */
+.column-name,
+.column-alarms,
+.column-quantity,
+.column-compartment {
+	flex: 2; /* Todas as colunas têm o mesmo tamanho */
+}
+
+.column-quantity,
+.column-compartment {
+	text-align: center;
+}
+
+/* Medication Row */
+.medication-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 0;
+}
+
+/* Medication Item Styles */
+.medication-name,
+.medication-alarms,
+.medication-quantity,
+.medication-compartment {
+	flex: 2;
+}
+
+.medication-quantity,
+.medication-compartment {
+	text-align: center;
+}
+
+/* Medications Alarms Body */
+.medications-alarms-body {
+	width: 100%;
+	height: calc(100% - 40px);
+	overflow: scroll;
+	overflow-x: hidden;
+	scrollbar-width: inherit;
+	scrollbar-color: #c1c1c1 #f0f0f0;
+}

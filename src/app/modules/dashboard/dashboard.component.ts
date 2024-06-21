@@ -8,6 +8,7 @@ import {
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CalendarWeekComponent } from './components/calendar-week/calendar-week.component';
 import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
+import { CardMedicationsComponent } from './components/card-medications/card-medications.component';
 import { CardReminderComponent } from './components/card-reminder/card-reminder.component';
 
 @Component({
@@ -21,6 +22,7 @@ import { CardReminderComponent } from './components/card-reminder/card-reminder.
 		CardInfoUserComponent,
 		CardReminderComponent,
 		CalendarWeekComponent,
+		CardMedicationsComponent,
 	],
 })
 export class DashboardComponent {
