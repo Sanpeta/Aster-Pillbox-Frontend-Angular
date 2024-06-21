@@ -1,0 +1,36 @@
+/* Select Container */
+.select-container {
+	margin-bottom: 16px;
+}
+
+/* Styled Label */
+.styled-label {
+	display: block;
+	color: #000; /* Substitua pela cor deepBlack do seu tema */
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+/* Styled Select */
+.styled-select {
+	width: 100%;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #6c757d; /* Substitua pela cor gray7 do seu tema */
+	background-color: #fff; /* Substitua pela cor white do seu tema */
+	border: 1px solid #ced4da; /* Substitua pela cor gray5 do seu tema */
+	border-radius: 0.25rem;
+}
+
+.styled-select:focus {
+	border-color: #007bff; /* Substitua pela cor primary do seu tema */
+	outline: 0;
+}
+
+/* Error Div */
+.error-div {
+	margin-top: 0.25rem;
+	font-size: 0.875rem;
+	color: #ffc107; /* Substitua pela cor warning do seu tema */
+}
