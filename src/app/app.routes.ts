@@ -61,7 +61,13 @@ export const routes: Routes = [
 						(m) => m.DashboardComponent
 					),
 			},
-			// ... outras rotas aninhadas para o dashboard
+			{
+				path: 'perfil',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-perfil/dashboard-perfil.component'
+					).then((m) => m.DashboardPerfilComponent),
+			},
 		],
 	},
 	{ path: '**', component: PageNotFoundComponent },
