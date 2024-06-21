@@ -1,7 +1,7 @@
-.grid-container {
+.container {
 	padding: 16px 20px;
 	height: auto;
-	width: auto;
+	width: calc(100vw - 260px);
 	overflow: scroll;
 }
 

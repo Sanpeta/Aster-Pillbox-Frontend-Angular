@@ -1,8 +1,8 @@
-.grid-sidenav-container {
-	grid-area: SN;
+.sidenav-container {
 	background-color: #313a46;
 	font-size: 30px;
-	height: 100%;
+	height: 100vw;
+	width: 260px;
 	padding: 16px 0;
 	text-align: center;
 }
