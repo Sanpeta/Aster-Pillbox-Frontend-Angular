@@ -1,13 +1,7 @@
-.container {
-	display: flex;
-	flex-shrink: 0; /* Impede que o card-info seja comprimido */
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-
+.container-card-info-user {
 	position: relative;
 
-	background-color: red;
+	background-color: white;
 	border-radius: 20px;
 	border: 1px solid gray;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
