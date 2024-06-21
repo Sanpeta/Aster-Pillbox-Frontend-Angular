@@ -1,7 +1,12 @@
 <div class="dashboard-container flex flex-col p-4">
 	<div #toastContainer></div>
-	<div class="flex flex-row h-auto gap-4">
+	<!-- <div class="flex flex-row h-auto gap-4">
 		<app-card-info-user></app-card-info-user>
 		<app-card-reminder></app-card-reminder>
+	</div> -->
+	<div class="grid grid-cols-12 gap-4">
+		<app-card-info-user class="col-span-3 h-72"></app-card-info-user>
+		<app-card-reminder class="col-span-3 h-72"></app-card-reminder>
+		<app-card-reminder class="col-span-6 h-72"></app-card-reminder>
 	</div>
 </div>
