@@ -1,0 +1,71 @@
+/* Widget Container */
+.widget-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 16px;
+	border-radius: 20px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	color: #212529;
+	width: 100%;
+	height: 100%;
+}
+
+/* Media queries (manter as mesmas do código original) */
+@media (max-width: 1200px) {
+	/* ... */
+}
+@media (max-width: 992px) {
+	/* ... */
+}
+@media (max-width: 768px) {
+	/* ... */
+}
+@media (max-width: 576px) {
+	/* ... */
+}
+
+/* Widget Header */
+.widget-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* Widget Title */
+.widget-title {
+	margin: 0;
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+}
+/* PillsGrid */
+.pills-grid {
+	display: grid;
+	gap: 10px;
+	width: 100%;
+	height: 100%;
+}
+
+/* PillBox */
+.pill-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #eee;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	border-color: #007bff;
+	border-style: solid;
+	border-width: 1px;
+	width: 100%;
+	height: 70px;
+}
+
+.pill-box.selected {
+	background-color: #007bff; /* Cor de fundo quando selecionado (azul primário por padrão) */
+	color: white;
+}

@@ -1,0 +1,22 @@
+<div class="widget-container">
+	<div class="widget-header">
+		<h2 class="widget-title">
+			O Formato do sua caixa de medicamentos esta assim:
+		</h2>
+	</div>
+
+	<div
+		class="pills-grid mt-4"
+		[style.gridTemplateColumns]="'repeat(' + columns + ', 1fr)'"
+		[style.gridTemplateRows]="'repeat(' + rows + ', 1fr)'"
+	>
+		<div
+			*ngFor="let index of createRange(rows * columns); let i = index"
+			class="pill-box"
+			[class.selected]="selectedItems.includes(i)"
+			(click)="toggleSelection(i)"
+		>
+			{{ i + 1 }}
+		</div>
+	</div>
+</div>
