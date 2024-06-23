@@ -1,37 +1,37 @@
 :host {
 	display: block;
 	width: 100%;
+}
 
-	button {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		width: 100%;
-		border: 0;
-		padding: 16px 10px;
-		text-align: left;
-		font-size: 14px;
-		font-weight: 600;
-		cursor: pointer;
-		background-color: #313a46;
-		color: #6c757d;
-	}
+button {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	border: 0;
+	padding: 16px 10px;
+	text-align: left;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	background-color: #313a46;
+	color: #6c757d;
+}
 
-	span {
-		display: inline-block;
-		vertical-align: middle;
-		width: 260;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+span {
+	display: inline-block;
+	vertical-align: middle;
+	width: 260;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
-	.selected {
-		color: white;
-	}
+.selected {
+	color: white;
+}
 
-	:hover {
-		color: white;
-	}
+:hover {
+	color: white;
 }
