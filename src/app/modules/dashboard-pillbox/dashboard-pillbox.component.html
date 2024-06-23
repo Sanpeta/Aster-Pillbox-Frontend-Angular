@@ -1,0 +1,111 @@
+<ng-template #toastContainer></ng-template>
+<div class="container-pillbox">
+	<div class="header">
+		<img
+			class="logo"
+			src="../../../assets/images/perfil-icon.svg"
+			alt="Logo"
+		/>
+		<div class="title-and-subtitle-container">
+			<h1 class="title">Adicionar Novo Pillbox</h1>
+			<h3 class="subtitle">
+				Insira corretamente o formato da sua pillbox para garantir uma
+				gestão eficaz do seu tratamento. <br />
+			</h3>
+		</div>
+	</div>
+
+	<div
+		class="form-container"
+		[formGroup]="pillboxForm"
+		(ngSubmit)="onSubmitPillboxForm()"
+	>
+		<!-- Name Pillbox & Lines & Columns-->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="name"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>Nome da Pillbox</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="name"
+						name="name"
+						type="text"
+						placeholder="O Nome que quer colocar para Pillbox"
+						formControlName="name"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="rows"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>Quantas Linhas tem a Pillbox</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="rows"
+						name="rows"
+						type="number"
+						placeholder="Número de Linhas"
+						formControlName="rows"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="columns"
+						class="block text-base font-semibold leading-6 text-gray-900"
+					>
+						Quantas Colunas tem a Pillbox</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="columns"
+						name="columns"
+						type="number"
+						placeholder="Número de Colunas"
+						formControlName="columns"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<app-medicine-case-pillbox
+			[columns]="pillboxForm.value.columns!"
+			[rows]="pillboxForm.value.rows!"
+		></app-medicine-case-pillbox>
+
+		<!-- Button Cancel & Save -->
+		<div class="form-row mt-4">
+			<button
+				type="button"
+				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Cancelar
+			</button>
+			<button
+				type="submit"
+				class="flex w-1/12 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Salvar
+			</button>
+		</div>
+	</div>
+</div>

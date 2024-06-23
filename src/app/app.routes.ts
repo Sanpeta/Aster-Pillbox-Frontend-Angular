@@ -68,6 +68,13 @@ export const routes: Routes = [
 						'./modules/dashboard-perfil/dashboard-perfil.component'
 					).then((m) => m.DashboardPerfilComponent),
 			},
+			{
+				path: 'pillbox',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-pillbox/dashboard-pillbox.component'
+					).then((m) => m.DashboardPillboxComponent),
+			},
 		],
 	},
 	{ path: '**', component: PageNotFoundComponent },
