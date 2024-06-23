@@ -1,4 +1,301 @@
-<div class="bg-blue-300">
-	<h1 class="">Perfil</h1>
-	<ng-template #toastContainer></ng-template>
+<ng-template #toastContainer></ng-template>
+<div class="container-perfil">
+	<div class="header">
+		<img
+			class="logo"
+			src="../../../assets/images/perfil-icon.svg"
+			alt="Logo"
+		/>
+		<div class="title-and-subtitle-container">
+			<h1 class="title">Suas informaçoes de perfil</h1>
+			<h3 class="subtitle">
+				Aqui você pode editar suas informações de perfil e seus dados
+				pessoais.
+			</h3>
+		</div>
+	</div>
+
+	<div
+		class="form-container"
+		[formGroup]="perfilForm"
+		(ngSubmit)="onSubmitPerfilForm()"
+	>
+		<!-- Name & Email -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="name"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>Nome</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="name"
+						name="name"
+						type="text"
+						autocomplete="name"
+						placeholder="Seu Nome"
+						formControlName="name"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="email"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>Email</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="email"
+						name="email"
+						type="email"
+						autocomplete="email"
+						placeholder="Seu Email"
+						formControlName="email"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="cpf_or_id_number"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>CPF ou RG</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="cpf_or_id_number"
+						name="cpf_or_id_number"
+						type="text"
+						autocomplete="username"
+						placeholder="Seu CPF ou RG"
+						formControlName="cpf_or_id_number"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<!-- Phone & Birth -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="phone"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Telefone</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="phone"
+						name="phone"
+						type="tel"
+						autocomplete="phone"
+						placeholder="Seu Telefone"
+						formControlName="phone"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+			<div class="w-full">
+				<div>
+					<label
+						for="date"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Data de Nascimento</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="date"
+						name="date"
+						type="date"
+						autocomplete="date"
+						placeholder="Sua Data de Nascimento"
+						formControlName="date"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<!-- Sex & BloodType -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="genre"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Sexo:</label
+					>
+				</div>
+				<!-- Single Select -->
+				<select
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					data-toggle="select"
+					formControlName="genre"
+					name="genre"
+					id="genre"
+					required
+				>
+					<option value="">Selecione</option>
+					<option value="M">Homem</option>
+					<option value="F">Mulher</option>
+				</select>
+			</div>
+			<div class="w-full">
+				<div>
+					<label
+						for="bloodType"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Tipo Sanguíneo:</label
+					>
+				</div>
+				<!-- Single Select -->
+				<select
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					data-toggle="select"
+					formControlName="bloodType"
+					name="bloodType"
+					id="bloodType"
+					required
+				>
+					<option value="">Selecione</option>
+					<option value="AB+">AB+</option>
+					<option value="AB-">AB-</option>
+					<option value="A">A+</option>
+					<option value="A-">A-</option>
+					<option value="B+">B+</option>
+					<option value="B-">B-</option>
+					<option value="O+">O+</option>
+					<option value="O-">O-</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- Weight & Height -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="weight"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Peso</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="weight"
+						name="weight"
+						type="number"
+						autocomplete="weight"
+						placeholder="Seu Peso"
+						formControlName="weight"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+			<div class="w-full">
+				<div>
+					<label
+						for="height"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Altura</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="height"
+						name="height"
+						type="height"
+						autocomplete="height"
+						placeholder="Seu Peso"
+						formControlName="height"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<!-- NeedACaretaker & Screen for elder -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="needACaretaker"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Necessita de Cuidador?</label
+					>
+				</div>
+				<!-- Single Select -->
+				<select
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					data-toggle="select"
+					formControlName="needACaretaker"
+					name="needACaretaker"
+					id="needACaretaker"
+					required
+				>
+					<option value="Y">Sim</option>
+					<option value="N">Não</option>
+				</select>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="screenForElder"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Tela precisa ser adaptada para Idoso?</label
+					>
+				</div>
+				<!-- Single Select -->
+				<select
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					data-toggle="select"
+					formControlName="screenForElder"
+					name="screenForElder"
+					id="screenForElder"
+					required
+				>
+					<option value="Y">Sim</option>
+					<option value="N">Não</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- Button Cancel & Save -->
+		<div class="form-row mt-4">
+			<button
+				type="button"
+				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Cancelar
+			</button>
+			<button
+				type="submit"
+				class="flex w-1/12 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Salvar
+			</button>
+		</div>
+	</div>
 </div>
