@@ -12,7 +12,7 @@ import { AccountService } from './../../../services/account/account.service';
 	styleUrl: './sidenav-dashboard.component.css',
 })
 export class SidenavDashboardComponent {
-	menuSelected = 'Home';
+	menuSelected = 'Dashboard';
 
 	constructor(
 		private accountService: AccountService,
@@ -23,11 +23,32 @@ export class SidenavDashboardComponent {
 		this.menuSelected = menu;
 		console.log(this.menuSelected);
 		switch (this.menuSelected) {
-			case 'Logout':
-				this.accountService.logoutAccount();
+			case 'Dashboard':
+				this.router.navigate(['/dashboard']);
 				break;
 			case 'Perfil':
 				this.router.navigate(['/dashboard', 'perfil']);
+				break;
+			case 'Pillbox':
+				this.router.navigate(['/dashboard', 'pillbox']);
+				break;
+			case 'Medication':
+				this.router.navigate(['/dashboard', 'medication']);
+				break;
+			case 'Information':
+				this.router.navigate(['/dashboard', 'information']);
+				break;
+			case 'Feedback':
+				this.router.navigate(['/dashboard', 'feedback']);
+				break;
+			case 'Settings':
+				this.router.navigate(['/dashboard', 'settings']);
+				break;
+			case 'Support':
+				this.router.navigate(['/dashboard', 'support']);
+				break;
+			case 'Logout':
+				this.accountService.logoutAccount();
 				break;
 			default:
 				console.log('Default');

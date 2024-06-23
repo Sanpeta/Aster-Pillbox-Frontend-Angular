@@ -2,8 +2,8 @@
 	<div class="sidenav-content">
 		<app-button-menu
 			[description]="'Dashboard'"
-			[selected]="menuSelected === 'Home'"
-			(click)="onMenuSelected('Home')"
+			[selected]="menuSelected === 'Dashboard'"
+			(click)="onMenuSelected('Dashboard')"
 		>
 			<app-icon
 				[src]="'/assets/images/dashboard-icon.svg'"
@@ -25,33 +25,33 @@
 		</app-button-menu>
 
 		<app-button-menu
-			[description]="'Adicionar Medicamentos'"
-			[selected]="menuSelected === 'Add Medication'"
-			(click)="onMenuSelected('Add Medication')"
+			[description]="'Pillbox'"
+			[selected]="menuSelected === 'Pillbox'"
+			(click)="onMenuSelected('Pillbox')"
 		>
 			<app-icon
 				[src]="'/assets/images/add-circle-icon.svg'"
-				[alt]="'image add'"
+				[alt]="'image add pillbox'"
 				[classes]="'h-6 w-6 ml-2 mr-2'"
 			/>
 		</app-button-menu>
 
 		<app-button-menu
-			[description]="'Ajustar Medicamentos'"
-			[selected]="menuSelected === 'Edit Medication'"
-			(click)="onMenuSelected('Edit Medication')"
+			[description]="'Medicamentos'"
+			[selected]="menuSelected === 'Add Medication'"
+			(click)="onMenuSelected('Medication')"
 		>
 			<app-icon
-				[src]="'/assets/images/edit-icon.svg'"
-				[alt]="'image edit'"
+				[src]="'/assets/images/medication-icon.svg'"
+				[alt]="'image add medication'"
 				[classes]="'h-6 w-6 ml-2 mr-2'"
 			/>
 		</app-button-menu>
 
 		<app-button-menu
 			[description]="'Informações Gerais'"
-			[selected]="menuSelected === 'Info'"
-			(click)="onMenuSelected('Info')"
+			[selected]="menuSelected === 'Information'"
+			(click)="onMenuSelected('Information')"
 		>
 			<app-icon
 				[src]="'/assets/images/info-icon.svg'"
@@ -86,8 +86,8 @@
 
 		<app-button-menu
 			[description]="'Suporte'"
-			[selected]="menuSelected === 'Help'"
-			(click)="onMenuSelected('Help')"
+			[selected]="menuSelected === 'Support'"
+			(click)="onMenuSelected('Support')"
 		>
 			<app-icon
 				[src]="'/assets/images/help-icon.svg'"
