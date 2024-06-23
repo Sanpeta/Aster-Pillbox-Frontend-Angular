@@ -20,7 +20,7 @@
 		[formGroup]="perfilForm"
 		(ngSubmit)="onSubmitPerfilForm()"
 	>
-		<!-- Name & Email -->
+		<!-- Name & Email & CPF-->
 		<div class="form-row">
 			<div class="w-full">
 				<div>
@@ -69,19 +69,19 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="cpf_or_id_number"
+						for="cpfOrAIdNumber"
 						class="block text-base font-semibold leading-6 text-gray-900"
 						>CPF ou RG</label
 					>
 				</div>
 				<div class="mt-2">
 					<input
-						id="cpf_or_id_number"
-						name="cpf_or_id_number"
+						id="cpfOrAIdNumber"
+						name="cpfOrAIdNumber"
 						type="text"
 						autocomplete="username"
 						placeholder="Seu CPF ou RG"
-						formControlName="cpf_or_id_number"
+						formControlName="cpfOrAIdNumber"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>

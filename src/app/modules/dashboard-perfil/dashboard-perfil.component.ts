@@ -45,6 +45,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 	perfilForm = this.formBuilder.group({
 		name: ['', [Validators.required]],
 		email: ['', [Validators.required, Validators.email]],
+		cpfOrAIdNumber: ['', [Validators.required]],
 		phone: ['', [Validators.required]],
 		date: ['', [Validators.required]],
 		genre: ['', [Validators.required]],
@@ -52,6 +53,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 		weight: ['', [Validators.required]],
 		height: ['', [Validators.required]],
 		needACaretaker: [false, [Validators.required]],
+		screenForElder: [false, [Validators.required]],
 	});
 
 	ngOnInit(): void {
