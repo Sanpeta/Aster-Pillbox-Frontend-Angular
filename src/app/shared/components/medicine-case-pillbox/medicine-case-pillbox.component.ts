@@ -9,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 	styleUrl: './medicine-case-pillbox.component.css',
 })
 export class MedicineCasePillboxComponent implements OnInit {
+	@Input() titleLabel: string = '';
 	@Input() columns: number = 1;
 	@Input() rows: number = 1;
 
