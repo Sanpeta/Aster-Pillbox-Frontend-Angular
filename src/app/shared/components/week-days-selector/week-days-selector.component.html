@@ -1,0 +1,17 @@
+<div>
+	<div class="mb-2">
+		<label
+			for="name"
+			class="block text-base font-semibold leading-6 text-gray-900"
+			>Selecione os Dias da Semana</label
+		>
+	</div>
+	<button
+		*ngFor="let day of daysOfWeek"
+		class="day-button"
+		[class.selected]="selectedDays.includes(day)"
+		(click)="toggleDaySelection(day)"
+	>
+		{{ day }}
+	</button>
+</div>
