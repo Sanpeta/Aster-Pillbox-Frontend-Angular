@@ -1,0 +1,50 @@
+/* FormRowTimer */
+.form-row-timer {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	align-items: center;
+	gap: 16px;
+	padding: 8px 0;
+}
+
+/* DayButton */
+.day-button {
+	padding: 8px 16px;
+	margin: 5px;
+	border: 1px solid #ccc; /* Cor da borda */
+	background-color: #fff; /* Cor de fundo padrão */
+	color: #000; /* Cor do texto padrão */
+}
+
+.day-button:focus {
+	outline: none; /* Remove o contorno de foco */
+}
+
+.day-button.selected {
+	background-color: #007bff; /* Cor de fundo quando selecionado (azul) */
+	color: #fff; /* Cor do texto quando selecionado (branco) */
+}
+
+/* ToggleButton */
+.toggle-button {
+	padding: 10px 20px;
+	border: 2px solid #007bff; /* Cor da borda (azul) */
+	background-color: #fff; /* Cor de fundo padrão */
+	color: #007bff; /* Cor do texto padrão (azul) */
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.toggle-button:focus {
+	outline: none; /* Remove o contorno de foco */
+}
+
+.toggle-button.selected {
+	background-color: #007bff; /* Cor de fundo quando selecionado (azul) */
+	color: #fff; /* Cor do texto quando selecionado (branco) */
+}
+
+/* Estilos para o input type="time" (você pode personalizar conforme necessário) */
+/* input[type="time"] {
+} */
