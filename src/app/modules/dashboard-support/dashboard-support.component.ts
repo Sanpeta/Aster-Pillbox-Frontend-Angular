@@ -27,7 +27,7 @@ export class DashboardSupportComponent {
 
 	supportContactForm = this.formBuilder.group({
 		assunt: ['', [Validators.required, Validators.minLength(3)]],
-		menssage: [0, [Validators.required]],
+		message: ['', [Validators.required, Validators.minLength(5)]],
 	});
 
 	ngOnInit(): void {
