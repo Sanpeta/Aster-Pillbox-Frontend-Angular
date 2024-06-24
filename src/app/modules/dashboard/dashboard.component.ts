@@ -5,11 +5,11 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
+import { ListMedicationsComponent } from '../../shared/components/list-medications/list-medications.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CalendarWeekComponent } from './components/calendar-week/calendar-week.component';
 import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
 import { CardMedicationPillboxComponent } from './components/card-medication-pillbox/card-medication-pillbox.component';
-import { CardMedicationsComponent } from './components/card-medications/card-medications.component';
 import { CardReminderComponent } from './components/card-reminder/card-reminder.component';
 
 @Component({
@@ -23,8 +23,8 @@ import { CardReminderComponent } from './components/card-reminder/card-reminder.
 		CardInfoUserComponent,
 		CardReminderComponent,
 		CalendarWeekComponent,
-		CardMedicationsComponent,
 		CardMedicationPillboxComponent,
+		ListMedicationsComponent,
 	],
 })
 export class DashboardComponent {
