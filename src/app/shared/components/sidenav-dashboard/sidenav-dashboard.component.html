@@ -1,66 +1,67 @@
 <div class="sidenav-container">
 	<div class="sidenav-content">
-		<app-button-menu
-			[description]="'Dashboard'"
-			[selected]="menuSelected === 'Dashboard'"
-			(click)="onMenuSelected('Dashboard')"
-		>
-			<app-icon
-				[src]="'/assets/images/dashboard-icon.svg'"
-				[alt]="'image dashboard'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+		<div class="w-full">
+			<app-button-menu
+				[description]="'Dashboard'"
+				[selected]="menuSelected === 'Dashboard'"
+				(click)="onMenuSelected('Dashboard')"
+			>
+				<app-icon
+					[src]="'/assets/images/dashboard-icon.svg'"
+					[alt]="'image dashboard'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
-			[description]="'Perfil'"
-			[selected]="menuSelected === 'Perfil'"
-			(click)="onMenuSelected('Perfil')"
-		>
-			<app-icon
-				[src]="'/assets/images/perfil-icon.svg'"
-				[alt]="'image perfil'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Perfil'"
+				[selected]="menuSelected === 'Perfil'"
+				(click)="onMenuSelected('Perfil')"
+			>
+				<app-icon
+					[src]="'/assets/images/perfil-icon.svg'"
+					[alt]="'image perfil'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
-			[description]="'Pillbox'"
-			[selected]="menuSelected === 'Pillbox'"
-			(click)="onMenuSelected('Pillbox')"
-		>
-			<app-icon
-				[src]="'/assets/images/add-circle-icon.svg'"
-				[alt]="'image add pillbox'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Pillbox'"
+				[selected]="menuSelected === 'Pillbox'"
+				(click)="onMenuSelected('Pillbox')"
+			>
+				<app-icon
+					[src]="'/assets/images/add-circle-icon.svg'"
+					[alt]="'image add pillbox'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
-			[description]="'Adicionar Medicamentos'"
-			[selected]="menuSelected === 'Add Medication'"
-			(click)="onMenuSelected('Add Medication')"
-		>
-			<app-icon
-				[src]="'/assets/images/medication-icon.svg'"
-				[alt]="'image add medication'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Adicionar Medicamentos'"
+				[selected]="menuSelected === 'Add Medication'"
+				(click)="onMenuSelected('Add Medication')"
+			>
+				<app-icon
+					[src]="'/assets/images/medication-icon.svg'"
+					[alt]="'image add medication'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
-			[description]="'Atualizar Medicamentos'"
-			[selected]="menuSelected === 'Update Medication'"
-			(click)="onMenuSelected('Update Medication')"
-		>
-			<app-icon
-				[src]="'/assets/images/medication-icon.svg'"
-				[alt]="'image add medication'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Atualizar Medicamentos'"
+				[selected]="menuSelected === 'Update Medication'"
+				(click)="onMenuSelected('Update Medication')"
+			>
+				<app-icon
+					[src]="'/assets/images/medication-icon.svg'"
+					[alt]="'image add medication'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
+			<!-- <app-button-menu
 			[description]="'Informações Gerais'"
 			[selected]="menuSelected === 'Information'"
 			(click)="onMenuSelected('Information')"
@@ -82,31 +83,32 @@
 				[alt]="'image feedback'"
 				[classes]="'h-6 w-6 ml-2 mr-2'"
 			/>
-		</app-button-menu>
+		</app-button-menu> -->
 
-		<app-button-menu
-			[description]="'Configurações'"
-			[selected]="menuSelected === 'Settings'"
-			(click)="onMenuSelected('Settings')"
-		>
-			<app-icon
-				[src]="'/assets/images/settings-icon.svg'"
-				[alt]="'image settings'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Configurações'"
+				[selected]="menuSelected === 'Settings'"
+				(click)="onMenuSelected('Settings')"
+			>
+				<app-icon
+					[src]="'/assets/images/settings-icon.svg'"
+					[alt]="'image settings'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-		<app-button-menu
-			[description]="'Suporte'"
-			[selected]="menuSelected === 'Support'"
-			(click)="onMenuSelected('Support')"
-		>
-			<app-icon
-				[src]="'/assets/images/help-icon.svg'"
-				[alt]="'image help'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<app-button-menu
+				[description]="'Suporte'"
+				[selected]="menuSelected === 'Support'"
+				(click)="onMenuSelected('Support')"
+			>
+				<app-icon
+					[src]="'/assets/images/help-icon.svg'"
+					[alt]="'image help'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
+		</div>
 
 		<app-button-menu
 			[description]="'Sair'"

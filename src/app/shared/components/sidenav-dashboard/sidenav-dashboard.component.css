@@ -1,7 +1,8 @@
 .sidenav-container {
+	display: flex;
 	background-color: #313a46;
 	font-size: 30px;
-	height: 100vw;
+	height: calc(100vh - 70px);
 	width: 260px;
 	padding: 16px 0;
 	text-align: center;
@@ -10,7 +11,9 @@
 .sidenav-content {
 	display: flex;
 	flex-direction: column;
-	justify-content: start;
-	align-items: end;
+	justify-content: space-between;
+	align-items: center;
 	height: 100%;
+	width: 100%;
+	text-align: center;
 }

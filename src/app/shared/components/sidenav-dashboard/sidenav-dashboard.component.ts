@@ -38,12 +38,12 @@ export class SidenavDashboardComponent {
 			case 'Update Medication':
 				this.router.navigate(['/dashboard', 'update-medication']);
 				break;
-			case 'Information':
-				this.router.navigate(['/dashboard', 'information']);
-				break;
-			case 'Feedback':
-				this.router.navigate(['/dashboard', 'feedback']);
-				break;
+			// case 'Information':
+			// 	this.router.navigate(['/dashboard', 'information']);
+			// 	break;
+			// case 'Feedback':
+			// 	this.router.navigate(['/dashboard', 'feedback']);
+			// 	break;
 			case 'Settings':
 				this.router.navigate(['/dashboard', 'settings']);
 				break;
