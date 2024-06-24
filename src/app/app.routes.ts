@@ -82,6 +82,13 @@ export const routes: Routes = [
 						'./modules/dashboard-medication/dashboard-medication.component'
 					).then((m) => m.DashboardMedicationComponent),
 			},
+			{
+				path: 'update-medication',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-update-medication/dashboard-update-medication.component'
+					).then((m) => m.DashboardUpdateMedicationComponent),
+			},
 		],
 	},
 	{ path: '**', component: PageNotFoundComponent },

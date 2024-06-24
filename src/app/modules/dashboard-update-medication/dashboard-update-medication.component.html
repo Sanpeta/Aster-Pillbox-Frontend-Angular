@@ -1,0 +1,158 @@
+<ng-template #toastContainer></ng-template>
+<div class="container-pillbox">
+	<div class="header">
+		<img
+			class="logo"
+			src="../../../assets/images/perfil-icon.svg"
+			alt="Logo"
+		/>
+		<div class="title-and-subtitle-container">
+			<h1 class="title">Adicionar Novo Medicamento</h1>
+			<h3 class="subtitle">
+				Insira corretamente os dados abaixo para garantir uma gestão
+				eficaz do seu tratamento. <br />
+			</h3>
+		</div>
+	</div>
+
+	<div
+		class="form-container"
+		[formGroup]="medicationForm"
+		(ngSubmit)="onSubmitMedicationForm()"
+	>
+		<div class="flex flex-row gap-12">
+			<div class="flex flex-col gap-4 w-1/2">
+				<!-- Label Pillbox -->
+				<div class="w-full">
+					<div>
+						<label
+							for="pillbox"
+							class="block text-base font-semibold leading-6 text-gray-900"
+							>Selecione a Caixa de Medicamentos</label
+						>
+					</div>
+					<!-- Single Select -->
+					<select
+						class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+						data-toggle="select"
+						formControlName="pillbox"
+						name="pillbox"
+						id="pillbox"
+						required
+					>
+						<option value="">Selecione</option>
+						<option value="pillbox1">Caixa 1</option>
+						<option value="pillbox2">Caixa 2</option>
+					</select>
+				</div>
+
+				<!-- Pillbox -->
+				<app-medicine-case-pillbox
+					class="mt-4 w-full"
+					[titleLabel]="
+						'Selecione um compartimento no qual vai adicionar o medicamento'
+					"
+					[columns]="1"
+					[rows]="1"
+				></app-medicine-case-pillbox>
+
+				<!-- List of Medicines -->
+				<app-list-medications class="h-96"></app-list-medications>
+			</div>
+
+			<div class="flex flex-col gap-4 w-1/2">
+				<!-- Name Medication & QTN medic compart & QTN medic use -->
+				<div class="form-row">
+					<div class="w-full">
+						<div>
+							<label
+								for="name"
+								class="block text-base font-semibold leading-6 text-gray-900"
+								>Nome do Remédio</label
+							>
+						</div>
+						<div class="mt-2">
+							<input
+								id="name"
+								name="name"
+								type="text"
+								placeholder="O Nome do Remédio"
+								formControlName="name"
+								required
+								class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+							/>
+						</div>
+					</div>
+
+					<div class="w-full">
+						<div>
+							<label
+								for="quantity_pill_compartment"
+								class="block text-base font-semibold leading-6 text-gray-900"
+								>Quantidade de comprimidos no
+								compartimento</label
+							>
+						</div>
+						<div class="mt-2">
+							<input
+								id="quantity_pill_compartment"
+								name="quantity_pill_compartment"
+								type="number"
+								placeholder="Digite a quantidade de comprimidos no compartimento"
+								formControlName="quantity_pill_compartment"
+								required
+								class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+							/>
+						</div>
+					</div>
+
+					<div class="w-full">
+						<div>
+							<label
+								for="quantity_pill_will_use"
+								class="block text-base font-semibold leading-6 text-gray-900"
+							>
+								Quantos comprimidos você vai estar tomando em
+								cada alarme?</label
+							>
+						</div>
+						<div class="mt-2">
+							<input
+								id="quantity_pill_will_use"
+								name="quantity_pill_will_use"
+								type="number"
+								placeholder="Digite a quantidade de comprimidos que vai tomar"
+								formControlName="quantity_pill_will_use"
+								required
+								class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<!-- Dates -->
+				<app-week-days-selector></app-week-days-selector>
+
+				<!-- Form Time List -->
+				<app-form-time-input-list></app-form-time-input-list>
+			</div>
+		</div>
+
+		<!-- Button Cancel & Save -->
+		<div class="form-row mt-4">
+			<button
+				type="button"
+				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Cancelar
+			</button>
+
+			<button
+				type="submit"
+				class="flex w-1/12 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			>
+				Salvar
+			</button>
+		</div>
+	</div>
+</div>
