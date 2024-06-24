@@ -1,0 +1,17 @@
+<div class="widget-container">
+	<h2 class="widget-title">Medicamentos</h2>
+	<div class="header">
+		<div class="column-name">Nome</div>
+		<div class="column-alarms">Alarmes</div>
+		<div class="column-quantity">Quantidade</div>
+		<div class="column-compartiment">Compartimento(s)</div>
+	</div>
+	<div class="medications-alarms-body">
+		<div class="medication-row" *ngFor="let med of medications">
+			<span class="medication-name">{{ med.name }}</span>
+			<span class="medication-alarms">{{ med.alarms.join(", ") }}</span>
+			<span class="medication-quantity">{{ med.quantity }}</span>
+			<span class="medication-compartiment">{{ med.compartiment }}</span>
+		</div>
+	</div>
+</div>
