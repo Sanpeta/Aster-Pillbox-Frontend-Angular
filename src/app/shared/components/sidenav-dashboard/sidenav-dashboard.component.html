@@ -37,9 +37,21 @@
 		</app-button-menu>
 
 		<app-button-menu
-			[description]="'Medicamentos'"
+			[description]="'Adicionar Medicamentos'"
 			[selected]="menuSelected === 'Add Medication'"
-			(click)="onMenuSelected('Medication')"
+			(click)="onMenuSelected('Add Medication')"
+		>
+			<app-icon
+				[src]="'/assets/images/medication-icon.svg'"
+				[alt]="'image add medication'"
+				[classes]="'h-6 w-6 ml-2 mr-2'"
+			/>
+		</app-button-menu>
+
+		<app-button-menu
+			[description]="'Atualizar Medicamentos'"
+			[selected]="menuSelected === 'Update Medication'"
+			(click)="onMenuSelected('Update Medication')"
 		>
 			<app-icon
 				[src]="'/assets/images/medication-icon.svg'"
