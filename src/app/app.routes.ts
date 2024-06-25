@@ -83,6 +83,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardListAlarmsComponent),
 			},
 			{
+				path: 'patients',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-list-patients/dashboard-list-patients.component'
+					).then((m) => m.DashboardListPatientsComponent),
+			},
+			{
 				path: 'medication',
 				loadComponent: () =>
 					import(
