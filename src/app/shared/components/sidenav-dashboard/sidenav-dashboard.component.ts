@@ -50,6 +50,9 @@ export class SidenavDashboardComponent {
 			// case 'Feedback':
 			// 	this.router.navigate(['/dashboard', 'feedback']);
 			// 	break;
+			case 'Report':
+				this.router.navigate(['/dashboard', 'report']);
+				break;
 			case 'Settings':
 				this.router.navigate(['/dashboard', 'settings']);
 				break;

@@ -104,6 +104,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardUpdateMedicationComponent),
 			},
 			{
+				path: 'report',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-report/dashboard-report.component'
+					).then((m) => m.DashboardReportComponent),
+			},
+			{
 				path: 'support',
 				loadComponent: () =>
 					import(
