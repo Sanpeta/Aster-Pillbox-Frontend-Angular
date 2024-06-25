@@ -38,6 +38,18 @@
 			</app-button-menu>
 
 			<app-button-menu
+				[description]="'Lista de Alarmes'"
+				[selected]="menuSelected === 'List Alarms'"
+				(click)="onMenuSelected('List Alarms')"
+			>
+				<app-icon
+					[src]="'/assets/images/settings-icon.svg'"
+					[alt]="'image settings'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
+
+			<app-button-menu
 				[description]="'Adicionar Medicamentos'"
 				[selected]="menuSelected === 'Add Medication'"
 				(click)="onMenuSelected('Add Medication')"

@@ -32,6 +32,9 @@ export class SidenavDashboardComponent {
 			case 'Pillbox':
 				this.router.navigate(['/dashboard', 'pillbox']);
 				break;
+			case 'List Alarms':
+				this.router.navigate(['/dashboard', 'alarms']);
+				break;
 			case 'Add Medication':
 				this.router.navigate(['/dashboard', 'medication']);
 				break;

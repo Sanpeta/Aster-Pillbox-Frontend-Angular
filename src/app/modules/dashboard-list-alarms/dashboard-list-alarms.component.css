@@ -1,0 +1,7 @@
+.container-pillbox {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 70px);
+	width: calc(100vw - 260px);
+	padding: 32px;
+}
