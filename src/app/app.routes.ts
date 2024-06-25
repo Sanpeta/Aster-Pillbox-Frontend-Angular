@@ -111,6 +111,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardReportComponent),
 			},
 			{
+				path: 'prices',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-prices/dashboard-prices.component'
+					).then((m) => m.DashboardPricesComponent),
+			},
+			{
 				path: 'support',
 				loadComponent: () =>
 					import(
