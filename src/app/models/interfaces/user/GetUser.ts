@@ -3,11 +3,17 @@ export interface GetUserRequest {
 }
 
 export interface GetUserResponse {
-	id: number;
+	user_id: number;
 	name: string;
 	age: string;
-	genre: 'M' | 'F';
-	is_a_caretaker: boolean;
+	genre: string;
+	need_a_caretaker: boolean;
+	screen_for_elder: boolean;
+	blood_type: string;
+	height: string;
+	weight: string;
+	cpf_or_id_number: string;
+	date_of_birth: string;
 	phone_number: string;
 }
 
@@ -17,14 +23,15 @@ export interface GetUserByAccountIDRequest {
 
 export interface GetUserByAccountIDResponse {
 	user_id: number;
-	email: string;
 	name: string;
 	age: string;
-	genre: 'M' | 'F';
-	is_a_caretaker: boolean;
-	height: number;
-	weight: number;
-	date_of_birth: string;
+	genre: string;
+	need_a_caretaker: boolean;
+	screen_for_elder: boolean;
+	blood_type: string;
+	height: string;
+	weight: string;
 	cpf_or_id_number: string;
+	date_of_birth: string;
 	phone_number: string;
 }
