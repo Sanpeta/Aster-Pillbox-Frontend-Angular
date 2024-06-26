@@ -1,21 +1,29 @@
 export interface UpdateUserRequest {
 	id: number;
-	name: string;
-	age: string;
-	genre: 'M' | 'F';
-	is_a_caretaker: boolean;
-	height: number;
-	weight: number;
-	date_of_birth: string;
-	cpf_or_id_number: string;
-	phone_number: string;
+	name?: string;
+	age?: string;
+	genre?: string;
+	need_a_caretaker?: boolean;
+	height?: string;
+	weight?: string;
+	date_of_birth?: string;
+	cpf_or_id_number?: string;
+	phone_number?: string;
+	blood_type?: string;
+	screen_for_elder?: boolean;
 }
 
 export interface UpdateUserResponse {
 	user_id: number;
 	name: string;
 	age: string;
-	genre: 'M' | 'F';
-	is_a_caretaker: boolean;
+	genre: string;
+	need_a_caretaker: boolean;
+	height: string;
+	weight: string;
+	date_of_birth: string;
+	cpf_or_id_number: string;
 	phone_number: string;
+	blood_type: string;
+	screen_for_elder: boolean;
 }
