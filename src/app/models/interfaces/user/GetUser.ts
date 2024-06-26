@@ -15,6 +15,7 @@ export interface GetUserResponse {
 	cpf_or_id_number: string;
 	date_of_birth: string;
 	phone_number: string;
+	image_url: string;
 }
 
 export interface GetUserByAccountIDRequest {
@@ -34,4 +35,5 @@ export interface GetUserByAccountIDResponse {
 	cpf_or_id_number: string;
 	date_of_birth: string;
 	phone_number: string;
+	image_url: string;
 }

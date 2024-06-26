@@ -11,6 +11,7 @@ export interface UpdateUserRequest {
 	phone_number?: string;
 	blood_type?: string;
 	screen_for_elder?: boolean;
+	image_url: string;
 }
 
 export interface UpdateUserResponse {
@@ -26,4 +27,5 @@ export interface UpdateUserResponse {
 	phone_number: string;
 	blood_type: string;
 	screen_for_elder: boolean;
+	image_url: string;
 }

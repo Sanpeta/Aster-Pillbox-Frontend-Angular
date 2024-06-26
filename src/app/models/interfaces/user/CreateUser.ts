@@ -11,6 +11,7 @@ export interface CreateUserRequest {
 	phone_number: string;
 	blood_type: string;
 	screen_for_elder: boolean;
+	image_url: string;
 }
 
 export interface CreateUserResponse {
@@ -25,4 +26,5 @@ export interface CreateUserResponse {
 	weight: string;
 	date_of_birth: string;
 	phone_number: string;
+	image_url: string;
 }
