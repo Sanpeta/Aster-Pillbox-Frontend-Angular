@@ -15,10 +15,10 @@
 		</div>
 	</div>
 
-	<div
+	<form
 		class="form-container"
-		[formGroup]="perfilForm"
-		(ngSubmit)="onSubmitPerfilForm()"
+		[formGroup]="userForm"
+		(ngSubmit)="onSubmitUserForm()"
 	>
 		<!-- Name & Email & CPF-->
 		<div class="form-row">
@@ -57,11 +57,10 @@
 						id="email"
 						name="email"
 						type="email"
-						autocomplete="email"
 						placeholder="Seu Email"
 						formControlName="email"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+						[readonly]="true"
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 read-only:bg-gray-50 read-only:text-gray-500 read-only:ring-gray-500 read-only:border-gray-500 cursor-default sm:text-sm sm:leading-5"
 					/>
 				</div>
 			</div>
@@ -69,19 +68,19 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="cpfOrAIdNumber"
+						for="cpf_or_id_number"
 						class="block text-base font-semibold leading-6 text-gray-900"
 						>CPF ou RG</label
 					>
 				</div>
 				<div class="mt-2">
 					<input
-						id="cpfOrAIdNumber"
-						name="cpfOrAIdNumber"
+						id="cpf_or_id_number"
+						name="cpf_or_id_number"
 						type="text"
 						autocomplete="username"
 						placeholder="Seu CPF ou RG"
-						formControlName="cpfOrAIdNumber"
+						formControlName="cpf_or_id_number"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -94,19 +93,19 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="phone"
+						for="phone_number"
 						class="block text-sm font-semibold leading-6 text-gray-900"
 						>Telefone</label
 					>
 				</div>
 				<div class="mt-2">
 					<input
-						id="phone"
-						name="phone"
+						id="phone_number"
+						name="phone_number"
 						type="tel"
-						autocomplete="phone"
+						autocomplete="phone_number"
 						placeholder="Seu Telefone"
-						formControlName="phone"
+						formControlName="phone_number"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -115,19 +114,19 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="date"
+						for="date_of_birth"
 						class="block text-sm font-semibold leading-6 text-gray-900"
 						>Data de Nascimento</label
 					>
 				</div>
 				<div class="mt-2">
 					<input
-						id="date"
-						name="date"
+						id="date_of_birth"
+						name="date_of_birth"
 						type="date"
-						autocomplete="date"
+						autocomplete="date_of_birth"
 						placeholder="Sua Data de Nascimento"
-						formControlName="date"
+						formControlName="date_of_birth"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -154,7 +153,6 @@
 					id="genre"
 					required
 				>
-					<option value="">Selecione</option>
 					<option value="M">Homem</option>
 					<option value="F">Mulher</option>
 				</select>
@@ -162,19 +160,19 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="bloodType"
+						for="blood_type"
 						class="block text-sm font-semibold leading-6 text-gray-900"
 						>Tipo Sanguíneo:</label
 					>
 				</div>
 				<!-- Single Select -->
 				<select
-					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					data-toggle="select"
-					formControlName="bloodType"
-					name="bloodType"
-					id="bloodType"
+					id="blood_type"
+					name="blood_type"
+					formControlName="blood_type"
 					required
+					data-toggle="select"
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 				>
 					<option value="">Selecione</option>
 					<option value="AB+">AB+</option>
@@ -203,7 +201,7 @@
 					<input
 						id="weight"
 						name="weight"
-						type="number"
+						type="text"
 						autocomplete="weight"
 						placeholder="Seu Peso"
 						formControlName="weight"
@@ -224,7 +222,7 @@
 					<input
 						id="height"
 						name="height"
-						type="height"
+						type="text"
 						autocomplete="height"
 						placeholder="Seu Peso"
 						formControlName="height"
@@ -240,7 +238,7 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="needACaretaker"
+						for="need_a_caretaker"
 						class="block text-sm font-semibold leading-6 text-gray-900"
 						>Necessita de Cuidador?</label
 					>
@@ -249,20 +247,20 @@
 				<select
 					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					data-toggle="select"
-					formControlName="needACaretaker"
-					name="needACaretaker"
-					id="needACaretaker"
+					formControlName="need_a_caretaker"
+					name="need_a_caretaker"
+					id="need_a_caretaker"
 					required
 				>
-					<option value="Y">Sim</option>
-					<option value="N">Não</option>
+					<option [ngValue]="true">Sim</option>
+					<option [ngValue]="false">Não</option>
 				</select>
 			</div>
 
 			<div class="w-full">
 				<div>
 					<label
-						for="screenForElder"
+						for="screen_for_elder"
 						class="block text-sm font-semibold leading-6 text-gray-900"
 						>Tela precisa ser adaptada para Idoso?</label
 					>
@@ -271,13 +269,13 @@
 				<select
 					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					data-toggle="select"
-					formControlName="screenForElder"
-					name="screenForElder"
-					id="screenForElder"
+					formControlName="screen_for_elder"
+					name="screen_for_elder"
+					id="screen_for_elder"
 					required
 				>
-					<option value="Y">Sim</option>
-					<option value="N">Não</option>
+					<option [ngValue]="true">Sim</option>
+					<option [ngValue]="false">Não</option>
 				</select>
 			</div>
 		</div>
@@ -285,6 +283,8 @@
 		<!-- Button Cancel & Save -->
 		<div class="form-row mt-4">
 			<button
+				routerLink="/dashboard"
+				routerLinkActive="active"
 				type="button"
 				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 			>
@@ -294,8 +294,8 @@
 				type="submit"
 				class="flex w-1/12 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 			>
-				Salvar
+				{{ createNewUser ? "Salvar" : "Atualizar" }}
 			</button>
 		</div>
-	</div>
+	</form>
 </div>
