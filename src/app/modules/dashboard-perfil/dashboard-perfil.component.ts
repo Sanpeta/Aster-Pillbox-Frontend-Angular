@@ -54,6 +54,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 		phone_number: '',
 		screen_for_elder: false,
 		weight: '',
+		image_url: '',
 	};
 	private ACCOUNT_ID = 0;
 	private ACCOUNT_EMAIL = '';
@@ -179,6 +180,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 				phone_number: formValue.phone_number!,
 				blood_type: formValue.blood_type!,
 				screen_for_elder: formValue.screen_for_elder ?? false,
+				image_url: '',
 			};
 
 			if (this.createNewUser) {
@@ -227,6 +229,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 					phone_number: formValue.phone_number!,
 					blood_type: formValue.blood_type!,
 					screen_for_elder: formValue.screen_for_elder ?? false,
+					image_url: '',
 				};
 
 				this.userService
