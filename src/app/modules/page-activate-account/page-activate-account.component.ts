@@ -20,7 +20,6 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	public description = 'Só falta entrar e começar a usar!';
 	public showResendButton = false;
 	private token: string | null = null;
-	private accountID: string | null = null;
 	private emailAccount: string = '';
 	private accActivateRequest: UpdateAccountActivationRequest = {
 		token: '',
@@ -38,13 +37,13 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 		this.route.queryParams.subscribe((params) => {
 			this.token = params['token']; //Salva o valor do token
 		});
-		this.accountID = this.cookieService.get('ACCOUNT_ID');
 		this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
-		if (!this.token || !this.accountID) {
+		if (!this.token) {
 			this.loader = false;
 			this.showResendButton = true;
-			this.title = 'Token inválido';
-			this.description = 'O token é inválido.';
+			this.title = 'Email inválido';
+			this.description =
+				'O email é inválido, favor tente solicitar o reenvio do email de ativação novamente.';
 			return;
 		}
 		this.accActivateRequest = {
