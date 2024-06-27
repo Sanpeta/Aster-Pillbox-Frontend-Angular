@@ -1,5 +1,5 @@
 export interface UpdateCaseRequest {
-	user_id: number;
+	id: number;
 	mac_address?: string;
 	case_name?: string;
 	row_size?: number;
@@ -8,6 +8,7 @@ export interface UpdateCaseRequest {
 }
 
 export interface UpdateCaseResponse {
+	id: number;
 	user_id: number;
 	mac_address: string;
 	case_name: string;

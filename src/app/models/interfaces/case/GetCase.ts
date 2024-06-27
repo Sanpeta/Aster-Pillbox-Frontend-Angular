@@ -3,6 +3,7 @@ export interface GetCaseRequest {
 }
 
 export interface GetCaseResponse {
+	id: number;
 	user_id: number;
 	mac_address: string;
 	case_name: string;
