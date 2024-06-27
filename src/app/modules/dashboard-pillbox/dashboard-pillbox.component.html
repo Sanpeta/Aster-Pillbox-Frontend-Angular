@@ -1,4 +1,6 @@
-<ng-template #toastContainer></ng-template>
+<div #toastContainer></div>
+<div #dialogContainer></div>
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-pillbox">
 	<div class="header">
 		<img
@@ -15,7 +17,7 @@
 		</div>
 	</div>
 
-	<div
+	<form
 		class="form-container"
 		[formGroup]="pillboxForm"
 		(ngSubmit)="onSubmitPillboxForm()"
@@ -46,18 +48,18 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="rows"
+						for="row_size"
 						class="block text-base font-semibold leading-6 text-gray-900"
 						>Quantas Linhas tem a Pillbox</label
 					>
 				</div>
 				<div class="mt-2">
 					<input
-						id="rows"
-						name="rows"
+						id="row_size"
+						name="row_size"
 						type="number"
 						placeholder="Número de Linhas"
-						formControlName="rows"
+						formControlName="row_size"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -67,7 +69,7 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="columns"
+						for="col_size"
 						class="block text-base font-semibold leading-6 text-gray-900"
 					>
 						Quantas Colunas tem a Pillbox</label
@@ -75,11 +77,11 @@
 				</div>
 				<div class="mt-2">
 					<input
-						id="columns"
-						name="columns"
+						id="col_size"
+						name="col_size"
 						type="number"
 						placeholder="Número de Colunas"
-						formControlName="columns"
+						formControlName="col_size"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -87,17 +89,66 @@
 			</div>
 		</div>
 
+		<!-- MAC Address & Status -->
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="mac"
+						class="block text-base font-semibold leading-6 text-gray-900"
+					>
+						Qual o endereço MAC do seu Dispositivo?(Opcional)</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="mac"
+						name="mac"
+						type="text"
+						placeholder="Exemplo: 00-B0-D0-63-C2-26"
+						formControlName="mac"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
+						for="status"
+						class="block text-sm font-semibold leading-6 text-gray-900"
+						>Dispositivo está ativo?</label
+					>
+				</div>
+				<!-- Single Select -->
+				<select
+					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					data-toggle="select"
+					formControlName="status"
+					name="status"
+					id="status"
+					required
+				>
+					<option [ngValue]="true">Sim</option>
+					<option [ngValue]="false">Não</option>
+				</select>
+			</div>
+		</div>
+
 		<app-medicine-case-pillbox
 			class="mt-4 w-full"
 			[titleLabel]="'O formato da sua caixa de medicamentos.'"
-			[columns]="pillboxForm.value.columns!"
-			[rows]="pillboxForm.value.rows!"
+			[columns]="pillboxForm.value.col_size!"
+			[rows]="pillboxForm.value.row_size!"
 		></app-medicine-case-pillbox>
 
 		<!-- Button Cancel & Save -->
 		<div class="form-row mt-4">
 			<button
 				type="button"
+				routerLink="/dashboard"
+				routerLinkActive="active"
 				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 			>
 				Cancelar
@@ -109,5 +160,5 @@
 				Salvar
 			</button>
 		</div>
-	</div>
+	</form>
 </div>

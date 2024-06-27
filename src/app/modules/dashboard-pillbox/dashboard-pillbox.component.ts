@@ -1,9 +1,12 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { CreateCaseRequest } from '../../models/interfaces/case/CreateCase';
+import { CaseService } from '../../services/case/case.service';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MedicineCasePillboxComponent } from '../../shared/components/medicine-case-pillbox/medicine-case-pillbox.component';
 
 @Component({
@@ -13,30 +16,35 @@ import { MedicineCasePillboxComponent } from '../../shared/components/medicine-c
 		ReactiveFormsModule,
 		DialogComponent,
 		MedicineCasePillboxComponent,
+		RouterModule,
+		LoaderComponent,
 	],
 	templateUrl: './dashboard-pillbox.component.html',
 	styleUrl: './dashboard-pillbox.component.css',
 })
 export class DashboardPillboxComponent {
 	private destroy$ = new Subject<void>();
-	loading = false; // Inicialmente, a página está carregando
+	loading = false;
 	@ViewChild('dialogContainer', { read: ViewContainerRef })
 	dialogContainer!: ViewContainerRef;
 
 	constructor(
 		private formBuilder: FormBuilder,
+		private caseService: CaseService,
 		private cookieService: CookieService,
 		private router: Router
 	) {}
 
 	pillboxForm = this.formBuilder.group({
+		mac: [''],
 		name: ['', [Validators.required, Validators.minLength(3)]],
-		rows: [0, [Validators.required]],
-		columns: [0, [Validators.required]],
+		row_size: [0, [Validators.required]],
+		col_size: [0, [Validators.required]],
+		status: [true, [Validators.required]],
 	});
 
 	ngOnInit(): void {
-		this.pillboxForm.reset();
+		console.log('teste');
 	}
 
 	ngOnDestroy(): void {
@@ -46,79 +54,90 @@ export class DashboardPillboxComponent {
 
 	onSubmitPillboxForm(): void {
 		this.loading = true;
-		// if (this.registerForm.value && this.registerForm.valid) {
-		// 	console.log(this.registerForm.value);
-		// 	this.accountService
-		// 		.registerAccount(this.registerForm.value as AccountRequest)
-		// 		.pipe(
-		// 			switchMap((response) => {
-		// 				this.cookieService.set(
-		// 					'ACCOUNT_ID',
-		// 					response.id.toString()
-		// 				);
-		// 				this.cookieService.set('ACCOUNT_EMAIL', response.email);
-		// 				this.emailAccount = response.email;
-		// 				return this.accountService.createTokenAccountActivate(
-		// 					this.emailAccount
-		// 				);
-		// 			}),
-		// 			takeUntil(this.destroy$)
-		// 		)
-		// 		.subscribe({
-		// 			next: (response) => {
-		// 				if (response) {
-		// 					this.registerForm.reset();
-		// 					this.loading = false;
-		// 					this.router.navigate(['/check-your-email']);
-		// 				}
-		// 			},
-		// 			complete: () => {
-		// 				this.loading = false;
-		// 			},
-		// 			error: (error) => {
-		// 				console.log(error);
-		// 				this.loading = false;
-		// 				switch (error.status) {
-		// 					case 401:
-		// 						this.openDialog(
-		// 							'Não Autorizado',
-		// 							'E-Mail ou senha inválido.',
-		// 							'Ok',
-		// 							'',
-		// 							() => {}
-		// 						);
-		// 						break;
-		// 					case 404:
-		// 						this.openDialog(
-		// 							'Email não cadastrado',
-		// 							'Favor verifique os dados informados e tente novamente.',
-		// 							'Ok',
-		// 							'',
-		// 							() => {}
-		// 						);
-		// 						break;
-		// 					case 500:
-		// 						this.openDialog(
-		// 							'Email já cadastrado',
-		// 							'Favor verifique os dados informados e tente novamente.',
-		// 							'Ok',
-		// 							'',
-		// 							() => {}
-		// 						);
-		// 						break;
-		// 					default:
-		// 						this.openDialog(
-		// 							'Ocorreu um erro',
-		// 							'Favor verifique os dados informados e tente novamente.',
-		// 							'Ok',
-		// 							'',
-		// 							() => {}
-		// 						);
-		// 						break;
-		// 				}
-		// 			},
-		// 		});
-		// }
+		console.log(this.pillboxForm.value);
+		if (this.pillboxForm.value && this.pillboxForm.valid) {
+			const pillbox: CreateCaseRequest = {
+				user_id: parseInt(this.cookieService.get('USER_ID')),
+				mac_address: this.pillboxForm.value.mac ?? '',
+				case_name: this.pillboxForm.value.name!,
+				row_size: this.pillboxForm.value.row_size!,
+				col_size: this.pillboxForm.value.col_size!,
+				status: this.pillboxForm.value.status!,
+			};
+
+			this.caseService
+				.createCase(pillbox)
+				.pipe(takeUntil(this.destroy$))
+				.subscribe({
+					next: (response) => {
+						if (response) {
+							this.pillboxForm.reset();
+							this.loading = false;
+							this.openDialog(
+								'Foi criado com sucesso',
+								'Agora você pode adicionar medicamentos ao case.',
+								'Ok',
+								'',
+								() => {}
+							);
+						}
+					},
+					complete: () => {
+						this.loading = false;
+					},
+					error: (error) => {
+						console.log(error);
+						this.loading = false;
+						switch (error.status) {
+							case 400:
+								this.openDialog(
+									'Favor verifique os dados informados',
+									'Favor verificar os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 401:
+								this.openDialog(
+									'Não autorizado',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 404:
+								this.openDialog(
+									'Usuario não encontrado',
+									'O usuário não foi encontrado. Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 500:
+								this.openDialog(
+									'Problema no servidor',
+									'Desculpe, ocorreu um problema no servidor. Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							default:
+								this.openDialog(
+									'Ocorreu um erro',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+						}
+					},
+				});
+		}
 	}
 
 	openDialog(
