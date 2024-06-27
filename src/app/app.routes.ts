@@ -76,6 +76,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardPillboxComponent),
 			},
 			{
+				path: 'update-pillbox/:id',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-update-pillbox/dashboard-update-pillbox.component'
+					).then((m) => m.DashboardUpdatePillboxComponent),
+			},
+			{
 				path: 'pillboxes',
 				loadComponent: () =>
 					import(
