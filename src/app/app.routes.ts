@@ -76,6 +76,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardPillboxComponent),
 			},
 			{
+				path: 'pillboxes',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-list-pillboxes/dashboard-list-pillboxes.component'
+					).then((m) => m.DashboardListPillboxesComponent),
+			},
+			{
 				path: 'alarms',
 				loadComponent: () =>
 					import(
