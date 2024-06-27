@@ -30,6 +30,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 })
 export class LoginComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
+	public sendedEmail = false;
 	public showLoader = false;
 	@ViewChild('dialogContainer', { read: ViewContainerRef })
 	dialogContainer!: ViewContainerRef;
@@ -55,6 +56,25 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
+	resendEmail() {
+		this.showLoader = true;
+		this.accountService
+			.createTokenAccountActivate(this.cookieService.get('ACCOUNT_EMAIL'))
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: (response) => {
+					console.log(response);
+					this.showLoader = false;
+					this.sendedEmail = true;
+				},
+				error: (err) => {
+					console.log(err.error);
+					this.showLoader = false;
+					this.sendedEmail = false;
+				},
+			});
+	}
+
 	onSubmitLoginForm(): void {
 		this.showLoader = true;
 		if (this.loginForm.valid && this.loginForm.value) {
@@ -65,20 +85,37 @@ export class LoginComponent implements OnInit, OnDestroy {
 					next: (response) => {
 						if (response) {
 							this.cookieService.set(
-								'AUTH_TOKEN',
-								response.access_token
-							);
-							this.cookieService.set(
 								'ACCOUNT_EMAIL',
 								response.account.email
 							);
-							this.cookieService.set(
-								'ACCOUNT_ID',
-								response.account.id.toString()
-							);
-							this.showLoader = false;
-							this.loginForm.reset();
-							this.router.navigate(['/dashboard']);
+							if (response.account.active) {
+								this.cookieService.set(
+									'AUTH_TOKEN',
+									response.access_token
+								);
+								this.cookieService.set(
+									'ACCOUNT_ID',
+									response.account.id.toString()
+								);
+								this.showLoader = false;
+								this.loginForm.reset();
+								this.router.navigate(['/dashboard']);
+							} else {
+								this.showLoader = false;
+								this.openDialog(
+									'Conta não ativada.',
+									'Favor solicitar o reenvio do e-mail de ativação da conta ou  entrar em contato com o suporte.',
+									'Solicitar Reenvio',
+									'Cancelar',
+									() => {
+										this.resendEmail();
+										this.loginForm.reset();
+										this.router.navigate([
+											'/check-your-email',
+										]);
+									}
+								);
+							}
 						}
 					},
 					error: (error) => {
