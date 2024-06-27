@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCaseResponse } from '../../models/interfaces/case/GetCase';
@@ -17,12 +17,13 @@ interface Pillbox {
 @Component({
 	selector: 'app-dashboard-list-pillboxes',
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule, RouterModule],
 	templateUrl: './dashboard-list-pillboxes.component.html',
 	styleUrl: './dashboard-list-pillboxes.component.css',
 })
 export class DashboardListPillboxesComponent {
 	private destroy$ = new Subject<void>();
+	public pillbox_id: number = 0;
 
 	public pillboxes: GetCaseResponse[] = [];
 	tableHeaders = [

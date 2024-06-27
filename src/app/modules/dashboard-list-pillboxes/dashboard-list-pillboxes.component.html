@@ -36,7 +36,12 @@
 					</td>
 					<td class="px-6 py-4">
 						<a
-							href="#"
+							[routerLink]="[
+								'/dashboard',
+								'update-pillbox',
+								pillbox.id
+							]"
+							routerLinkActive="active"
 							class="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-300"
 							>Editar</a
 						>
