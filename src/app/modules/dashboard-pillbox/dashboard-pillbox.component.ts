@@ -39,7 +39,7 @@ export class DashboardPillboxComponent {
 		mac: [''],
 		name: ['', [Validators.required, Validators.minLength(3)]],
 		row_size: [0, [Validators.required]],
-		col_size: [0, [Validators.required]],
+		column_size: [0, [Validators.required]],
 		status: [true, [Validators.required]],
 	});
 
@@ -61,7 +61,7 @@ export class DashboardPillboxComponent {
 				mac_address: this.pillboxForm.value.mac ?? '',
 				case_name: this.pillboxForm.value.name!,
 				row_size: this.pillboxForm.value.row_size!,
-				col_size: this.pillboxForm.value.col_size!,
+				column_size: this.pillboxForm.value.column_size!,
 				status: this.pillboxForm.value.status!,
 			};
 

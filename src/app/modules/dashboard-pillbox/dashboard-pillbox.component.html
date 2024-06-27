@@ -69,7 +69,7 @@
 			<div class="w-full">
 				<div>
 					<label
-						for="col_size"
+						for="column_size"
 						class="block text-base font-semibold leading-6 text-gray-900"
 					>
 						Quantas Colunas tem a Pillbox</label
@@ -77,11 +77,11 @@
 				</div>
 				<div class="mt-2">
 					<input
-						id="col_size"
-						name="col_size"
+						id="column_size"
+						name="column_size"
 						type="number"
 						placeholder="Número de Colunas"
-						formControlName="col_size"
+						formControlName="column_size"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
@@ -139,7 +139,7 @@
 		<app-medicine-case-pillbox
 			class="mt-4 w-full"
 			[titleLabel]="'O formato da sua caixa de medicamentos.'"
-			[columns]="pillboxForm.value.col_size!"
+			[columns]="pillboxForm.value.column_size!"
 			[rows]="pillboxForm.value.row_size!"
 		></app-medicine-case-pillbox>
 

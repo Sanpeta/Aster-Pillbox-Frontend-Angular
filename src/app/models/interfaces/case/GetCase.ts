@@ -7,6 +7,6 @@ export interface GetCaseResponse {
 	mac_address: string;
 	case_name: string;
 	row_size: number;
-	col_size: number;
+	column_size: number;
 	status: boolean;
 }
