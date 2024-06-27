@@ -61,12 +61,12 @@ export class CaseService {
 		);
 	}
 
-	public getCaseByUserID(): Observable<GetCaseResponse> {
+	public getCaseByUserID(): Observable<GetCaseResponse[]> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
 		const USER_ID = this.cookie.get('USER_ID');
 
-		return this.httpClient.get<GetCaseResponse>(
-			this.API_URL + '/case/user/' + USER_ID,
+		return this.httpClient.get<GetCaseResponse[]>(
+			this.API_URL + '/cases/user/' + USER_ID,
 			{
 				headers: {
 					'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export class CaseService {
 
 		return this.httpClient.get<GetCaseResponse>(
 			this.API_URL +
-				'/case/user?id=' +
+				'/cases/user?id=' +
 				USER_ID +
 				'&page_id=' +
 				page_id +
