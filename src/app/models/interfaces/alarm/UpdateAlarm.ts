@@ -1,6 +1,6 @@
 export interface UpdateAlarmRequest {
 	id: number;
-	time_alarm?: string;
+	time_alarm?: string[];
 	is_active?: boolean;
 	days_of_week?: boolean[];
 	description?: string;
@@ -8,7 +8,7 @@ export interface UpdateAlarmRequest {
 
 export interface UpdateAlarmResponse {
 	id: number;
-	time_alarm: string;
+	time_alarm: string[];
 	is_active: boolean;
 	days_of_week: boolean[];
 	description: string;
