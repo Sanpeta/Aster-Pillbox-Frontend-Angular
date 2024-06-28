@@ -1,8 +1,8 @@
-export interface GetCaseByUserIDRequest {
+export interface GetCasesByUserIDRequest {
 	id: number;
 }
 
-export interface GetCaseByUserIDResponse {
+export interface GetCasesByUserIDResponse {
 	user_id: number;
 	mac_address: string;
 	case_name: string;

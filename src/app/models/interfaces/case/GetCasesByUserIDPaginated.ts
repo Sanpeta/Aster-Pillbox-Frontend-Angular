@@ -1,10 +1,10 @@
-export interface GetCaseByUserIDPaginatedRequest {
+export interface GetCasesByUserIDPaginatedRequest {
 	id: number;
 	page_id: number;
 	page_size: number;
 }
 
-export interface GetCaseByUserIDPaginatedResponse {
+export interface GetCasesByUserIDPaginatedResponse {
 	user_id: number;
 	mac_address: string;
 	case_name: string;
