@@ -61,7 +61,7 @@ export class CaseService {
 		);
 	}
 
-	public getCaseByUserID(): Observable<GetCaseResponse[]> {
+	public getCasesByUserID(): Observable<GetCaseResponse[]> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
 		const USER_ID = this.cookie.get('USER_ID');
 
@@ -76,7 +76,7 @@ export class CaseService {
 		);
 	}
 
-	public getCaseByUserIDPaginated(
+	public getCasesByUserIDPaginated(
 		page_id: number,
 		page_size: number
 	): Observable<GetCaseResponse> {
