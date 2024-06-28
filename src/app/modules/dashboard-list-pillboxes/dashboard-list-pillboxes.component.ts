@@ -47,7 +47,7 @@ export class DashboardListPillboxesComponent {
 	ngOnInit() {
 		// this.updateDisplayedData();
 		this.caseService
-			.getCaseByUserID()
+			.getCasesByUserID()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (response: GetCaseResponse[]) => {
