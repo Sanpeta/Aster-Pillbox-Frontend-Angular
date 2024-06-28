@@ -6,12 +6,15 @@
 			>Selecione os Dias da Semana</label
 		>
 	</div>
+
+	@for (day of daysOfWeek; track $index) {
 	<button
-		*ngFor="let day of daysOfWeek"
+		type="button"
 		class="day-button"
-		[class.selected]="selectedDays.includes(day)"
-		(click)="toggleDaySelection(day)"
+		[class.selected]="selectedDays[$index]"
+		(click)="toggleDaySelection($index)"
 	>
 		{{ day }}
 	</button>
+	}
 </div>
