@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-medicine-case-pillbox',
@@ -13,7 +13,8 @@ export class MedicineCasePillboxComponent implements OnInit {
 	@Input() columns: number = 1;
 	@Input() rows: number = 1;
 
-	selectedItems: number[] = [];
+	@Output() selectedItemChange = new EventEmitter<number>();
+	selectedIndex: number | null = null;
 
 	ngOnInit() {}
 
@@ -26,8 +27,11 @@ export class MedicineCasePillboxComponent implements OnInit {
 	}
 
 	toggleSelection(index: number) {
-		this.selectedItems = this.selectedItems.includes(index)
-			? this.selectedItems.filter((i) => i !== index)
-			: [...this.selectedItems, index];
+		if (this.selectedIndex === index) {
+			this.selectedIndex = null; // Deseleciona se clicar novamente no mesmo item
+		} else {
+			this.selectedIndex = index;
+			this.selectedItemChange.emit(index); // Emite o índice do item selecionado
+		}
 	}
 }
