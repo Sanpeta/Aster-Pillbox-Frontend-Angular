@@ -1,0 +1,46 @@
+<div
+	class="container-menu text-sm font-semibold cursor-pointer px-6 py-4 hover:color-gray-100"
+	(click)="toggleExpanded()"
+	[class.selected]="selected"
+>
+	<div class="flex items-center justify-between">
+		<span>{{ label }}</span>
+		<svg
+			*ngIf="!selected"
+			class="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M19 9l-7 7-7-7"
+			></path>
+		</svg>
+		<svg
+			*ngIf="selected"
+			class="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M5 15l7-7 7 7"
+			></path>
+		</svg>
+	</div>
+	<div
+		class="submenu"
+		*ngIf="selected"
+		[attr.data-selected]="selected ? 'true' : 'false'"
+	>
+		<ng-content></ng-content>
+	</div>
+</div>
