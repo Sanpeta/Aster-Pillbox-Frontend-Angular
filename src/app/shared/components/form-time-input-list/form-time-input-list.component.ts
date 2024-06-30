@@ -10,16 +10,16 @@ import { FormsModule } from '@angular/forms';
 	styleUrl: './form-time-input-list.component.css',
 })
 export class FormTimeInputListComponent {
-	@Input() time: string[] = ['']; // Array inicial de horários
+	@Input() times: string[] = ['']; // Array inicial de horários
 	@Output() timeChange = new EventEmitter<string[]>();
 
 	addTime() {
-		this.time.push(''); // Adiciona um novo horário vazio
-		this.timeChange.emit(this.time); // Emite o array atualizado
+		this.times.push(''); // Adiciona um novo horário vazio
+		this.timeChange.emit(this.times); // Emite o array atualizado
 	}
 
 	removeTime(index: number) {
-		this.time.splice(index, 1); // Remove o horário no índice especificado
-		this.timeChange.emit(this.time); // Emite o array atualizado
+		this.times.splice(index, 1); // Remove o horário no índice especificado
+		this.timeChange.emit(this.times); // Emite o array atualizado
 	}
 }
