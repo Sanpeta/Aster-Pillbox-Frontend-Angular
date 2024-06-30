@@ -4,7 +4,7 @@ export interface GetAlarmRequest {
 
 export interface GetAlarmResponse {
 	id: number;
-	time_alarm: string[];
+	time_alarms: string[];
 	is_active: boolean;
 	days_of_week: boolean[];
 	description: string;
