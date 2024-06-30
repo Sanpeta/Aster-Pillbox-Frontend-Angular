@@ -89,7 +89,7 @@ export class MedicationService {
 		}
 
 		return this.httpClient.put<UpdateMedicationResponse>(
-			this.API_URL + '/medications',
+			this.API_URL + '/medication',
 			medication,
 			{
 				headers: {
