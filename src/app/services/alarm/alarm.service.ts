@@ -8,7 +8,7 @@ import {
 	CreateAlarmRequest,
 	CreateAlarmResponse,
 } from '../../models/interfaces/alarm/CreateAlarm';
-import { GetAlarmRequest } from '../../models/interfaces/alarm/GetAlarm';
+import { GetAlarmResponse } from '../../models/interfaces/alarm/GetAlarm';
 import {
 	UpdateAlarmRequest,
 	UpdateAlarmResponse,
@@ -47,10 +47,10 @@ export class AlarmService {
 		);
 	}
 
-	public getAlarm(id: number): Observable<GetAlarmRequest> {
+	public getAlarm(id: number): Observable<GetAlarmResponse> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
 
-		return this.httpClient.get<GetAlarmRequest>(
+		return this.httpClient.get<GetAlarmResponse>(
 			this.API_URL + '/alarm/' + id,
 			{
 				headers: {
