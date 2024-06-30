@@ -8,11 +8,11 @@ import {
 	CreateCompartmentContentRequest,
 	CreateCompartmentContentResponse,
 } from '../../models/interfaces/compartment_content/CreateCompartmentContent';
-import { GetCompartmentContentsByCompartmentIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsByCompartmentID';
-import { GetCompartmentContentsWithAlarmAndMedicationByCaseIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByCaseID';
-import { GetCompartmentContentsWithAlarmAndMedicationByCompartmentIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByCompartmentID';
+import { GetCompartmentContetsByCompartmentIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsByCompartmentID';
 import { GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByUserID';
 import { UpdateCompartmentContentOnlyCompartmentAndAlarmResponse } from '../../models/interfaces/compartment_content/UpdateCompartmentContentOnlyMedicationAndCompartment';
+import { GetCompartmentContentsWithAlarmAndMedicationByCaseIDResponse } from './../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByCaseID';
+import { GetCompartmentContentsWithAlarmAndMedicationByCompartmentIDResponse } from './../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByCompartmentID';
 import { UpdateCompartmentContentOnlyCompartmentAndAlarmRequest } from './../../models/interfaces/compartment_content/UpdateCompartmentContentOnlyCompartmentAndAlarm';
 
 @Injectable({
@@ -50,10 +50,12 @@ export class CompartmentContentsService {
 
 	public getCompartmentContentsByCompartmentID(
 		compartment_id: number
-	): Observable<GetCompartmentContentsByCompartmentIDResponse> {
+	): Observable<GetCompartmentContetsByCompartmentIDResponse[]> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
 
-		return this.httpClient.get<GetCompartmentContentsByCompartmentIDResponse>(
+		return this.httpClient.get<
+			GetCompartmentContetsByCompartmentIDResponse[]
+		>(
 			this.API_URL +
 				'/compartment-contents/compartment/' +
 				compartment_id,
@@ -102,15 +104,18 @@ export class CompartmentContentsService {
 		);
 	}
 
-	public getCompartmentContentsWithAlarmAndMedicationByUserID(
-		user_id: number
-	): Observable<GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse> {
+	public getCompartmentContentsWithAlarmAndMedicationByUserID(): Observable<
+		GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse[]
+	> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
+		const USER_ID = this.cookie.get('USER_ID');
 
-		return this.httpClient.get<GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse>(
+		return this.httpClient.get<
+			GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse[]
+		>(
 			this.API_URL +
 				'/compartment-contents/user-with-alarm-and-medication/' +
-				user_id,
+				USER_ID,
 			{
 				headers: {
 					'Content-Type': 'application/json',
