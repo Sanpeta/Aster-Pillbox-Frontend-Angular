@@ -6,9 +6,10 @@ import { GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse } from '..
 import { CompartmentContentsService } from '../../services/compartment_content/compartment-contents.service';
 
 interface Alarm {
-	case_id: number;
+	alarm_id: number;
 	compartment_id: number;
 	medication_id: number;
+	case_id: number;
 	name: string;
 	alarms: string[];
 	quantity_will_use: number;
@@ -82,9 +83,10 @@ export class DashboardListMedicationsComponent {
 							content: GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse
 						) => {
 							this.alarms.push({
-								case_id: content.case_id,
+								alarm_id: content.alarm_id,
 								compartment_id: content.compartment_id,
 								medication_id: content.medication_id,
+								case_id: content.case_id,
 								name: content.name,
 								alarms: content.time_alarms,
 								quantity_will_use: content.quantity_use_pill,
