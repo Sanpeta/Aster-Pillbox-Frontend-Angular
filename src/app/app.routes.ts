@@ -90,18 +90,18 @@ export const routes: Routes = [
 					).then((m) => m.DashboardListPillboxesComponent),
 			},
 			{
-				path: 'alarms',
-				loadComponent: () =>
-					import(
-						'./modules/dashboard-list-alarms/dashboard-list-alarms.component'
-					).then((m) => m.DashboardListAlarmsComponent),
-			},
-			{
 				path: 'patients',
 				loadComponent: () =>
 					import(
 						'./modules/dashboard-list-patients/dashboard-list-patients.component'
 					).then((m) => m.DashboardListPatientsComponent),
+			},
+			{
+				path: 'medications',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-list-medications/dashboard-list-medications.component'
+					).then((m) => m.DashboardListMedicationsComponent),
 			},
 			{
 				path: 'medication',
