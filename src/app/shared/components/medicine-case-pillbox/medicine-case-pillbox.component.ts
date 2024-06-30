@@ -12,9 +12,9 @@ export class MedicineCasePillboxComponent implements OnInit {
 	@Input() titleLabel: string = '';
 	@Input() columns: number = 1;
 	@Input() rows: number = 1;
+	@Input() selectedIndex: number | null = null;
 
 	@Output() selectedItemChange = new EventEmitter<number>();
-	selectedIndex: number | null = null;
 
 	ngOnInit() {}
 
