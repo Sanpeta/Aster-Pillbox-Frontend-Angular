@@ -2,17 +2,19 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonMenuComponent } from '../button-menu/button-menu.component';
 import { IconComponent } from '../icon/icon.component';
+import { MenuItemsComponent } from '../menu-items/menu-items.component';
 import { AccountService } from './../../../services/account/account.service';
 
 @Component({
 	selector: 'app-sidenav-dashboard',
 	standalone: true,
-	imports: [ButtonMenuComponent, IconComponent],
+	imports: [ButtonMenuComponent, IconComponent, MenuItemsComponent],
 	templateUrl: './sidenav-dashboard.component.html',
 	styleUrl: './sidenav-dashboard.component.css',
 })
 export class SidenavDashboardComponent {
 	menuSelected = 'Dashboard';
+	menuItemsSelected = '';
 
 	constructor(
 		private accountService: AccountService,
@@ -21,7 +23,7 @@ export class SidenavDashboardComponent {
 
 	onMenuSelected(menu: string) {
 		this.menuSelected = menu;
-		console.log(this.menuSelected);
+
 		switch (this.menuSelected) {
 			case 'Dashboard':
 				this.router.navigate(['/dashboard']);
@@ -30,21 +32,27 @@ export class SidenavDashboardComponent {
 				this.router.navigate(['/dashboard', 'perfil']);
 				break;
 			case 'Pillbox':
+				this.menuItemsSelected = 'Pillbox';
 				this.router.navigate(['/dashboard', 'pillbox']);
 				break;
 			case 'List Pillboxes':
+				this.menuItemsSelected = 'Pillbox';
 				this.router.navigate(['/dashboard', 'pillboxes']);
 				break;
 			case 'List Patients':
+				this.menuItemsSelected = 'Patient';
 				this.router.navigate(['/dashboard', 'patients']);
 				break;
 			case 'List Medications':
+				this.menuItemsSelected = 'Medication';
 				this.router.navigate(['/dashboard', 'medications']);
 				break;
 			case 'Add Medication':
+				this.menuItemsSelected = 'Medication';
 				this.router.navigate(['/dashboard', 'medication']);
 				break;
 			case 'Update Medication':
+				this.menuItemsSelected = 'Medication';
 				this.router.navigate(['/dashboard', 'update-medication']);
 				break;
 			// case 'Information':

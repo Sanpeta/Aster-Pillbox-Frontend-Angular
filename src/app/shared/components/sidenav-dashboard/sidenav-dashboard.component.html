@@ -25,77 +25,80 @@
 				/>
 			</app-button-menu>
 
-			<app-button-menu
-				[description]="'Caixa de Medicamentos'"
-				[selected]="menuSelected === 'Pillbox'"
-				(click)="onMenuSelected('Pillbox')"
+			<app-menu-items
+				label="Caixa de Medicamentos"
+				[selected]="menuItemsSelected === 'Pillbox'"
 			>
-				<app-icon
-					[src]="'/assets/images/add-circle-icon.svg'"
-					[alt]="'image add pillbox'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Mostrar todos'"
+					[selected]="menuSelected === 'List Pillboxes'"
+					(click)="onMenuSelected('List Pillboxes')"
+				>
+					<app-icon
+						[src]="'/assets/images/settings-icon.svg'"
+						[alt]="'image settings'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-			<app-button-menu
-				[description]="'Lista das Caixas de Medicamentos'"
-				[selected]="menuSelected === 'List Pillboxes'"
-				(click)="onMenuSelected('List Pillboxes')"
-			>
-				<app-icon
-					[src]="'/assets/images/settings-icon.svg'"
-					[alt]="'image settings'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Adicionar'"
+					[selected]="menuSelected === 'Pillbox'"
+					(click)="onMenuSelected('Pillbox')"
+				>
+					<app-icon
+						[src]="'/assets/images/add-circle-icon.svg'"
+						[alt]="'image add pillbox'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</app-menu-items>
 
-			<app-button-menu
-				[description]="'Lista de Pacientes'"
-				[selected]="menuSelected === 'List Patients'"
-				(click)="onMenuSelected('List Patients')"
+			<app-menu-items
+				label="Pacientes"
+				[selected]="menuItemsSelected === 'Patient'"
 			>
-				<app-icon
-					[src]="'/assets/images/settings-icon.svg'"
-					[alt]="'image settings'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Lista de Pacientes'"
+					[selected]="menuSelected === 'List Patients'"
+					(click)="onMenuSelected('List Patients')"
+				>
+					<app-icon
+						[src]="'/assets/images/settings-icon.svg'"
+						[alt]="'image settings'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</app-menu-items>
 
-			<app-button-menu
-				[description]="'Lista de Medicamentos'"
-				[selected]="menuSelected === 'List Medications'"
-				(click)="onMenuSelected('List Medications')"
+			<app-menu-items
+				label="Medicamentos"
+				[selected]="menuItemsSelected === 'Medication'"
 			>
-				<app-icon
-					[src]="'/assets/images/settings-icon.svg'"
-					[alt]="'image settings'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Lista de Medicamentos'"
+					[selected]="menuSelected === 'List Medications'"
+					(click)="onMenuSelected('List Medications')"
+				>
+					<app-icon
+						[src]="'/assets/images/settings-icon.svg'"
+						[alt]="'image settings'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-			<app-button-menu
-				[description]="'Adicionar Medicamentos'"
-				[selected]="menuSelected === 'Add Medication'"
-				(click)="onMenuSelected('Add Medication')"
-			>
-				<app-icon
-					[src]="'/assets/images/medication-icon.svg'"
-					[alt]="'image add medication'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
-
-			<app-button-menu
-				[description]="'Atualizar Medicamentos'"
-				[selected]="menuSelected === 'Update Medication'"
-				(click)="onMenuSelected('Update Medication')"
-			>
-				<app-icon
-					[src]="'/assets/images/medication-icon.svg'"
-					[alt]="'image add medication'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Adicionar Medicamentos'"
+					[selected]="menuSelected === 'Add Medication'"
+					(click)="onMenuSelected('Add Medication')"
+				>
+					<app-icon
+						[src]="'/assets/images/medication-icon.svg'"
+						[alt]="'image add medication'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</app-menu-items>
 
 			<app-button-menu
 				[description]="'Relatório'"
