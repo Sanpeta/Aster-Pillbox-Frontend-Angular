@@ -7,7 +7,7 @@
 			alt="Logo"
 		/>
 		<div class="title-and-subtitle-container">
-			<h1 class="title">Adicionar Novo Medicamento</h1>
+			<h1 class="title">Atualizar o Medicamento</h1>
 			<h3 class="subtitle">
 				Insira corretamente os dados abaixo para garantir uma gestão
 				eficaz do seu tratamento. <br />
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-	<div
+	<form
 		class="form-container"
 		[formGroup]="medicationForm"
 		(ngSubmit)="onSubmitMedicationForm()"
@@ -40,9 +40,14 @@
 						id="pillbox"
 						required
 					>
-						<option value="">Selecione</option>
-						<option value="pillbox1">Caixa 1</option>
-						<option value="pillbox2">Caixa 2</option>
+						<option value="" disabled>
+							Selecione a Caixa de Medicamento
+						</option>
+						@for (pillbox of listCase; track $index) {
+						<option value="{{ $index }}">
+							{{ pillbox.case_name }}
+						</option>
+						}
 					</select>
 				</div>
 
@@ -52,12 +57,11 @@
 					[titleLabel]="
 						'Selecione um compartimento no qual vai adicionar o medicamento'
 					"
-					[columns]="1"
-					[rows]="1"
+					[columns]="column"
+					[rows]="row"
+					[selectedIndex]="selectedItemPillboxIndex"
+					(selectedItemChange)="onSelectedItemPillboxChange($event)"
 				></app-medicine-case-pillbox>
-
-				<!-- List of Medicines -->
-				<app-list-medications class="h-96"></app-list-medications>
 			</div>
 
 			<div class="flex flex-col gap-4 w-1/2">
@@ -130,11 +134,42 @@
 					</div>
 				</div>
 
+				<div class="form-row">
+					<div class="w-full">
+						<div>
+							<label
+								for="description_pill"
+								class="block text-base font-semibold leading-6 text-gray-900"
+								>Observação pro medicamento</label
+							>
+						</div>
+						<div class="mt-2">
+							<textarea
+								name="description_pill"
+								id="description_pill"
+								cols="30"
+								rows="5"
+								id="description_pill"
+								name="description_pill"
+								formControlName="description_pill"
+								required
+								class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+							></textarea>
+						</div>
+					</div>
+				</div>
+
 				<!-- Dates -->
-				<app-week-days-selector></app-week-days-selector>
+				<app-week-days-selector
+					[selectedDays]="selectedDays"
+					(selectionChange)="onSelectionChange($event)"
+				></app-week-days-selector>
 
 				<!-- Form Time List -->
-				<app-form-time-input-list></app-form-time-input-list>
+				<app-form-time-input-list
+					[times]="alarms"
+					(timeChange)="onTimeChange($event)"
+				></app-form-time-input-list>
 			</div>
 		</div>
 
@@ -154,5 +189,5 @@
 				Salvar
 			</button>
 		</div>
-	</div>
+	</form>
 </div>
