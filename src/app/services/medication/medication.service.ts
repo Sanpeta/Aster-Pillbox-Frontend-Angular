@@ -8,7 +8,7 @@ import {
 	CreateMedicationRequest,
 	CreateMedicationResponse,
 } from '../../models/interfaces/medication/CreateMedication';
-import { GetMedicationRequest } from '../../models/interfaces/medication/GetMedication';
+import { GetMedicationResponse } from '../../models/interfaces/medication/GetMedication';
 import { GetMedicationsByUserIDResponse } from '../../models/interfaces/medication/GetMedicationsByUserID';
 import {
 	UpdateMedicationRequest,
@@ -48,10 +48,10 @@ export class MedicationService {
 		);
 	}
 
-	public getMedication(id: number): Observable<GetMedicationRequest> {
+	public getMedication(id: number): Observable<GetMedicationResponse> {
 		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
 
-		return this.httpClient.get<GetMedicationRequest>(
+		return this.httpClient.get<GetMedicationResponse>(
 			this.API_URL + '/medication/' + id,
 			{
 				headers: {
