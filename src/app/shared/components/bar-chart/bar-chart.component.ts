@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+
+interface DataSets {
+	data: number[];
+	label: string;
+}
 
 @Component({
 	selector: 'app-bar-chart',
@@ -12,13 +17,12 @@ import { BaseChartDirective } from 'ng2-charts';
 export class BarChartComponent implements OnInit {
 	public barChartLegend = true;
 	public barChartPlugins = [];
+	@Input() labels: string[] = [];
+	@Input() datasets: DataSets[] = [];
 
 	public barChartData: ChartConfiguration<'bar'>['data'] = {
-		labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
-		datasets: [
-			{ data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-			{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-		],
+		labels: this.labels,
+		datasets: [...this.datasets],
 	};
 
 	public barChartOptions: ChartOptions<'bar'> = {
