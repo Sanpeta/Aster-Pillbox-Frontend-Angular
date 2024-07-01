@@ -1,0 +1,21 @@
+.dashboard-report-container {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	height: calc(100vh - 70px);
+	width: calc(100vw - 260px);
+	overflow: scroll;
+	padding: 32px;
+}
+
+.chart-container {
+	grid-column: 1/11;
+	grid-row: auto;
+}
+
+.container-list {
+	display: flex;
+	flex-direction: column;
+	width: calc(100vw - 260px - 64px);
+	margin-top: 32px;
+}
