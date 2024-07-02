@@ -90,6 +90,7 @@ export class DashboardUpdateMedicationComponent {
 		quantity_pill_compartment: [0, [Validators.required]],
 		quantity_pill_will_use: [0, [Validators.required]],
 		description_pill: [''],
+		dosage: [''],
 	});
 
 	onSelectionChange(newSelectedDays: boolean[]) {
@@ -137,6 +138,7 @@ export class DashboardUpdateMedicationComponent {
 					quantity_pill_compartment:
 						medicationResponse.quantity_total_pill,
 					description_pill: medicationResponse.description,
+					dosage: medicationResponse.dosage,
 				});
 				this.alarms = alarmResponse.time_alarms;
 				this.selectedDays = alarmResponse.days_of_week;
@@ -181,6 +183,7 @@ export class DashboardUpdateMedicationComponent {
 				this.medicationForm.value.quantity_pill_will_use!,
 			quantity_total_pill:
 				this.medicationForm.value.quantity_pill_compartment!,
+			dosage: this.medicationForm.value.dosage!,
 			active: true,
 		};
 
