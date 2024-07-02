@@ -5,11 +5,11 @@
 	<div class="header">
 		<img
 			class="logo"
-			src="../../../assets/images/perfil-icon.svg"
+			src="../../../assets/images/pill-icon.svg"
 			alt="Logo"
 		/>
 		<div class="title-and-subtitle-container">
-			<h1 class="title">Adicionar Novo Medicamento oi</h1>
+			<h1 class="title">Adicionar Novo Medicamento</h1>
 			<h3 class="subtitle">
 				Insira corretamente os dados abaixo para garantir uma gestão
 				eficaz do seu tratamento. <br />
@@ -90,7 +90,7 @@
 					<label
 						for="dosage"
 						class="block text-base font-semibold leading-6 text-gray-900"
-						>A miligramagem(mg) por comprimido é de:</label
+						>A miligramagem(mg) por comprimido:</label
 					>
 				</div>
 				<div class="mt-2">
@@ -100,7 +100,6 @@
 						type="text"
 						placeholder="Digite a miligramagem por comprimido"
 						formControlName="dosage"
-						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
 				</div>
@@ -111,7 +110,7 @@
 					<label
 						for="quantity_pill_compartment"
 						class="block text-base font-semibold leading-6 text-gray-900"
-						>Quantidade de comprimidos no compartimento</label
+						>Quantidade de comprimidos no compartimento:</label
 					>
 				</div>
 				<div class="mt-2">
@@ -133,8 +132,7 @@
 						for="quantity_pill_will_use"
 						class="block text-base font-semibold leading-6 text-gray-900"
 					>
-						Quantos comprimidos você vai estar tomando em cada
-						alarme?</label
+						Quantos comprimidos vai ingerir em cada alarme?</label
 					>
 				</div>
 				<div class="mt-2">
@@ -157,7 +155,7 @@
 					<label
 						for="description_pill"
 						class="block text-base font-semibold leading-6 text-gray-900"
-						>Observação pro medicamento</label
+						>Observação pro medicamento (Opcional)</label
 					>
 				</div>
 				<div class="mt-2">
@@ -169,7 +167,6 @@
 						id="description_pill"
 						name="description_pill"
 						formControlName="description_pill"
-						required
 						class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					></textarea>
 				</div>
@@ -185,9 +182,35 @@
 			(timeChange)="onTimeChange($event)"
 		></app-form-time-input-list>
 
+		<div class="form-row">
+			<div class="w-full">
+				<div>
+					<label
+						for="description_alarm"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>Observação pros alarme(s) (Opcional)</label
+					>
+				</div>
+				<div class="mt-2">
+					<textarea
+						name="description_alarm"
+						id="description_alarm"
+						cols="30"
+						rows="5"
+						id="description_alarm"
+						name="description_alarm"
+						formControlName="description_alarm"
+						class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					></textarea>
+				</div>
+			</div>
+		</div>
+
 		<!-- Button Cancel & Save -->
 		<div class="form-row mt-4">
 			<button
+				routerLink="/dashboard/medications"
+				routerLinkActive="active"
 				type="button"
 				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 			>

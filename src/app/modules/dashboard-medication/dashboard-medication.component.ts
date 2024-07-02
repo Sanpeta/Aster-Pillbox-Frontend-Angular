@@ -6,7 +6,7 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, concatMap, takeUntil } from 'rxjs';
 import {
@@ -46,6 +46,7 @@ import { MedicationService } from './../../services/medication/medication.servic
 		WeekDaysSelectorComponent,
 		FormTimeInputListComponent,
 		LoaderComponent,
+		RouterModule,
 	],
 	templateUrl: './dashboard-medication.component.html',
 	styleUrl: './dashboard-medication.component.css',
@@ -97,6 +98,7 @@ export class DashboardMedicationComponent implements OnInit {
 		quantity_pill_will_use: [0, [Validators.required]],
 		dosage: [''],
 		description_pill: [''],
+		description_alarm: [''],
 	});
 
 	onSelectionChange(newSelectedDays: boolean[]) {
@@ -188,7 +190,9 @@ export class DashboardMedicationComponent implements OnInit {
 							time_alarms: this.alarms,
 							is_active: true,
 							days_of_week: this.selectedDays,
-							description: 'alarm',
+							description:
+								this.medicationForm.value.description_alarm ??
+								'',
 						};
 						return this.alarmService.createAlarm(alarmRequest);
 					}),
@@ -231,7 +235,7 @@ export class DashboardMedicationComponent implements OnInit {
 								'Medicação cadastrada com sucesso!',
 								'success'
 							);
-							// this.router.navigate(['/check-your-email']);
+							this.router.navigate(['/dashboard/medications']);
 						}
 					},
 					complete: () => {
@@ -280,6 +284,15 @@ export class DashboardMedicationComponent implements OnInit {
 						}
 					},
 				});
+		} else {
+			this.loading = false;
+			this.openDialog(
+				'Favor preencher todos os campos',
+				'Favor verifique os dados informados e tente novamente.',
+				'Ok',
+				'',
+				() => {}
+			);
 		}
 	}
 
