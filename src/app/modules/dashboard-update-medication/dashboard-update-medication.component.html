@@ -1,9 +1,10 @@
 <ng-template #toastContainer></ng-template>
+<app-loader [isLoading]="loading"></app-loader>
 <div class="container-pillbox">
 	<div class="header">
 		<img
 			class="logo"
-			src="../../../assets/images/perfil-icon.svg"
+			src="../../../assets/images/pill-icon.svg"
 			alt="Logo"
 		/>
 		<div class="title-and-subtitle-container">
@@ -53,7 +54,7 @@
 
 				<!-- Pillbox -->
 				<app-medicine-case-pillbox
-					class="mt-4 w-full"
+					class="mt-4 w-full h-auto"
 					[titleLabel]="
 						'Selecione um compartimento no qual vai adicionar o medicamento'
 					"
@@ -193,12 +194,38 @@
 					[times]="alarms"
 					(timeChange)="onTimeChange($event)"
 				></app-form-time-input-list>
+
+				<div class="form-row">
+					<div class="w-full">
+						<div>
+							<label
+								for="description_alarm"
+								class="block text-base font-semibold leading-6 text-gray-900"
+								>Observação pros alarme(s) (Opcional)</label
+							>
+						</div>
+						<div class="mt-2">
+							<textarea
+								name="description_alarm"
+								id="description_alarm"
+								cols="30"
+								rows="5"
+								id="description_alarm"
+								name="description_alarm"
+								formControlName="description_alarm"
+								class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+							></textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<!-- Button Cancel & Save -->
 		<div class="form-row mt-4">
 			<button
+				routerLink="/dashboard/medications"
+				routerLinkActive="active"
 				type="button"
 				class="flex w-1/12 justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 			>

@@ -5,7 +5,7 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, concatMap, takeUntil, zip } from 'rxjs';
 import {
@@ -20,6 +20,7 @@ import {
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { FormTimeInputListComponent } from '../../shared/components/form-time-input-list/form-time-input-list.component';
 import { ListMedicationsComponent } from '../../shared/components/list-medications/list-medications.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MedicineCasePillboxComponent } from '../../shared/components/medicine-case-pillbox/medicine-case-pillbox.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { WeekDaysSelectorComponent } from '../../shared/components/week-days-selector/week-days-selector.component';
@@ -39,6 +40,8 @@ import { MedicationService } from './../../services/medication/medication.servic
 		WeekDaysSelectorComponent,
 		FormTimeInputListComponent,
 		ListMedicationsComponent,
+		RouterModule,
+		LoaderComponent,
 	],
 	templateUrl: './dashboard-update-medication.component.html',
 	styleUrl: './dashboard-update-medication.component.css',
@@ -90,6 +93,7 @@ export class DashboardUpdateMedicationComponent {
 		quantity_pill_compartment: [0, [Validators.required]],
 		quantity_pill_will_use: [0, [Validators.required]],
 		description_pill: [''],
+		description_alarm: [''],
 		dosage: [''],
 	});
 
@@ -108,6 +112,7 @@ export class DashboardUpdateMedicationComponent {
 	}
 
 	ngOnInit(): void {
+		this.loading = true;
 		this.activeRoute.queryParams.subscribe((params) => {
 			this.compartmentID = +params['compartment'];
 			this.alarmID = +params['alarm'];
@@ -139,6 +144,7 @@ export class DashboardUpdateMedicationComponent {
 						medicationResponse.quantity_total_pill,
 					description_pill: medicationResponse.description,
 					dosage: medicationResponse.dosage,
+					description_alarm: alarmResponse.description,
 				});
 				this.alarms = alarmResponse.time_alarms;
 				this.selectedDays = alarmResponse.days_of_week;
@@ -150,9 +156,11 @@ export class DashboardUpdateMedicationComponent {
 				console.log(medicationResponse);
 				console.log(alarmResponse);
 			},
-			complete: () => {},
+			complete: () => {
+				this.loading = false;
+			},
 			error: (error) => {
-				console.log(error);
+				this.loading = false;
 			},
 		});
 
@@ -178,12 +186,12 @@ export class DashboardUpdateMedicationComponent {
 			id: this.medicationID,
 			user_id: parseInt(this.cookieService.get('USER_ID')),
 			name: this.medicationForm.value.name!,
+			dosage: this.medicationForm.value.dosage!,
 			description: this.medicationForm.value.description_pill ?? '',
 			quantity_use_pill:
 				this.medicationForm.value.quantity_pill_will_use!,
 			quantity_total_pill:
 				this.medicationForm.value.quantity_pill_compartment!,
-			dosage: this.medicationForm.value.dosage!,
 			active: true,
 		};
 
@@ -207,7 +215,8 @@ export class DashboardUpdateMedicationComponent {
 						time_alarms: this.alarms,
 						is_active: true,
 						days_of_week: this.selectedDays,
-						description: 'alarm',
+						description:
+							this.medicationForm.value.description_alarm ?? '',
 					};
 					return this.alarmService.updateAlarm(alarmRequest);
 				}),
@@ -219,7 +228,7 @@ export class DashboardUpdateMedicationComponent {
 					const compartmentRequest: UpdateCompartmentRequest = {
 						id: this.compartmentID,
 						case_id: this.listCase[0].id,
-						description: 'compartment',
+						description: '',
 						index_compartment: this.selectedItemPillboxIndex! + 1,
 					};
 					return this.compartmentService.updateCompartment(
@@ -235,7 +244,7 @@ export class DashboardUpdateMedicationComponent {
 							'Medicação atualizada com sucesso!',
 							'success'
 						);
-						// this.router.navigate(['/check-your-email']);
+						this.router.navigate(['/dashboard/medications']);
 					}
 				},
 				complete: () => {
