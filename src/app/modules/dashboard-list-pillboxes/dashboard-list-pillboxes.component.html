@@ -1,38 +1,56 @@
 <ng-template #toastContainer></ng-template>
 <div class="container-pillbox">
-	<h2 class="font-bold text-2xl pb- 4">Lista das Caixas de Medicamentos</h2>
+	<div class="flex flex-row items-center justify-between">
+		<h2 class="font-bold text-2xl">Lista das Caixas de Medicamentos</h2>
+		<button
+			type="button"
+			routerLink="/dashboard/pillbox"
+			routerLinkActive="active"
+			class="flex w-auto justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+		>
+			+ Adicionar Nova Caixa de Medicamento
+		</button>
+	</div>
 
 	<!-- Table List Pillboxes -->
 	<div class="relative mt-4 rounded-lg overflow-x-hidden border-2">
 		<table class="min-w-full divide-y divide-gray-200">
 			<thead class="bg-gray-50 sticky top-0 z-10">
 				<tr>
-					@for (title of tableHeaders; track $index) {
+					@for (title of tableHeaders; track $index) { @if ($index%2
+					== 0) {
 					<th
 						scope="col"
-						class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+						class="px-6 py-3 text-center text-xs font-medium bg-gray-300 text-gray-500 uppercase tracking-wider"
 					>
 						{{ title }}
 					</th>
-					}
+					} @else {
+					<th
+						scope="col"
+						class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+					>
+						{{ title }}
+					</th>
+					} }
 				</tr>
 			</thead>
-			<tbody class="bg-white divide-y divide-gray-200">
+			<tbody class="bg-white divide-y divide-gray-200 text-center">
 				<tr *ngFor="let pillbox of pillboxes; let i = index">
-					<td class="px-6 py-4 whitespace-nowrap">
+					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
 						{{ pillbox.case_name }}
 					</td>
 					<td class="px-6 py-4 whitespace-nowrap">
 						{{ pillbox.mac_address }}
 					</td>
-					<td class="px-6 py-4 whitespace-nowrap">
+					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
 						{{ pillbox.row_size }}
 					</td>
 					<td class="px-6 py-4 whitespace-nowrap">
 						{{ pillbox.column_size }}
 					</td>
-					<td class="px-6 py-4 whitespace-nowrap">
-						{{ pillbox.status }}
+					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
+						{{ pillbox.status ? "Ativo" : "Inativo" }}
 					</td>
 					<td class="px-6 py-4">
 						<a
