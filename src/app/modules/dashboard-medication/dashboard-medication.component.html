@@ -88,6 +88,27 @@
 			<div class="w-full">
 				<div>
 					<label
+						for="dosage"
+						class="block text-base font-semibold leading-6 text-gray-900"
+						>A miligramagem(mg) por comprimido é de:</label
+					>
+				</div>
+				<div class="mt-2">
+					<input
+						id="dosage"
+						name="dosage"
+						type="text"
+						placeholder="Digite a miligramagem por comprimido"
+						formControlName="dosage"
+						required
+						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+					/>
+				</div>
+			</div>
+
+			<div class="w-full">
+				<div>
+					<label
 						for="quantity_pill_compartment"
 						class="block text-base font-semibold leading-6 text-gray-900"
 						>Quantidade de comprimidos no compartimento</label
@@ -123,27 +144,6 @@
 						type="number"
 						placeholder="Digite a quantidade de comprimidos que vai tomar"
 						formControlName="quantity_pill_will_use"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-
-			<div class="w-full">
-				<div>
-					<label
-						for="dosage"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>A miligramagem(mg) por comprimido é de:</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="dosage"
-						name="dosage"
-						type="text"
-						placeholder="Digite a miligramagem por comprimido"
-						formControlName="dosage"
 						required
 						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
 					/>
