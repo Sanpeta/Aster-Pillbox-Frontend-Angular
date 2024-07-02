@@ -95,6 +95,7 @@ export class DashboardMedicationComponent implements OnInit {
 		name: ['', [Validators.required, Validators.minLength(3)]],
 		quantity_pill_compartment: [0, [Validators.required]],
 		quantity_pill_will_use: [0, [Validators.required]],
+		dosage: [''],
 		description_pill: [''],
 	});
 
@@ -154,130 +155,132 @@ export class DashboardMedicationComponent implements OnInit {
 
 	onSubmitMedicationForm(): void {
 		this.loading = true;
-		// if (this.medicationForm.value && this.medicationForm.valid) {
-		console.log(this.medicationForm.value);
-		const medicationRequest: CreateMedicationRequest = {
-			user_id: parseInt(this.cookieService.get('USER_ID')),
-			name: this.medicationForm.value.name!,
-			description: this.medicationForm.value.description_pill ?? '',
-			quantity_use_pill:
-				this.medicationForm.value.quantity_pill_will_use!,
-			quantity_total_pill:
-				this.medicationForm.value.quantity_pill_compartment!,
-			active: true,
-		};
+		if (this.medicationForm.value && this.medicationForm.valid) {
+			console.log(this.medicationForm.value);
+			const medicationRequest: CreateMedicationRequest = {
+				user_id: parseInt(this.cookieService.get('USER_ID')),
+				name: this.medicationForm.value.name!,
+				description: this.medicationForm.value.description_pill ?? '',
+				quantity_use_pill:
+					this.medicationForm.value.quantity_pill_will_use!,
+				quantity_total_pill:
+					this.medicationForm.value.quantity_pill_compartment!,
+				dosage: this.medicationForm.value.dosage ?? '',
+				active: true,
+			};
 
-		this.medicationService
-			.createMedication(medicationRequest)
-			.pipe(
-				concatMap((response) => {
-					if (response === false) {
-						this.openDialog(
-							'Algo deu erro',
-							'Favor verifique os dados informados e tente novamente.',
-							'Ok'
-						);
-					}
-					console.log('resposta 1:' + response);
-					const result = response as CreateMedicationResponse;
-					this.medicationID = result.id;
+			this.medicationService
+				.createMedication(medicationRequest)
+				.pipe(
+					concatMap((response) => {
+						if (response === false) {
+							this.openDialog(
+								'Algo deu erro',
+								'Favor verifique os dados informados e tente novamente.',
+								'Ok'
+							);
+						}
+						console.log('resposta 1:' + response);
+						const result = response as CreateMedicationResponse;
+						this.medicationID = result.id;
 
-					const alarmRequest: CreateAlarmRequest = {
-						time_alarms: this.alarms,
-						is_active: true,
-						days_of_week: this.selectedDays,
-						description: 'alarm',
-					};
-					return this.alarmService.createAlarm(alarmRequest);
-				}),
-				concatMap((response) => {
-					console.log('response 2:' + response);
-					const result = response as CreateAlarmResponse;
-					this.alarmID = result.id;
-
-					const compartmentRequest: CreateCompartmentRequest = {
-						case_id: this.listCase[0].id,
-						description: 'compartment',
-						index_compartment: this.selectedItemPillboxIndex! + 1,
-					};
-					return this.compartmentService.createCompartment(
-						compartmentRequest
-					);
-				}),
-				concatMap((response) => {
-					console.log('response 3:' + response);
-					const result = response as CreateCompartmentResponse;
-					this.compartmentID = result.id;
-
-					const compartmentContentsRequest: CreateCompartmentContentRequest =
-						{
-							compartment_id: this.compartmentID,
-							alarm_id: this.alarmID,
-							medication_id: this.medicationID,
+						const alarmRequest: CreateAlarmRequest = {
+							time_alarms: this.alarms,
+							is_active: true,
+							days_of_week: this.selectedDays,
+							description: 'alarm',
 						};
-					return this.compartmentContentsService.createCompartmentContent(
-						compartmentContentsRequest
-					);
-				})
-			)
-			.subscribe({
-				next: (response) => {
-					console.log('response: ' + response);
-					if (response) {
-						this.showToast(
-							'Medicação cadastrada com sucesso!',
-							'success'
+						return this.alarmService.createAlarm(alarmRequest);
+					}),
+					concatMap((response) => {
+						console.log('response 2:' + response);
+						const result = response as CreateAlarmResponse;
+						this.alarmID = result.id;
+
+						const compartmentRequest: CreateCompartmentRequest = {
+							case_id: this.listCase[0].id,
+							description: 'compartment',
+							index_compartment:
+								this.selectedItemPillboxIndex! + 1,
+						};
+						return this.compartmentService.createCompartment(
+							compartmentRequest
 						);
-						// this.router.navigate(['/check-your-email']);
-					}
-				},
-				complete: () => {
-					this.loading = false;
-				},
-				error: (error) => {
-					console.log(error);
-					this.loading = false;
-					switch (error.status) {
-						case 401:
-							this.openDialog(
-								'Não Autorizado',
-								'E-Mail ou senha inválido.',
-								'Ok',
-								'',
-								() => {}
+					}),
+					concatMap((response) => {
+						console.log('response 3:' + response);
+						const result = response as CreateCompartmentResponse;
+						this.compartmentID = result.id;
+
+						const compartmentContentsRequest: CreateCompartmentContentRequest =
+							{
+								compartment_id: this.compartmentID,
+								alarm_id: this.alarmID,
+								medication_id: this.medicationID,
+							};
+						return this.compartmentContentsService.createCompartmentContent(
+							compartmentContentsRequest
+						);
+					})
+				)
+				.subscribe({
+					next: (response) => {
+						console.log('response: ' + response);
+						if (response) {
+							this.showToast(
+								'Medicação cadastrada com sucesso!',
+								'success'
 							);
-							break;
-						case 404:
-							this.openDialog(
-								'Email não cadastrado',
-								'Favor verifique os dados informados e tente novamente.',
-								'Ok',
-								'',
-								() => {}
-							);
-							break;
-						case 500:
-							this.openDialog(
-								'Email já cadastrado',
-								'Favor verifique os dados informados e tente novamente.',
-								'Ok',
-								'',
-								() => {}
-							);
-							break;
-						default:
-							this.openDialog(
-								'Ocorreu um erro',
-								'Favor verifique os dados informados e tente novamente.',
-								'Ok',
-								'',
-								() => {}
-							);
-							break;
-					}
-				},
-			});
-		// }
+							// this.router.navigate(['/check-your-email']);
+						}
+					},
+					complete: () => {
+						this.loading = false;
+					},
+					error: (error) => {
+						console.log(error);
+						this.loading = false;
+						switch (error.status) {
+							case 401:
+								this.openDialog(
+									'Não Autorizado',
+									'E-Mail ou senha inválido.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 404:
+								this.openDialog(
+									'Email não cadastrado',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							case 500:
+								this.openDialog(
+									'Email já cadastrado',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+							default:
+								this.openDialog(
+									'Ocorreu um erro',
+									'Favor verifique os dados informados e tente novamente.',
+									'Ok',
+									'',
+									() => {}
+								);
+								break;
+						}
+					},
+				});
+		}
 	}
 
 	openDialog(
