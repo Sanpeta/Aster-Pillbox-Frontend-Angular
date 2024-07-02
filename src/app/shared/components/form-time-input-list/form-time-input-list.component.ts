@@ -22,4 +22,9 @@ export class FormTimeInputListComponent {
 		this.times.splice(index, 1); // Remove o horário no índice especificado
 		this.timeChange.emit(this.times); // Emite o array atualizado
 	}
+
+	updateTime(newTime: string, index: number) {
+		this.times[index] = newTime;
+		this.timeChange.emit(this.times);
+	}
 }
