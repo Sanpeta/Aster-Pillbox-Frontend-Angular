@@ -36,7 +36,7 @@ export class DashboardPillboxComponent {
 	) {}
 
 	pillboxForm = this.formBuilder.group({
-		mac: [''],
+		mac_address: [''],
 		name: ['', [Validators.required, Validators.minLength(3)]],
 		row_size: [0, [Validators.required]],
 		column_size: [0, [Validators.required]],
@@ -55,10 +55,11 @@ export class DashboardPillboxComponent {
 	onSubmitPillboxForm(): void {
 		this.loading = true;
 		console.log(this.pillboxForm.value);
+		console.log(this.pillboxForm.valid);
 		if (this.pillboxForm.value && this.pillboxForm.valid) {
 			const pillbox: CreateCaseRequest = {
 				user_id: parseInt(this.cookieService.get('USER_ID')),
-				mac_address: this.pillboxForm.value.mac ?? '',
+				mac_address: this.pillboxForm.value.mac_address ?? '-',
 				case_name: this.pillboxForm.value.name!,
 				row_size: this.pillboxForm.value.row_size!,
 				column_size: this.pillboxForm.value.column_size!,
@@ -137,6 +138,15 @@ export class DashboardPillboxComponent {
 						}
 					},
 				});
+		} else {
+			this.loading = false;
+			this.openDialog(
+				'Favor preencher os dados corretamente',
+				'Favor verifique os dados informados e tente novamente.',
+				'Ok',
+				'',
+				() => {}
+			);
 		}
 	}
 
