@@ -5,6 +5,7 @@ export interface GetMedicationsByUserIDRequest {
 export interface GetMedicationsByUserIDResponse {
 	id: number;
 	name: string;
+	dosage: string;
 	quantity_use_pill: number;
 	quantity_total_pill: number;
 	description: string;
