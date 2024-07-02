@@ -3,16 +3,15 @@
 	<div #dialogContainer></div>
 	<div class="grid grid-cols-12 gap-4">
 		<app-card-info-user
-			class="col-span-3 h-72"
+			class="col-span-3 h-80"
 			[user]="userInfo"
 		></app-card-info-user>
-		<app-card-reminder class="col-span-3 h-72"></app-card-reminder>
-		<app-calendar-week class="col-span-6 h-72"></app-calendar-week>
+		<app-calendar-week class="col-span-9 h-80"></app-calendar-week>
 	</div>
 	<div class="grid grid-cols-12 gap-4 mt-4">
-		<app-list-medications class="col-span-6 h-96"></app-list-medications>
+		<app-list-medications class="col-span-12 h-96"></app-list-medications>
 		<app-card-medication-pillbox
-			class="col-span-6 h-auto"
+			class="col-span-12 h-96"
 		></app-card-medication-pillbox>
 	</div>
 </div>
