@@ -68,7 +68,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #eee;
+	border-width: 1px;
+	border-color: #007bff;
 	border-radius: 4px;
 	cursor: pointer;
 	transition: background-color 0.2s;
@@ -77,4 +78,11 @@
 .pill-box.selected {
 	background-color: #007bff; /* Substitua pela cor primary do seu tema */
 	color: white;
+}
+
+.action-button:hover {
+	opacity: 0.8;
+}
+.icon {
+	filter: invert(100%);
 }
