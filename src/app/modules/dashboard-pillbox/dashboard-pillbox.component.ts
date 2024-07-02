@@ -79,7 +79,11 @@ export class DashboardPillboxComponent {
 								'Agora você pode adicionar medicamentos ao case.',
 								'Ok',
 								'',
-								() => {}
+								() => {
+									this.router.navigate([
+										'/dashboard/pillboxes',
+									]);
+								}
 							);
 						}
 					},
