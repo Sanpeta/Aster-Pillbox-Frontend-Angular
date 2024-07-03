@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByUserID';
 import { CompartmentContentsService } from '../../services/compartment_content/compartment-contents.service';
+import { NewLinePipe } from '../../shared/pipes/new-line.pipe';
 
 interface Alarm {
 	alarm_id: number;
@@ -23,7 +24,7 @@ interface Alarm {
 @Component({
 	selector: 'app-dashboard-list-medications',
 	standalone: true,
-	imports: [CommonModule, RouterModule],
+	imports: [CommonModule, RouterModule, NewLinePipe],
 	templateUrl: './dashboard-list-medications.component.html',
 	styleUrl: './dashboard-list-medications.component.css',
 })
@@ -32,7 +33,7 @@ export class DashboardListMedicationsComponent {
 	@Input() alarms: Alarm[] = [];
 	public tableHeaders = [
 		'Nome do Medicamento',
-		'Alarmes',
+		'Alarmes do Medicamento',
 		'Quantidade de comprimido(s) por horário',
 		'Quantidade existente no compartimento',
 		'Número do Compartimento',
@@ -42,12 +43,12 @@ export class DashboardListMedicationsComponent {
 	];
 	public daysOfWeek = [
 		'Domingo',
-		' Segunda',
-		' Terça',
-		' Quarta',
-		' Quinta',
-		' Sexta',
-		' Sábado',
+		'Segunda',
+		'Terça',
+		'Quarta',
+		'Quinta',
+		'Sexta',
+		'Sábado',
 	];
 	public displayedTableDataAlarms: Alarm[] = [];
 	public itemsPerPage = 20;
