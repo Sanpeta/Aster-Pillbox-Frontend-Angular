@@ -4,9 +4,9 @@ import { RouterModule } from '@angular/router';
 import { differenceInDays, parseISO } from 'date-fns';
 import { Subject, takeUntil } from 'rxjs';
 import { HistoricMedicationsForReport } from '../../models/interfaces/historic-medication/GetHistoricMedicationsForReport';
+import { HistoricMedicationService } from '../../services/historic-medication/historic-medication.service';
 import { BarChartComponent } from '../../shared/components/bar-chart/bar-chart.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { HistoricMedicationService } from './../../services/historic-medication.service';
 
 interface HistoricMedicationsForReportInternal {
 	name: string;
