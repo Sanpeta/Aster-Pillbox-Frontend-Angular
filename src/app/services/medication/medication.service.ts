@@ -14,6 +14,10 @@ import {
 	UpdateMedicationRequest,
 	UpdateMedicationResponse,
 } from '../../models/interfaces/medication/UpdateMedication';
+import {
+	UpdateQuantityMedicationRequest,
+	UpdateQuantityMedicationResponse,
+} from '../../models/interfaces/medication/UpdateQuantityMedication';
 
 @Injectable({
 	providedIn: 'root',
@@ -68,6 +72,28 @@ export class MedicationService {
 
 		return this.httpClient.get<GetMedicationsByUserIDResponse>(
 			this.API_URL + '/medications/user/' + USER_ID,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `bearer ${AUTH_TOKEN}`,
+				},
+			}
+		);
+	}
+
+	public updateQuantityMedication(
+		medication: UpdateQuantityMedicationRequest
+	): Observable<UpdateQuantityMedicationResponse | boolean> {
+		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
+
+		// Check if token exists
+		if (!AUTH_TOKEN) {
+			return of(false);
+		}
+
+		return this.httpClient.put<UpdateQuantityMedicationResponse>(
+			this.API_URL + '/medication-quantity-pill',
+			medication,
 			{
 				headers: {
 					'Content-Type': 'application/json',
