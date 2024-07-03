@@ -14,7 +14,7 @@
 
 	<!-- Table List Pillboxes -->
 	<div class="relative mt-4 rounded-lg overflow-x-hidden border-2">
-		<table class="min-w-full divide-y divide-gray-200">
+		<table class="min-w-full divide-y divide-gray-400">
 			<thead class="bg-gray-50 sticky top-0 z-10">
 				<tr>
 					@for (title of tableHeaders; track $index) { @if ($index%2
@@ -35,7 +35,7 @@
 					} }
 				</tr>
 			</thead>
-			<tbody class="bg-white divide-y divide-gray-200 text-center">
+			<tbody class="bg-white divide-y divide-gray-400 text-center">
 				<tr *ngFor="let pillbox of pillboxes; let i = index">
 					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
 						{{ pillbox.case_name }}
