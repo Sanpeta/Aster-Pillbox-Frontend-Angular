@@ -1,8 +1,8 @@
-import { NewLinePipePipe } from './new-line.pipe';
+import { NewLinePipe } from './new-line.pipe';
 
 describe('NewLinePipePipe', () => {
 	it('create an instance', () => {
-		const pipe = new NewLinePipePipe();
+		const pipe = new NewLinePipe();
 		expect(pipe).toBeTruthy();
 	});
 });
