@@ -1,24 +1,95 @@
 <div class="calendar-container">
-	<div class="header">
-		<button class="navigation-button"><</button>
-		<div class="month-year-title">Junho 2024</div>
-		<button class="navigation-button">></button>
+	<div
+		class="w-full h-auto px-4 py-2 flex flex-col items-center justify-center bg-blue-600 rounded-t-2xl"
+	>
+		<div class="text-white">
+			<div class="text-lg font-bold">
+				{{ weekDays[0].date | date : "MMMM yyyy" }}
+			</div>
+		</div>
+
+		<div class="week-container">
+			@for (day of weekDays; track $index) {
+			<div
+				class="day"
+				(click)="onDayClick(day)"
+				[class.selected]="isSameDay(day.date, selectedDate)"
+			>
+				<div class="day-header">
+					{{ day.dayName }}
+				</div>
+				<div class="day-number">
+					{{ day.date | date : "d" }}
+				</div>
+			</div>
+			}
+		</div>
 	</div>
 
-	<div class="week-container">
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-		<div class="day">Sexta<br />20</div>
-	</div>
-	<div class="week-body">
-		<app-calendar-week-item></app-calendar-week-item>
-		<app-calendar-week-item></app-calendar-week-item>
-		<app-calendar-week-item></app-calendar-week-item>
-		<app-calendar-week-item></app-calendar-week-item>
-		<app-calendar-week-item></app-calendar-week-item>
+	<div class="w-full h-full overflow-scroll" *ngIf="selectedDate">
+		<ul class="divide-y divide-gray-200">
+			@for (medication of getMedicationsForDay(selectedDate); track
+			$index) {
+			<li>
+				<div class="flex items-center justify-between">
+					<div class="w-full h-full">
+						@for (time of medication.alarms; track $index) {
+						<div
+							class="flex flex-row items-center justify-evenly w-auto p-4 m-4 rounded-md"
+							[ngClass]="getAlarmStatusClass(time)"
+						>
+							<div
+								class="flex flex-col items-start justify-center"
+							>
+								<div class="pb-2">
+									Remédio:
+									<span class="font-bold">{{
+										medication.name.toUpperCase()
+									}}</span>
+								</div>
+
+								<div class="text-2xl font-bold">
+									{{ time }}
+								</div>
+							</div>
+
+							<div
+								class="flex flex-col items-center justify-center"
+							>
+								<div class="pb-2 text-lg">Compartimento:</div>
+								<span class="font-bold text-xl">
+									{{ medication.compartiment }}
+								</span>
+							</div>
+
+							<div
+								class="flex flex-col items-center justify-center"
+							>
+								<div class="pb-2 text-lg">Quantidade:</div>
+								<span class="font-bold text-xl">
+									{{ medication.quantity }}
+								</span>
+							</div>
+
+							<button
+								type="button"
+								(click)="
+									onTakeMedication(
+										medication.id,
+										medication.quantity,
+										time
+									)
+								"
+								class="flex w-auto justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+							>
+								Tomar Agora
+							</button>
+						</div>
+						}
+					</div>
+				</div>
+			</li>
+			}
+		</ul>
 	</div>
 </div>
