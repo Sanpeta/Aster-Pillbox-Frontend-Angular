@@ -7,9 +7,26 @@
 			<nav
 				class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto"
 			>
-				<a class="mr-5 hover:text-gray-900">Como Funciona</a>
-				<a class="mr-5 hover:text-gray-900">Funcionalidade</a>
-				<a class="hover:text-gray-900">Reviews</a>
+				<a
+					class="mr-5 hover:text-gray-900 cursor-pointer"
+					(click)="scrollToSection('home')"
+					>Home</a
+				>
+				<a
+					class="mr-5 hover:text-gray-900 cursor-pointer"
+					(click)="scrollToSection('functions')"
+					>Funcionalidades</a
+				>
+				<a
+					class="mr-5 hover:text-gray-900 cursor-pointer"
+					(click)="scrollToSection('plans')"
+					>Planos</a
+				>
+				<a
+					class="hover:text-gray-900 cursor-pointer"
+					(click)="scrollToSection('contact-us')"
+					>Fale Conosco</a
+				>
 			</nav>
 
 			<a
@@ -37,6 +54,7 @@
 
 	<!-- HERO -->
 	<section
+		#homeSection
 		class="text-white bg-blue-600 body-font w-full h-5/6 flex flex-col items-center justify-center mt-20"
 	>
 		<!-- Infos Hero -->
@@ -185,7 +203,7 @@
 	</section>
 
 	<!-- FUNCIONALIDADES -->
-	<section class="text-white body-font bg-blue-600">
+	<section #functionsSection class="text-white body-font bg-blue-600">
 		<div class="container px-5 py-12 mx-auto">
 			<!-- Title -->
 			<div
@@ -408,7 +426,7 @@
 	</section>
 
 	<!-- PRICING -->
-	<section class="text-gray-600 body-font overflow-hidden">
+	<section #plansSection class="text-gray-600 body-font overflow-hidden">
 		<div class="container px-5 pt-12 mx-auto">
 			<div class="flex flex-col text-center w-full mb-20">
 				<h1
@@ -865,7 +883,10 @@
 	</section>
 
 	<!-- Contact Us -->
-	<section class="text-white body-font relative bg-blue-600">
+	<section
+		#contactUsSection
+		class="text-white body-font relative bg-blue-600"
+	>
 		<div class="container px-5 py-24 mx-auto">
 			<div class="flex flex-col text-center w-full mb-12">
 				<h1
