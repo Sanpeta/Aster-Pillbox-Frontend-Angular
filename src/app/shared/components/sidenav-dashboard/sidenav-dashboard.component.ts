@@ -44,16 +44,8 @@ export class SidenavDashboardComponent {
 				this.router.navigate(['/dashboard', 'patients']);
 				break;
 			case 'List Medications':
-				this.menuItemsSelected = 'Medication';
+				this.menuItemsSelected = 'List Medications';
 				this.router.navigate(['/dashboard', 'medications']);
-				break;
-			case 'Add Medication':
-				this.menuItemsSelected = 'Medication';
-				this.router.navigate(['/dashboard', 'medication']);
-				break;
-			case 'Update Medication':
-				this.menuItemsSelected = 'Medication';
-				this.router.navigate(['/dashboard', 'update-medication']);
 				break;
 			// case 'Information':
 			// 	this.router.navigate(['/dashboard', 'information']);

@@ -25,55 +25,29 @@
 				/>
 			</app-button-menu>
 
-			<app-menu-items
-				label="Caixa de Medicamentos"
-				[selected]="menuItemsSelected === 'Pillbox'"
+			<app-button-menu
+				[description]="'Caixa de Medicamentos'"
+				[selected]="menuSelected === 'List Pillboxes'"
+				(click)="onMenuSelected('List Pillboxes')"
 			>
-				<app-button-menu
-					[description]="'Mostrar todos'"
-					[selected]="menuSelected === 'List Pillboxes'"
-					(click)="onMenuSelected('List Pillboxes')"
-				>
-				</app-button-menu>
+				<app-icon
+					[src]="'/assets/images/medication-icon.svg'"
+					[alt]="'image perfil'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
-				<app-button-menu
-					[description]="'Adicionar'"
-					[selected]="menuSelected === 'Pillbox'"
-					(click)="onMenuSelected('Pillbox')"
-				>
-				</app-button-menu>
-			</app-menu-items>
-
-			<app-menu-items
-				label="Pacientes"
-				[selected]="menuItemsSelected === 'Patient'"
+			<app-button-menu
+				[description]="'Medicamentos'"
+				[selected]="menuSelected === 'List Medications'"
+				(click)="onMenuSelected('List Medications')"
 			>
-				<app-button-menu
-					[description]="'Lista de Pacientes'"
-					[selected]="menuSelected === 'List Patients'"
-					(click)="onMenuSelected('List Patients')"
-				>
-				</app-button-menu>
-			</app-menu-items>
-
-			<app-menu-items
-				label="Medicamentos"
-				[selected]="menuItemsSelected === 'Medication'"
-			>
-				<app-button-menu
-					[description]="'Lista de Medicamentos'"
-					[selected]="menuSelected === 'List Medications'"
-					(click)="onMenuSelected('List Medications')"
-				>
-				</app-button-menu>
-
-				<app-button-menu
-					[description]="'Adicionar Medicamentos'"
-					[selected]="menuSelected === 'Add Medication'"
-					(click)="onMenuSelected('Add Medication')"
-				>
-				</app-button-menu>
-			</app-menu-items>
+				<app-icon
+					[src]="'/assets/images/pill-icon.svg'"
+					[alt]="'image perfil'"
+					[classes]="'h-6 w-6 ml-2 mr-2'"
+				/>
+			</app-button-menu>
 
 			<app-button-menu
 				[description]="'Relatório'"
