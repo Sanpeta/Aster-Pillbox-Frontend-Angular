@@ -2,11 +2,16 @@ import { Routes } from '@angular/router';
 import { AuthGuardService } from './guards/auth/auth-guard.service';
 import { LoggedGuardService } from './guards/logged/logged-guard.service';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
+import { HomeComponent } from './modules/home/home.component';
 import { LoginComponent } from './modules/login/login.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-	{ path: '', redirectTo: 'login', pathMatch: 'full' },
+	{ path: '', redirectTo: '', pathMatch: 'full' },
+	{
+		path: '',
+		component: HomeComponent,
+	},
 	{
 		path: 'login',
 		component: LoginComponent,
