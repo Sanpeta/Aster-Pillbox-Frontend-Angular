@@ -9,6 +9,7 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { Subject, takeUntil } from 'rxjs';
 import { DashboardLayoutComponent } from '../../layouts/dashboard-layout/dashboard-layout.component';
 import { CreateUserRequest } from '../../models/interfaces/user/CreateUser';
@@ -32,9 +33,11 @@ import { UserService } from './../../services/user/user.service';
 		ReactiveFormsModule,
 		FormInputComponent,
 		RouterModule,
+		NgxMaskDirective,
 	],
 	templateUrl: './dashboard-perfil.component.html',
 	styleUrl: './dashboard-perfil.component.css',
+	providers: [provideNgxMask()],
 })
 export class DashboardPerfilComponent implements OnInit, OnDestroy {
 	public loading = false;
