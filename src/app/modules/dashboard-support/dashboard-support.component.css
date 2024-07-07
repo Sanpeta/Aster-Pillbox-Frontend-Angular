@@ -1,4 +1,6 @@
 .dashboard-support-container {
 	height: calc(100vh - 70px);
 	width: calc(100vw - 260px);
+	overflow: auto;
+	padding-top: 70px;
 }
