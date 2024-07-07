@@ -1,12 +1,16 @@
 <ng-template #toastContainer></ng-template>
 <app-loader [isLoading]="loading"></app-loader>
 <div class="dashboard-report-container">
-	@if (!loading) {
+	@if (datasets.length > 0) { @if (!loading) {
 	<app-bar-chart
 		class="chart-container"
 		[datasets]="datasets"
 		[labels]="labels"
 	></app-bar-chart>
+	} } @else {
+	<div class="text-center text-base pt-2 chart-container">
+		Sem registro de medicamentos ingerido até o momento.
+	</div>
 	}
 
 	<div class="container-list">
