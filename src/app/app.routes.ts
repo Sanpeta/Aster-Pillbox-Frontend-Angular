@@ -144,6 +144,13 @@ export const routes: Routes = [
 					).then((m) => m.DashboardReportComponent),
 			},
 			{
+				path: 'settings',
+				loadComponent: () =>
+					import(
+						'./modules/dashboard-settings/dashboard-settings.component'
+					).then((m) => m.DashboardSettingsComponent),
+			},
+			{
 				path: 'prices',
 				loadComponent: () =>
 					import(

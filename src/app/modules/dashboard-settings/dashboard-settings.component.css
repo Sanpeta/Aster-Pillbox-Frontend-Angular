@@ -1,0 +1,6 @@
+.dashboard-settings {
+	height: calc(100vh - 70px);
+	width: calc(100vw - 260px);
+	overflow: scroll;
+	padding: 32px;
+}
