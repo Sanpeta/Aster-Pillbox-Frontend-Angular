@@ -14,6 +14,7 @@
 		</button>
 	</div>
 	<!-- Label Pillbox -->
+	@if (listCase.length > 0) {
 	<form class="w-full" [formGroup]="selectForm">
 		<!-- Single Select -->
 		<select
@@ -32,6 +33,12 @@
 			}
 		</select>
 	</form>
+	} @else if (listCase.length == 0) {
+	<div class="text-center text-base pt-2">
+		Nenhuma caixa de medicamento cadastrada.
+	</div>
+	}
+
 	<!-- Pillbox -->
 	<div
 		class="pills-grid mt-4"
