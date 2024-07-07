@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
 	Component,
 	OnDestroy,
@@ -12,6 +13,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { AccountRequest } from '../../models/interfaces/account/CreateAccount';
 import { AccountService } from '../../services/account/account.service';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
@@ -23,6 +25,8 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 		ReactiveFormsModule,
 		RouterModule,
 		LoaderComponent,
+		CommonModule,
+		ErrorMessageComponent,
 	],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.css',
@@ -133,6 +137,66 @@ export class RegisterComponent implements OnInit, OnDestroy {
 						}
 					},
 				});
+		} else {
+			this.loading = false;
+			if (this.registerForm.get('email')?.errors) {
+				// Verifica os erros do campo 'email'
+				if (this.registerForm.get('email')?.hasError('required')) {
+					this.openDialog(
+						'Email obrigatório',
+						'O campo email é obrigatório.',
+						'Ok',
+						'',
+						() => {}
+					);
+				}
+				if (this.registerForm.get('email')?.hasError('email')) {
+					this.openDialog(
+						'O e-mail inserido é inválido',
+						'Um e-mail válido é obrigatório',
+						'Ok',
+						'',
+						() => {}
+					);
+				}
+			}
+
+			if (this.registerForm.get('password')?.errors) {
+				if (this.registerForm.get('password')?.hasError('required')) {
+					this.openDialog(
+						'Senha é obrigatório',
+						'O campo senha é obrigatório',
+						'Ok',
+						'',
+						() => {}
+					);
+				}
+				if (this.registerForm.get('password')?.hasError('minlength')) {
+					this.openDialog(
+						'Senha inválida',
+						'A senha deve ter no mínimo 8 caracteres',
+						'Ok',
+						'',
+						() => {}
+					);
+				}
+			}
+
+			if (this.registerForm.get('terms_and_conditions')?.errors) {
+				if (
+					this.registerForm
+						.get('terms_and_conditions')
+						?.hasError('required')
+				) {
+					this.openDialog(
+						'Campo obrigatório',
+						'Você precisa aceitar os termos e condições para continuar.',
+						'Ok',
+						'',
+						() => {}
+					);
+				}
+			}
 		}
 	}
 
