@@ -24,6 +24,7 @@
 		"date-fns": "^3.6.0",
 		"ng2-charts": "^6.0.1",
 		"ngx-cookie-service": "^18.0.0",
+		"ngx-mask": "^17.1.1",
 		"rxjs": "~7.8.0",
 		"tslib": "^2.3.0",
 		"zone.js": "~0.14.3"
