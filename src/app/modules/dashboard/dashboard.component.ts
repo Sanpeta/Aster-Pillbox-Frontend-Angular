@@ -72,10 +72,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: (user) => {
 					var firstName = user.name.split(' ')[0];
-					this.showToast(
-						'Bem-vindo de volta, ' + firstName + '!',
-						'success'
-					);
 					this.populateUserInfo(user);
 					if (this.cookie.check('USER_ID')) {
 						this.cookie.delete('USER_ID');
