@@ -26,6 +26,13 @@ export const routes: Routes = [
 		canActivate: [LoggedGuardService],
 	},
 	{
+		path: 'terms-and-conditions',
+		loadComponent: () =>
+			import(
+				'./modules/terms-and-conditions/terms-and-conditions.component'
+			).then((m) => m.TermsAndConditionsComponent),
+	},
+	{
 		path: 'recover-password',
 		loadComponent: () =>
 			import(
