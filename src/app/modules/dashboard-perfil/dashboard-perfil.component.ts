@@ -16,6 +16,7 @@ import { CreateUserRequest } from '../../models/interfaces/user/CreateUser';
 import { UpdateUserRequest } from '../../models/interfaces/user/UpdateUser';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { FormInputComponent } from '../../shared/components/form-input/form-input.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { SidenavDashboardComponent } from '../../shared/components/sidenav-dashboard/sidenav-dashboard.component';
 import { SidenavTitleDashboardComponent } from '../../shared/components/sidenav-title-dashboard/sidenav-title-dashboard.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
@@ -34,6 +35,8 @@ import { UserService } from './../../services/user/user.service';
 		FormInputComponent,
 		RouterModule,
 		NgxMaskDirective,
+		LoaderComponent,
+		DialogComponent,
 	],
 	templateUrl: './dashboard-perfil.component.html',
 	styleUrl: './dashboard-perfil.component.css',
@@ -195,11 +198,15 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 							if (response) {
 								console.log(response);
 								this.userForm.reset();
-								this.loading = false;
 								this.toast.clear();
-								this.showToast(
-									'Usuário criado com sucesso!',
-									'success'
+								this.openDialog(
+									'Salvo!',
+									'Suas informações foram cadastradas com sucesso!',
+									'Ok',
+									'',
+									() => {
+										this.router.navigate(['/dashboard']);
+									}
 								);
 							}
 						},
@@ -213,7 +220,6 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 								'Erro ao criar usuário. Tente novamente mais tarde.',
 								'error'
 							);
-							this.loading = false;
 						},
 					});
 			} else {
@@ -242,11 +248,15 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 						next: (response) => {
 							if (response) {
 								console.log(response);
-								this.loading = false;
 								this.toast.clear();
-								this.showToast(
-									'Informações atualizados com sucesso!',
-									'success'
+								this.openDialog(
+									'Sucesso!',
+									'Informações atualizadas com sucesso!',
+									'Continuar',
+									'',
+									() => {
+										this.router.navigate(['/dashboard']);
+									}
 								);
 							}
 						},
@@ -260,7 +270,6 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 								'Erro ao atualizar. Tente novamente mais tarde.',
 								'error'
 							);
-							this.loading = false;
 						},
 					});
 			}
