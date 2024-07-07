@@ -13,6 +13,11 @@
 	</div>
 
 	<!-- Table Medications -->
+	@if (alarms.length == 0) {
+	<div class="text-center text-base pt-2 chart-container">
+		Sem registro de medicamentos ingerido até o momento.
+	</div>
+	} @else {
 	<div class="relative mt-4 rounded-lg overflow-x-scroll shadow-md border-2">
 		<table class="table-fixed w-auto divide-y divide-gray-400">
 			<thead class="bg-gray-50 sticky top-0 z-10">
@@ -83,7 +88,10 @@
 			</tbody>
 		</table>
 	</div>
-	<nav
+	}
+
+	<!-- Pagination -->
+	<!-- <nav
 		class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
 		aria-label="Table navigation"
 	>
@@ -150,5 +158,5 @@
 				>
 			</li>
 		</ul>
-	</nav>
+	</nav> -->
 </div>
