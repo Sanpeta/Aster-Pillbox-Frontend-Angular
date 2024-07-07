@@ -7,7 +7,7 @@
 			class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center"
 		>
 			<nav
-				class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto"
+				class="flex lg:w-2/5 flex-wrap items-center text-center mx-auto"
 			>
 				<a
 					class="mr-5 hover:text-gray-900 cursor-pointer"
@@ -41,7 +41,9 @@
 				/>
 			</a>
 
-			<div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
+			<div
+				class="lg:w-2/5 inline-flex lg:justify-end sm:ml-5 pt-2 lg:ml-0"
+			>
 				<button
 					routerLink="/login"
 					routerLinkActive="active"
@@ -57,18 +59,16 @@
 	<!-- HERO -->
 	<section
 		#homeSection
-		class="text-white bg-blue-600 body-font w-full h-5/6 flex flex-col items-center justify-center mt-20"
+		class="text-white bg-blue-600 body-font w-full h-auto sm:h-5/6 flex flex-col items-center justify-center sm:mt-20 mt-48"
 	>
 		<!-- Infos Hero -->
 		<div
-			class="container h-full w-2/3 flex md:flex-row flex-col items-center justify-center"
+			class="container h-full w-9/12 flex md:flex-row flex-col items-center justify-center"
 		>
 			<!-- Image Hero -->
-			<div
-				class="lg:max-w-lg lg:w-full md:w-1/2 h-5/6 w-1/2 mb-10 md:mb-0"
-			>
+			<div class="lg:max-w-lg md:w-1/2 md:mb-0 h-5/6 w-full mb-10 mt-10">
 				<img
-					class="object-contain h-full w-full object-right pr-8"
+					class="object-contain h-full w-full object-right sm:pr-8"
 					alt="hero"
 					src="../../../assets/images/Home-Screen.png"
 				/>
@@ -79,7 +79,7 @@
 				class="lg:flex-grow md:w-1/2 flex flex-col md:items-start md:text-left items-center text-center"
 			>
 				<!-- Title and Subtitle -->
-				<h1 class="sm:text-4xl text-6xl mb-4 font-semibold text-white">
+				<h1 class="sm:text-4xl text-3xl mb-4 font-semibold text-white">
 					Aster Pillbox: Seu Aliado na Gestão da Medicação
 				</h1>
 				<p class="mb-8 leading-relaxed">
@@ -88,16 +88,17 @@
 				</p>
 
 				<!-- Buttons com links -->
-				<div class="flex lg:flex-row md:flex-col">
+				<div class="flex flex-col gap-4 lg:flex-row md:flex-col pb-8">
+					<!-- Google Play -->
 					<a
 						href="https://play.google.com/store/apps/details?id=com.instagram.android&hl=pt_BR"
 						target="_blank"
-						class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none"
+						class="bg-gray-100 inline-flex sm:py-3 sm:px-5 p-2 rounded-lg items-center hover:bg-gray-200 focus:outline-none"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill=" "
-							class="w-6 h-6"
+							class="w-8 h-8"
 							viewBox="0 0 512 512"
 						>
 							<path
@@ -115,15 +116,17 @@
 							>
 						</span>
 					</a>
+
+					<!-- App Store -->
 					<a
 						href="https://play.google.com/store/apps/details?id=com.instagram.android&hl=pt_BR"
 						target="_blank"
-						class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center lg:ml-4 md:ml-0 ml-4 md:mt-4 mt-0 lg:mt-0 hover:bg-gray-200 focus:outline-none"
+						class="bg-gray-100 w-auto inline-flex sm:px-2 p-2 rounded-lg items-center hover:bg-gray-200 focus:outline-none"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill=""
-							class="w-6 h-6"
+							class="w-9 h-9"
 							viewBox="0 0 305 305"
 						>
 							<path
@@ -134,7 +137,7 @@
 							></path>
 						</svg>
 						<span
-							class="ml-4 flex items-start flex-col leading-none"
+							class="ml-2 sm:ml-4 flex items-start flex-col leading-none"
 						>
 							<span class="text-xs text-gray-800 mb-1"
 								>Download on the</span
@@ -201,7 +204,7 @@
 
 				<button
 					type="submit"
-					class="flex w-auto justify-center rounded-md bg-blue-600 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+					class="flex w-auto mx-auto justify-center rounded-md bg-blue-600 px-8 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
 				>
 					Solicitar
 				</button>
