@@ -13,6 +13,11 @@
 	</div>
 
 	<!-- Table List Pillboxes -->
+	@if (pillboxes.length == 0) {
+	<div class="text-center text-base py-16">
+		Sem registro de medicamentos ingerido até o momento.
+	</div>
+	} @else {
 	<div class="relative mt-4 rounded-lg overflow-x-hidden border-2">
 		<table class="min-w-full divide-y divide-gray-400">
 			<thead class="bg-gray-50 sticky top-0 z-10">
@@ -73,7 +78,8 @@
 			</tbody>
 		</table>
 	</div>
-	<nav
+	}
+	<!-- <nav
 		class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
 		aria-label="Table navigation"
 	>
@@ -140,5 +146,5 @@
 				>
 			</li>
 		</ul>
-	</nav>
+	</nav> -->
 </div>
