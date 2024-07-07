@@ -33,6 +33,13 @@ export const routes: Routes = [
 			).then((m) => m.TermsAndConditionsComponent),
 	},
 	{
+		path: 'privacy-policy',
+		loadComponent: () =>
+			import('./modules/privacy-policy/privacy-policy.component').then(
+				(m) => m.PrivacyPolicyComponent
+			),
+	},
+	{
 		path: 'recover-password',
 		loadComponent: () =>
 			import(
