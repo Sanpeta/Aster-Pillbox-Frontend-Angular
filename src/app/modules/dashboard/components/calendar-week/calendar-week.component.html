@@ -26,10 +26,17 @@
 		</div>
 	</div>
 
-	<div class="w-full h-full overflow-scroll" *ngIf="selectedDate">
+	@if (selectedDate) {
+	<div class="w-full h-full overflow-scroll">
 		<ul class="divide-y divide-gray-200">
-			@for (medication of getMedicationsForDay(selectedDate); track
-			$index) {
+			@if (getMedicationsForDay(selectedDate).length == 0) {
+			<div
+				class="w-full h-full flex flex-col items-center justify-center"
+			>
+				Sem medicamentos para hoje
+			</div>
+			} @else { @for (medication of getMedicationsForDay(selectedDate);
+			track $index) {
 			<li>
 				<div class="flex items-center justify-between">
 					<div class="w-full h-full">
@@ -89,7 +96,8 @@
 					</div>
 				</div>
 			</li>
-			}
+			} }
 		</ul>
 	</div>
+	}
 </div>
