@@ -100,5 +100,27 @@ export class UserService {
 		);
 	}
 
+	public uploadImageUser(infos: FormData): Observable<any | boolean> {
+		const AUTH_TOKEN = this.cookie.get('AUTH_TOKEN');
+		const ACCOUNT_ID = this.cookie.get('ACCOUNT_ID');
+
+		// Check if token exists
+		if (!AUTH_TOKEN || !ACCOUNT_ID) {
+			return of(false);
+		}
+
+		infos.append('account_id', ACCOUNT_ID);
+
+		return this.httpClient.post<any>(
+			this.API_URL + '/upload-image',
+			infos,
+			{
+				headers: {
+					Authorization: `bearer ${AUTH_TOKEN}`,
+				},
+			}
+		);
+	}
+
 	public deleteUser() {}
 }
