@@ -216,6 +216,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 						error: (error) => {
 							console.log(error);
 							this.toast.clear();
+							this.loading = false;
 							this.showToast(
 								'Erro ao criar usuário. Tente novamente mais tarde.',
 								'error'
@@ -265,6 +266,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 						},
 						error: (error) => {
 							console.log(error);
+							this.loading = false;
 							this.toast.clear();
 							this.showToast(
 								'Erro ao atualizar. Tente novamente mais tarde.',
