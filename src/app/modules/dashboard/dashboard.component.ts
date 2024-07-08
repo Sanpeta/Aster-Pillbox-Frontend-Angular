@@ -15,6 +15,7 @@ import { GetUserResponse } from '../../models/interfaces/user/GetUser';
 import { UserService } from '../../services/user/user.service';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { ListMedicationsComponent } from '../../shared/components/list-medications/list-medications.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CalendarWeekComponent } from './components/calendar-week/calendar-week.component';
 import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
@@ -35,6 +36,7 @@ import { CardReminderComponent } from './components/card-reminder/card-reminder.
 		CardMedicationPillboxComponent,
 		ListMedicationsComponent,
 		DialogComponent,
+		LoaderComponent,
 	],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
