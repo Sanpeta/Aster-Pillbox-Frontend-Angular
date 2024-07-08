@@ -1,5 +1,5 @@
 export interface UserInfo {
-	image: string;
+	image_url: string;
 	name: string;
 	age: number;
 	blood: string;

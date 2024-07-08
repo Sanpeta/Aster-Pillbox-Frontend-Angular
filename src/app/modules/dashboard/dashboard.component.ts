@@ -41,7 +41,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	public showLoader = false;
 	public userInfo: UserInfo = {
-		image: 'https://images.unsplash.com/photo-1518991669955-9c7e78ec80ca?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+		image_url:
+			'https://images.unsplash.com/photo-1518991669955-9c7e78ec80ca?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		name: '',
 		age: 0,
 		blood: '',
@@ -116,6 +117,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	}
 
 	private populateUserInfo(user: GetUserResponse) {
+		this.userInfo.image_url =
+			user.image_url === ''
+				? 'https://images.unsplash.com/photo-1518991669955-9c7e78ec80ca?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+				: user.image_url;
 		this.userInfo.name = user.name;
 		this.userInfo.age = parseInt(user.age, 10); // Converter para number se necessário
 		this.userInfo.gender = user.genre;
