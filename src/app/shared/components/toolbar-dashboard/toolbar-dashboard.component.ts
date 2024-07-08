@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { Subject, takeUntil } from 'rxjs';
+import { UserService } from '../../../services/user/user.service';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -8,12 +11,44 @@ import { IconComponent } from '../icon/icon.component';
 	templateUrl: './toolbar-dashboard.component.html',
 	styleUrl: './toolbar-dashboard.component.css',
 })
-export class ToolbarDashboardComponent {
+export class ToolbarDashboardComponent implements OnInit {
+	private destroy$ = new Subject<void>();
+
+	public user = {
+		image_url: '',
+		name: '',
+	};
 	isDarkTheme = false;
 	srcImage = 'assets/images/light-mode-icon.svg';
 
-	constructor() {
+	constructor(
+		private userService: UserService,
+		private cookie: CookieService
+	) {
 		// this.isDarkTheme = this.getTheme();
+	}
+
+	ngOnInit() {
+		const ACCOUNT_ID = this.cookie.get('ACCOUNT_ID');
+
+		this.userService
+			.getUserByAccountID(parseInt(ACCOUNT_ID))
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: (response) => {
+					this.user = {
+						image_url: response.image_url,
+						name: response.name,
+					};
+				},
+				complete: () => {},
+				error: (error) => {},
+			});
+	}
+
+	ngOnDestroy() {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	toggleTheme() {

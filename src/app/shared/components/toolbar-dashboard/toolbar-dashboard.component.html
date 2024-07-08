@@ -62,11 +62,12 @@
 			<img
 				class="info-user-container-img"
 				src="assets/images/perfil-icon.svg"
+				[src]="this.user.image_url"
 				alt="image perfil"
 			/>
 			<div class="info-user-container-text">
-				<span class="name">Sidnei de Souza Junior</span>
-				<span class="role">Admin</span>
+				<span class="name">{{ this.user.name }}</span>
+				<!-- <span class="role">{{ "this.user.age" }}</span> -->
 			</div>
 		</div>
 	</div>
