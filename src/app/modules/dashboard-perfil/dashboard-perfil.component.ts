@@ -45,6 +45,9 @@ import { UserService } from './../../services/user/user.service';
 export class DashboardPerfilComponent implements OnInit, OnDestroy {
 	public loading = false;
 	public createNewUser = true;
+	public errorMessage: string | null = null;
+	public selectedFile: File | null = null;
+	public editingImage = false;
 
 	private destroy$ = new Subject<void>();
 	private userCreateRequest: CreateUserRequest = {
@@ -64,6 +67,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 	};
 	private ACCOUNT_ID = 0;
 	private ACCOUNT_EMAIL = '';
+	public disableButtonImage = false;
 
 	@ViewChild('toastContainer', { read: ViewContainerRef })
 	toast!: ViewContainerRef;
@@ -90,6 +94,10 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 		phone_number: ['', [Validators.required]],
 		blood_type: ['', [Validators.required]],
 		screen_for_elder: [false, [Validators.required]],
+	});
+
+	imageForm = this.formBuilder.group({
+		image: [''],
 	});
 
 	ngOnInit(): void {
@@ -126,6 +134,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 							blood_type: response.blood_type,
 							screen_for_elder: response.screen_for_elder,
 						});
+						this.disableButtonImage = false;
 						this.loading = false;
 						this.createNewUser = false;
 						this.toast.clear();
@@ -136,6 +145,7 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 					this.loading = false;
 				},
 				error: (error) => {
+					this.disableButtonImage = true;
 					console.log(error);
 					this.loading = false;
 					this.toast.clear();
@@ -329,5 +339,65 @@ export class DashboardPerfilComponent implements OnInit, OnDestroy {
 				funcConfirmButton();
 			}
 		});
+	}
+
+	onFileSelected(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const file: File = (target.files as FileList)[0];
+
+		this.loading = true;
+		if (!this.isValidFile(file)) {
+			this.errorMessage =
+				'Arquivo inválido. Extensões permitidas: .png, .svg, .jpeg. Tamanho máximo: 1MB.';
+			this.loading = false;
+			return;
+		}
+
+		this.selectedFile = file;
+		this.uploadImage();
+	}
+
+	isValidFile(file: File): boolean {
+		const allowedExtensions = ['png', 'svg', 'jpeg'];
+		const maxFileSize = 1 * 1024 * 1024; // 1MB
+
+		const extension = file.name.split('.').pop()?.toLowerCase();
+		const isValidExtension = allowedExtensions.includes(extension!); // Verifica a extensão
+		const isValidSize = file.size <= maxFileSize; // Verifica o tamanho
+
+		return isValidExtension && isValidSize; // Retorna true se ambas as condições forem verdadeiras
+	}
+
+	uploadImage() {
+		if (this.selectedFile) {
+			const formData = new FormData();
+			formData.append('image', this.selectedFile, this.selectedFile.name);
+
+			this.userService
+				.uploadImageUser(formData)
+				.pipe(takeUntil(this.destroy$))
+				.subscribe({
+					next: (response) => {
+						if (response) {
+							console.log(
+								'Image uploaded successfully:',
+								response.s3_url
+							);
+							this.showToast('Imagem salva com sucesso!');
+							this.loading = false;
+						}
+					},
+					complete: () => {
+						this.loading = false;
+					},
+					error: (error) => {
+						this.loading = false;
+						this.errorMessage = 'Imagem não foi carregada.';
+						console.error('Image upload failed:', error);
+					},
+				});
+		} else {
+			this.loading = false;
+		}
 	}
 }

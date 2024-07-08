@@ -17,8 +17,46 @@
 		</div>
 	</div>
 
+	<div
+		[className]="
+			this.disableButtonImage ? 'image-form-disable' : 'image-form-enable'
+		"
+	>
+		<form [formGroup]="imageForm" (ngSubmit)="uploadImage()">
+			<div class="w-full">
+				<label
+					for="image"
+					class="block text-base font-semibold leading-6 text-gray-900"
+					>Selecionar Imagem de Perfil</label
+				>
+			</div>
+			<label
+				for="fileInput"
+				class="inline-block rounded-md bg-blue-600 px-4 py-2 mt-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 cursor-pointer"
+			>
+				Selecionar Imagem de Perfil
+			</label>
+			<input
+				id="fileInput"
+				name="fileInput"
+				class="hidden"
+				type="file"
+				(change)="onFileSelected($event)"
+				accept=".png, .svg, .jpeg"
+				formGroupName="image"
+			/>
+			@if (errorMessage) {
+			<div class="error-message">{{ errorMessage }}</div>
+			}
+		</form>
+	</div>
+
 	<form
-		class="form-container"
+		[className]="
+			this.disableButtonImage
+				? 'form-container-disable'
+				: 'form-container-enable'
+		"
 		[formGroup]="userForm"
 		(ngSubmit)="onSubmitUserForm()"
 	>
