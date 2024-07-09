@@ -1,11 +1,14 @@
 import {
 	Component,
 	ElementRef,
+	OnDestroy,
+	OnInit,
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -34,8 +37,10 @@ interface SendMessageForm {
 	templateUrl: './home.component.html',
 	styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject();
+
+	public isLogged = false;
 
 	@ViewChild('homeSection') homeSection: ElementRef = {} as ElementRef;
 	@ViewChild('functionsSection') functionsSection: ElementRef =
@@ -62,8 +67,76 @@ export class HomeComponent {
 	constructor(
 		private formBuilder: FormBuilder,
 		private homeService: HomeService,
+		private cookie: CookieService,
 		private router: Router
 	) {}
+
+	ngOnInit(): void {
+		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
+			this.isLogged = true;
+		} else {
+			this.isLogged = false;
+		}
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next(true);
+		this.destroy$.complete();
+	}
+
+	freePlan(): void {
+		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
+			this.router.navigate(['/dashboard']);
+		} else {
+			this.openDialog(
+				'Necessário uma conta!',
+				'Vamos cadastrar para iniciar seu plano grátis.',
+				'Ok',
+				'Cancelar',
+				() => {
+					this.router.navigate(['/register']);
+				}
+			);
+		}
+	}
+
+	premiumPlan30Days(): void {
+		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
+			window.open(
+				'https://buy.stripe.com/test_4gw3ec3G99caaXe4gh',
+				'_blank'
+			);
+		} else {
+			this.openDialog(
+				'Necessário uma conta!',
+				'Vamos cadastrar para iniciar com seu plano premium.',
+				'Ok',
+				'Cancelar',
+				() => {
+					this.router.navigate(['/register']);
+				}
+			);
+		}
+	}
+
+	premiumPlan1year(): void {
+		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
+			window.open(
+				'https://buy.stripe.com/test_eVa6qogsVcom1mEcMP',
+				'_blank'
+			);
+		} else {
+			this.openDialog(
+				'Necessário uma conta!',
+				'Vamos cadastrar para iniciar com seu plano premium.',
+				'Ok',
+				'Cancelar',
+				() => {
+					this.router.navigate(['/register']);
+				}
+			);
+		}
+	}
 
 	onSubmitContactProfessional(): void {
 		this.loading = true;
