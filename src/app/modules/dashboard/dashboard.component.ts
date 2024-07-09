@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 					this.showLoader = false;
 				},
 				error: (error) => {
+					this.showLoader = false;
 					switch (error.status) {
 						case 401:
 							this.showToast('Não autorizado', 'error');
