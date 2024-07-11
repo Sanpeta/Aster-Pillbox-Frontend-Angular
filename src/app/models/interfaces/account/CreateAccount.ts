@@ -9,4 +9,5 @@ export interface AccountResponse {
 	email: string;
 	active: boolean;
 	terms_and_conditions: boolean;
+	is_premium: boolean;
 }
