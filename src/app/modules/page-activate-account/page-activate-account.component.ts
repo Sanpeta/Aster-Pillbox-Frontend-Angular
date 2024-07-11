@@ -35,9 +35,10 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.route.queryParams.subscribe((params) => {
-			this.token = params['token']; //Salva o valor do token
+			this.token = params['token'];
+			this.emailAccount = params['email'];
 		});
-		this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
+		// this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
 		if (!this.token) {
 			this.loader = false;
 			this.showResendButton = true;
