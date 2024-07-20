@@ -81,7 +81,7 @@ export class AccountService {
 
 	createTokenAccountActivate(email: string): Observable<string> {
 		return this.http.post<string>(
-			`${this.API_URL}/create-activation-account?email=${email}`,
+			`${this.API_URL}/create-activation-account?email=${email}&is_mobile=false`,
 			{},
 			{
 				headers: {

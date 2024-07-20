@@ -19,6 +19,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	public title = 'Conta Ativada';
 	public description = 'Só falta entrar e começar a usar!';
 	public showResendButton = false;
+	public isMobile: boolean = false;
 	private token: string | null = null;
 	private emailAccount: string = '';
 	private accActivateRequest: UpdateAccountActivationRequest = {
@@ -37,6 +38,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 		this.route.queryParams.subscribe((params) => {
 			this.token = params['token'];
 			this.emailAccount = params['email'];
+			this.isMobile = params['is_mobile'];
 		});
 		// this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
 		if (!this.token) {
@@ -65,6 +67,10 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (response) => {
+					if (this.isMobile) {
+						this.description =
+							'Volte para o aplicativo e faça login.';
+					}
 					this.loader = false;
 					console.log(response);
 				},
