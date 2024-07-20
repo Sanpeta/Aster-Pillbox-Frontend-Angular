@@ -118,4 +118,8 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 				},
 			});
 	}
+
+	closePage() {
+		window.close();
+	}
 }
