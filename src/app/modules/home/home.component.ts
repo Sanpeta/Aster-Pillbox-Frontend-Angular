@@ -103,7 +103,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 	premiumPlan30Days(): void {
 		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
 			window.open(
-				'https://buy.stripe.com/test_4gw3ec3G99caaXe4gh',
+				'https://buy.stripe.com/aEU8yQ873gz8gA8aEE?prefilled_email=' +
+					this.cookie.get('ACCOUNT_EMAIL'),
 				'_blank'
 			);
 		} else {
@@ -122,7 +123,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 	premiumPlan1year(): void {
 		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
 			window.open(
-				'https://buy.stripe.com/test_eVa6qogsVcom1mEcMP',
+				'https://buy.stripe.com/7sI2ascnjgz8es0cMN' +
+					this.cookie.get('ACCOUNT_EMAIL'),
 				'_blank'
 			);
 		} else {
