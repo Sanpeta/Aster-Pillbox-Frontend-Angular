@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 	premiumPlan1year(): void {
 		if (this.cookie.get('ACCOUNT_EMAIL') && this.cookie.get('AUTH_TOKEN')) {
 			window.open(
-				'https://buy.stripe.com/7sI2ascnjgz8es0cMN' +
+				'https://buy.stripe.com/7sI2ascnjgz8es0cMN?prefilled_email=' +
 					this.cookie.get('ACCOUNT_EMAIL'),
 				'_blank'
 			);
