@@ -24,7 +24,6 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 export class PageConfirmRecoverPasswordComponent {
 	private destroy$ = new Subject<void>();
 	private token: string | null = null;
-	private accountID: string | null = null;
 	private emailAccount: string = '';
 	private accUpdateResetPasswordRequest: UpdateAccountResetPasswordRequest = {
 		token: '',
@@ -58,15 +57,13 @@ export class PageConfirmRecoverPasswordComponent {
 			this.token = params['token']; //Salva o valor do token
 			this.emailAccount = params['email'];
 		});
-		this.accountID = this.cookieService.get('ACCOUNT_ID');
-		this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
-		if (!this.token || !this.accountID) {
+		if (!this.token) {
 			this.showLoader = false;
 			return;
 		}
 		this.accUpdateResetPasswordRequest = {
-			token: this.token,
 			email: this.emailAccount,
+			token: this.token,
 			password: '',
 		};
 	}
