@@ -127,7 +127,7 @@ export class AccountService {
 			`${this.API_URL}/reset-account-password`,
 			{
 				token: data.token,
-				account_id: data.account_id,
+				email: data.email,
 				password: data.password,
 			},
 			{

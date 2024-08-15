@@ -1,5 +1,5 @@
 export interface UpdateAccountResetPasswordRequest {
-	account_id: number;
+	email: string;
 	token: string;
 	password: string;
 }

@@ -28,7 +28,7 @@ export class PageConfirmRecoverPasswordComponent {
 	private emailAccount: string = '';
 	private accUpdateResetPasswordRequest: UpdateAccountResetPasswordRequest = {
 		token: '',
-		account_id: 0,
+		email: '',
 		password: '',
 	};
 	public showLoader = false;
@@ -56,6 +56,7 @@ export class PageConfirmRecoverPasswordComponent {
 		this.resetPasswordForm.reset();
 		this.route.queryParams.subscribe((params) => {
 			this.token = params['token']; //Salva o valor do token
+			this.emailAccount = params['email'];
 		});
 		this.accountID = this.cookieService.get('ACCOUNT_ID');
 		this.emailAccount = this.cookieService.get('ACCOUNT_EMAIL');
@@ -65,7 +66,7 @@ export class PageConfirmRecoverPasswordComponent {
 		}
 		this.accUpdateResetPasswordRequest = {
 			token: this.token,
-			account_id: Number(this.accountID),
+			email: this.emailAccount,
 			password: '',
 		};
 	}
