@@ -40,6 +40,13 @@ export const routes: Routes = [
 			),
 	},
 	{
+		path: 'stdeula',
+		loadComponent: () =>
+			import('./modules/stdeula/stdeula.component').then(
+				(m) => m.STDEULAComponent
+			),
+	},
+	{
 		path: 'recover-password',
 		loadComponent: () =>
 			import(
