@@ -25,6 +25,8 @@ interface SendMessageForm {
 	message: string;
 }
 
+declare let gtag: Function;
+
 @Component({
 	selector: 'app-home',
 	standalone: true,
@@ -77,6 +79,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 		} else {
 			this.isLogged = false;
 		}
+		gtag('event', 'conversion', {
+			send_to: 'AW-352428596/odhaCLzk5tQZELTEhqgB',
+		});
 	}
 
 	ngOnDestroy(): void {
