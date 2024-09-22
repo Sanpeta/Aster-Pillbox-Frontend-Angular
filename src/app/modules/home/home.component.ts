@@ -26,6 +26,7 @@ interface SendMessageForm {
 }
 
 declare let gtag: Function;
+declare function gtag_report_conversion(url?: string): void;
 
 @Component({
 	selector: 'app-home',
@@ -163,7 +164,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 							'Em breve entraremos em contato.',
 							'Ok',
 							'',
-							() => {}
+							() => {
+								gtag_report_conversion(
+									'https://pillbox.astertech.site/'
+								);
+							}
 						);
 					},
 					error: (error) => {
