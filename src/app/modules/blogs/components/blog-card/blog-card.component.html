@@ -1,0 +1,28 @@
+<div class="card h-full overflow-hidden max-w-[350px] w-full mx-auto">
+	<div class="relative h-48">
+		<img
+			[src]="post.image"
+			[alt]="post.title"
+			class="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+		/>
+		<div class="absolute top-2 left-2">
+			<span class="badge bg-primary text-white">{{ post.category }}</span>
+		</div>
+	</div>
+	<div class="card-content p-6 text-center">
+		<div class="text-sm text-gray-500 mb-2">{{ post.date }}</div>
+		<h3 class="text-xl font-bold mb-2">{{ post.title }}</h3>
+		<p class="text-gray-500">{{ post.excerpt }}</p>
+	</div>
+	<div class="card-footer p-6 pt-0 flex flex-wrap gap-2 justify-center">
+		<a [routerLink]="['/blog', post.slug]">
+			<button class="btn btn-outline btn-primary btn-sm">
+				Leia mais →
+			</button>
+		</a>
+		<!-- <button class="btn btn-outline btn-primary btn-sm">
+			<i class="lucide-phone mr-2 h-4 w-4 text-green-500"></i>
+			Discuta este tema no nosso grupo
+		</button> -->
+	</div>
+</div>

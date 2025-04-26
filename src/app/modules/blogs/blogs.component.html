@@ -1,0 +1,65 @@
+<div class="h-screen w-screen overflow-scroll">
+	<main class="flex min-h-screen flex-col items-center">
+		<app-loader [isLoading]="loading"></app-loader>
+		<ng-template #dialogContainer></ng-template>
+
+		<!-- Header -->
+		<app-header-blog></app-header-blog>
+
+		<!-- Blog Header -->
+		<section class="w-full py-12 md:py-24 bg-primary-light">
+			<div class="container px-4 md:px-6 text-center mx-auto">
+				<h1
+					class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+				>
+					Blog Aster Pillbox
+				</h1>
+				<p
+					class="mt-4 text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-2xl mx-auto"
+				>
+					Artigos, dicas e informações para ajudar você a cuidar
+					melhor da sua saúde e gerenciar seus medicamentos.
+				</p>
+
+				<div class="mt-8 flex flex-wrap justify-center gap-2">
+					<button
+						*ngFor="let category of categories; let i = index"
+						class="btn {{
+							i === 0 ? 'btn-primary' : 'btn-outline btn-primary'
+						}} btn-sm"
+					>
+						{{ category }}
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Blog Posts -->
+		<section class="w-full py-12 md:py-24 bg-white">
+			<div class="container px-4 md:px-6 mx-auto">
+				<div
+					class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+				>
+					<app-blog-card
+						*ngFor="let post of blogPosts"
+						[post]="post"
+					></app-blog-card>
+				</div>
+
+				<div class="mt-10 flex justify-center">
+					<button class="btn btn-outline btn-primary">
+						Carregar mais artigos
+					</button>
+				</div>
+
+				<!-- Newsletter -->
+				<app-newsletter-blog></app-newsletter-blog>
+			</div>
+		</section>
+	</main>
+	<!-- Footer -->
+	<app-footer-blog></app-footer-blog>
+
+	<!-- WhatsApp Button -->
+	<app-whastapp-button-blog></app-whastapp-button-blog>
+</div>

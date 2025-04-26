@@ -1,0 +1,30 @@
+<header
+	class="w-full bg-white border-b sticky top-0 z-50 shadow-sm transition-all"
+	[class.shadow-md]="currentSection !== 'home'"
+>
+	<div
+		class="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6"
+	>
+		<a routerLink="/" class="flex items-center gap-2">
+			<img
+				src="/assets/images/logo-dark.png"
+				alt="Aster Pillbox Logo"
+				class="h-8 sm:h-10 w-auto"
+			/>
+		</a>
+
+		<!-- Desktop Navigation -->
+		<nav class="hidden md:flex gap-4 lg:gap-6"></nav>
+
+		<div class="flex items-center gap-2 sm:gap-4"></div>
+	</div>
+
+	<!-- Mobile Menu -->
+	<div
+		*ngIf="isMobileMenuOpen"
+		[@slideInOut]
+		class="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full max-w-full z-40"
+	>
+		<nav class="flex flex-col p-4 space-y-3"></nav>
+	</div>
+</header>

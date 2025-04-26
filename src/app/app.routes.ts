@@ -18,6 +18,13 @@ export const routes: Routes = [
 		canActivate: [LoggedGuardService],
 	},
 	{
+		path: 'blogs',
+		loadComponent: () =>
+			import('./modules/blogs/blogs.component').then(
+				(m) => m.BlogsComponent
+			),
+	},
+	{
 		path: 'register',
 		loadComponent: () =>
 			import('./modules/register/register.component').then(
