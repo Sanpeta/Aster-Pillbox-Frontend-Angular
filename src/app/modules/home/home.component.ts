@@ -88,7 +88,7 @@ export class HomeComponent {
 	scrolling = false;
 
 	// Número WhatsApp oficial da empresa
-	private readonly WHATSAPP_NUMBER = '5511999999999'; // Substitua pelo número real
+	private readonly WHATSAPP_NUMBER = '5547992820932';
 
 	sendContactProfessionalForm = this.formBuilder.group({
 		name: ['', [Validators.required, Validators.minLength(3)]],
@@ -139,7 +139,7 @@ export class HomeComponent {
 	}
 
 	detectCurrentSection(): void {
-		const scrollPosition = window.scrollY + 100; // Offset para melhor detecção
+		const scrollPosition = window.scrollY + 100;
 
 		const sections = [
 			{ id: 'home', el: this.homeSection?.nativeElement },
@@ -147,7 +147,7 @@ export class HomeComponent {
 			{ id: 'plans', el: this.plansSection?.nativeElement },
 			{ id: 'contact', el: this.contactSection?.nativeElement },
 			{ id: 'video', el: this.videoSection?.nativeElement },
-		].filter((section) => section.el); // Filtra elementos não inicializados
+		].filter((section) => section.el);
 
 		for (let i = sections.length - 1; i >= 0; i--) {
 			const section = sections[i];
@@ -194,7 +194,6 @@ export class HomeComponent {
 				break;
 		}
 
-		// Atualiza a seção atual e desativa o flag de rolagem após a conclusão
 		setTimeout(() => {
 			this.currentSection = sectionId;
 			this.scrolling = false;

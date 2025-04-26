@@ -192,18 +192,20 @@
 
 		<app-showcase />
 
-		<app-professional-section
+		<!-- <app-professional-section
 			(submitForm)="onSubmitContactProfessional()"
 			[formGroup]="sendContactProfessionalForm"
-		/>
+		/> -->
 
-		<div #videoSection>
+		<!-- <div #videoSection>
 			<app-video-section />
-		</div>
+		</div> -->
 
 		<div #featuresSection>
 			<app-features-section />
 		</div>
+
+		<app-whatsapp-community />
 
 		<div #plansSection>
 			<app-pricing-section
@@ -215,14 +217,12 @@
 
 		<app-blog-preview-section />
 
-		<app-whatsapp-community />
-
-		<div #contactSection>
+		<!-- <div #contactSection>
 			<app-contact-section
 				(submitForm)="onSubmitMessage()"
 				[formGroup]="sendMessageForm"
 			/>
-		</div>
+		</div> -->
 
 		<!-- Footer -->
 		<footer class="w-full bg-white border-t py-6">
