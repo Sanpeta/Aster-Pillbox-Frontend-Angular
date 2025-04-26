@@ -25,6 +25,13 @@ export const routes: Routes = [
 			),
 	},
 	{
+		path: 'blog/:slug',
+		loadComponent: () =>
+			import('./modules/blog/blog.component').then(
+				(m) => m.BlogComponent
+			),
+	},
+	{
 		path: 'register',
 		loadComponent: () =>
 			import('./modules/register/register.component').then(
