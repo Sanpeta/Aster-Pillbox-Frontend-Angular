@@ -56,7 +56,7 @@ import { RouterModule } from '@angular/router';
 											/>
 										</svg>
 									</div>
-									<span>contato&#64;astertech.site</span>
+									<span>contato&#64;astertechltda.com</span>
 								</li>
 								<li class="flex items-center gap-3">
 									<div

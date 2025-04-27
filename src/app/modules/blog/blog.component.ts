@@ -70,7 +70,7 @@ export class BlogComponent {
 
 	openWhatsApp() {
 		const message = `Olá! Estou interessado no artigo "${this.article.title}". Poderia me enviar mais informações?`;
-		const phoneNumber = '5511999999999'; // Número de telefone do WhatsApp
+		const phoneNumber = '5547992820932'; // Número de telefone do WhatsApp
 		const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(
 			message
 		)}`;

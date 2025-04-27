@@ -173,7 +173,7 @@ import { RouterModule } from '@angular/router';
 export class ProfessionalSection {
 	form = new FormGroup({
 		name: new FormControl('Sidnei de Souza Junior', [Validators.required]),
-		email: new FormControl('contato@astertech.site', [
+		email: new FormControl('contato@astertechltda.com', [
 			Validators.required,
 			Validators.email,
 		]),
