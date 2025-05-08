@@ -6,20 +6,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { GetCaseResponse } from '../../../../models/interfaces/case/GetCase';
 import { CaseService } from '../../../../services/case/case.service';
 import { IconComponent } from '../../../../shared/components/icon/icon.component';
-import { MedicineCasePillboxComponent } from '../../../../shared/components/medicine-case-pillbox/medicine-case-pillbox.component';
-import { SelectComponent } from '../../../../shared/components/select/select.component';
 
 @Component({
 	selector: 'app-card-medication-pillbox',
 	standalone: true,
-	imports: [
-		SelectComponent,
-		MedicineCasePillboxComponent,
-		IconComponent,
-		CommonModule,
-		ReactiveFormsModule,
-		RouterModule,
-	],
+	imports: [IconComponent, CommonModule, ReactiveFormsModule, RouterModule],
 	templateUrl: './card-medication-pillbox.component.html',
 	styleUrl: './card-medication-pillbox.component.css',
 })

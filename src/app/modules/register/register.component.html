@@ -1,57 +1,95 @@
-<div class="flex mx-8 h-screen flex-row justify-center items-center">
-	<app-loader [isLoading]="loading"></app-loader>
-	<ng-template #dialogContainer></ng-template>
-	<div class="w-0 h-0 lg:w-7/12 lg:h-screen">
+<div
+	class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col lg:flex-row"
+>
+	<!-- Imagem lateral (visível apenas em telas grandes) -->
+	<div class="hidden lg:block lg:w-1/2 relative overflow-hidden">
+		<div class="absolute inset-0 bg-blue-800 opacity-10"></div>
 		<img
-			class="h-full w-full"
+			class="h-full w-full object-cover"
 			src="/assets/images/medical-image-login.jpeg"
 			alt="Aster Pillbox"
 		/>
+		<div class="absolute inset-0 flex items-center justify-center">
+			<div
+				class="text-center p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg max-w-md"
+			>
+				<h2 class="text-2xl font-bold text-blue-800 mb-2">
+					Aster Pillbox
+				</h2>
+				<p class="text-gray-700">
+					Sua solução completa para gerenciamento de medicamentos e
+					saúde pessoal
+				</p>
+			</div>
+		</div>
 	</div>
 
-	<div class="mt-10 lg:mx-auto lg:w-full lg:max-w-sm">
-		<img
-			class="h-10 w-auto mx-auto my-4 fill-black"
-			src="/assets/images/logo-dark.png"
-			alt="Aster Pillbox"
-		/>
-		<div class="my-4 text-left">
-			<h3 class="text-xl font-semibold leading-6 text-gray-900">
-				Cadastra-se
-			</h3>
-			<p class="mt-2 text-sm font-light leading-5 text-gray-600">
-				Você não tem uma conta? Cadastre-se agora, leva menos de um
-				minuto.
-			</p>
-		</div>
-
-		<!-- Register Form -->
-		<form
-			class="space-y-6"
-			[formGroup]="registerForm"
-			(ngSubmit)="onSubmitRegisterForm()"
+	<!-- Formulário de cadastro -->
+	<div class="w-full lg:w-1/2 flex items-center justify-center p-6">
+		<div
+			class="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-xl"
 		>
-			<!-- Email Address -->
-			<div>
+			<!-- Logo -->
+			<div class="text-center">
+				<a routerLink="/" routerLinkActive="active">
+					<img
+						class="h-14 w-auto mx-auto"
+						src="/assets/images/logo-dark.png"
+						alt="Aster Pillbox"
+					/>
+				</a>
+				<h3 class="mt-6 text-2xl font-bold text-gray-900">
+					Cadastre-se
+				</h3>
+				<p class="mt-2 text-sm text-gray-600">
+					Você não tem uma conta? Cadastre-se agora, leva menos de um
+					minuto.
+				</p>
+			</div>
+
+			<!-- Register Form -->
+			<form
+				class="space-y-6 mt-8"
+				[formGroup]="registerForm"
+				(ngSubmit)="onSubmitRegisterForm()"
+			>
+				<!-- Email Address -->
 				<div>
 					<label
 						for="email"
-						class="block text-sm font-semibold leading-6 text-gray-900"
+						class="block text-sm font-medium text-gray-700 mb-1"
 						>E-mail</label
 					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="email"
-						name="email"
-						type="text"
-						autocomplete="email"
-						placeholder="Digite seu email"
-						formControlName="email"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+								/>
+							</svg>
+						</div>
+						<input
+							id="email"
+							name="email"
+							type="text"
+							autocomplete="email"
+							placeholder="Digite seu email"
+							formControlName="email"
+							required
+							class="pl-10 block w-full rounded-lg py-3 px-4 text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200 shadow-sm"
+						/>
+					</div>
 					@if (registerForm.get('email')) {
 					<app-error-message
 						[control]="registerForm.get('email')"
@@ -63,29 +101,44 @@
 					></app-error-message>
 					}
 				</div>
-			</div>
 
-			<!-- Password -->
-			<div>
+				<!-- Password -->
 				<div>
 					<label
 						for="password"
-						class="block text-sm font-semibold leading-6 text-gray-900"
+						class="block text-sm font-medium text-gray-700 mb-1"
 						>Senha</label
 					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="password"
-						name="password"
-						type="password"
-						autocomplete="current-password"
-						placeholder="Digite uma senha"
-						formControlName="password"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-5 w-5 text-gray-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+								/>
+							</svg>
+						</div>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							autocomplete="current-password"
+							placeholder="Digite uma senha"
+							formControlName="password"
+							required
+							class="pl-10 block w-full rounded-lg py-3 px-4 text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-200 shadow-sm"
+						/>
+					</div>
 					@if (registerForm.get('password')) {
 					<app-error-message
 						[control]="registerForm.get('password')"
@@ -97,69 +150,80 @@
 					></app-error-message>
 					}
 				</div>
-			</div>
 
-			<!-- Checked Terms and Conditions -->
-			<div class="flex items-center">
-				<input
-					type="checkbox"
-					name="terms"
-					id="terms"
-					formControlName="terms_and_conditions"
-					required
-					class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-				/>
-				<label
-					for="terms"
-					class="ml-2 block text-sm font-semibold leading-5 text-gray-900"
-				>
-					Eu aceito os
-					<a
-						routerLink="/terms-and-conditions"
-						routerLinkActive="true"
-						target="_blank"
-						class="text-blue-600 hover:text-blue-500"
-						>termos e condições</a
+				<!-- Checked Terms and Conditions -->
+				<div class="flex items-start py-2">
+					<div class="flex items-center h-5">
+						<input
+							type="checkbox"
+							name="terms"
+							id="terms"
+							formControlName="terms_and_conditions"
+							required
+							class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+						/>
+					</div>
+					<div class="ml-3 text-sm">
+						<label for="terms" class="font-medium text-gray-700">
+							Eu aceito os
+							<a
+								routerLink="/terms-and-conditions"
+								routerLinkActive="true"
+								target="_blank"
+								class="text-blue-600 hover:text-blue-500 font-semibold underline"
+								>termos e condições</a
+							>
+						</label>
+					</div>
+				</div>
+				@if (registerForm.get('terms_and_conditions')) {
+				<app-error-message
+					[control]="registerForm.get('terms_and_conditions')"
+					[errorMessage]="
+						registerForm
+							.get('terms_and_conditions')
+							?.hasError('required')
+							? 'Precisa aceitar os termos e condições para continuar'
+							: 'Precisa aceitar os termos e condições para continuar'
+					"
+				></app-error-message>
+				}
+
+				<!-- Register Account -->
+				<div class="pt-2">
+					<button
+						type="submit"
+						class="group relative flex w-full justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md hover:shadow-lg"
 					>
-				</label>
-			</div>
-			@if (registerForm.get('terms_and_conditions')) {
-			<app-error-message
-				[control]="registerForm.get('terms_and_conditions')"
-				[errorMessage]="
-					registerForm
-						.get('terms_and_conditions')
-						?.hasError('required')
-						? 'Precisa aceitar os termos e condições para continuar'
-						: 'Precisa aceitar os termos e condições para continuar'
-				"
-			></app-error-message>
-			}
+						<span
+							class="absolute left-0 inset-y-0 flex items-center pl-3"
+						>
+							<app-icon
+								[src]="'/assets/images/perfil-circle-icon.svg'"
+								[alt]="'icon-register-account'"
+								[classes]="
+									'h-5 w-5 text-blue-300 group-hover:text-blue-200'
+								"
+							></app-icon>
+						</span>
+						Cadastrar
+					</button>
+				</div>
+			</form>
 
-			<!-- Register Account -->
-			<div>
-				<button
-					type="submit"
-					class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			<p class="mt-6 text-center text-sm text-gray-600">
+				Já tem uma conta?
+				<a
+					routerLink="/login"
+					routerLinkActive="true"
+					class="font-medium text-blue-600 hover:text-blue-500 underline"
+					>Entrar</a
 				>
-					<app-icon
-						[src]="'/assets/images/perfil-circle-icon.svg'"
-						[alt]="'icon-register-account'"
-						[classes]="'mr-2 h-6 w-6'"
-					></app-icon>
-					Cadastrar
-				</button>
-			</div>
-		</form>
+			</p>
 
-		<p class="mt-10 text-center text-sm text-gray-500">
-			Já tem uma conta?
-			<a
-				routerLink="/login"
-				routerLinkActive="true"
-				class="font-semibold leading-6 text-blue-700 hover:text-blue-600"
-				>Entrar.</a
-			>
-		</p>
+			<!-- Loader (aparece quando loading=true) -->
+			<app-loader [isLoading]="loading"></app-loader>
+			<ng-template #dialogContainer></ng-template>
+		</div>
 	</div>
 </div>

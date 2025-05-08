@@ -1,37 +1,54 @@
 <div
-	class="container-card-info-user flex flex-col items-center justify-center text-gray-900"
+	class="container-card-info-user flex flex-col items-center p-6 bg-white rounded-xl text-gray-800 h-full"
 >
-	<img
-		src="{{ user.image_url }}"
-		alt="Imagem do usuário"
-		class="card-info-user-image"
-	/>
-	<button
-		class="action-button"
-		[routerLink]="'/dashboard/perfil'"
-		routerLinkActive="active"
-	>
-		<app-icon
-			[src]="'../../../../assets/images/edit-icon.svg'"
-			class="edit-icon"
-			[alt]="'Editar'"
-		></app-icon>
-	</button>
-	<div class="text-center my-2 w-auto">{{ user.name }}</div>
-	<div class="card-info-user-divider"></div>
-	<span class="card-info-user-description"
-		>Idade: <span class="text-black font-bold"> {{ user.age }}</span> |
-		Sangue: <span class="text-black font-bold"> {{ user.blood }}</span> |
-		Sexo: <span class="text-black font-bold"> {{ user.gender }}</span></span
-	>
-	<div class="card-info-user-stats">
-		<div class="stat-item">
-			<span class="stat-label text-blue-600">Altura</span>
-			<span class="stat-value">{{ user.height }} cm</span>
+	<div class="relative w-32 h-32 mb-4">
+		<img
+			src="{{ user.image_url }}"
+			alt="Foto de {{ user.name }}"
+			class="rounded-full object-cover w-full h-full border-4 border-blue-500 shadow-md"
+		/>
+		<button
+			class="action-button absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-md transition-all duration-200"
+			[routerLink]="'/dashboard/perfil'"
+			routerLinkActive="active"
+			aria-label="Editar perfil"
+		>
+			<app-icon
+				[src]="'../../../../assets/images/edit-icon.svg'"
+				class="w-5 h-5"
+				[alt]="'Editar'"
+			></app-icon>
+		</button>
+	</div>
+
+	<h2 class="text-xl font-bold text-center mb-2">{{ user.name }}</h2>
+
+	<div class="w-full border-t border-gray-200 my-3"></div>
+
+	<div class="flex flex-wrap justify-center gap-2 mb-4 text-sm">
+		<span class="px-3 py-1 bg-gray-100 rounded-full">
+			Idade: <span class="font-semibold">{{ user.age }}</span>
+		</span>
+		<span class="px-3 py-1 bg-gray-100 rounded-full">
+			Sangue: <span class="font-semibold">{{ user.blood }}</span>
+		</span>
+		<span class="px-3 py-1 bg-gray-100 rounded-full">
+			Sexo: <span class="font-semibold">{{ user.gender }}</span>
+		</span>
+	</div>
+
+	<div class="grid grid-cols-2 gap-4 w-full">
+		<div class="stat-item p-3 bg-blue-50 rounded-lg text-center">
+			<span class="stat-label text-blue-600 text-sm block">Altura</span>
+			<span class="stat-value font-bold text-lg"
+				>{{ user.height }} cm</span
+			>
 		</div>
-		<div class="stat-item">
-			<span class="stat-label text-blue-600">Peso</span>
-			<span class="stat-value">{{ user.weight }} kg</span>
+		<div class="stat-item p-3 bg-blue-50 rounded-lg text-center">
+			<span class="stat-label text-blue-600 text-sm block">Peso</span>
+			<span class="stat-value font-bold text-lg"
+				>{{ user.weight }} kg</span
+			>
 		</div>
 	</div>
 </div>

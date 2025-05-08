@@ -12,19 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoginAccountRequest } from '../../models/interfaces/auth/Auth';
 import { AccountService } from '../../services/account/account.service';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
 	selector: 'app-login',
 	standalone: true,
-	imports: [
-		IconComponent,
-		ReactiveFormsModule,
-		RouterModule,
-		LoaderComponent,
-		DialogComponent,
-	],
+	imports: [ReactiveFormsModule, RouterModule, LoaderComponent],
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.css',
 })

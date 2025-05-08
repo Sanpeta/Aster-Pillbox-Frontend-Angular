@@ -21,7 +21,6 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 		RouterModule,
 		ReactiveFormsModule,
 		LoaderComponent,
-		DialogComponent,
 	],
 	templateUrl: './recover-password.component.html',
 	styleUrl: './recover-password.component.css',

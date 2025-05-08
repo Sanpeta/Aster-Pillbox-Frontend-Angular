@@ -1,63 +1,95 @@
-<div class="widget-container">
-	<div class="widget-header">
-		<h2 class="widget-title">Medicamentos</h2>
+<div
+	class="widget-container bg-white rounded-xl h-full flex flex-col overflow-hidden"
+>
+	<div
+		class="widget-header flex justify-between items-center p-6 bg-blue-50 border-b border-gray-200"
+	>
+		<h2 class="widget-title text-xl font-bold text-gray-800">
+			Medicamentos
+		</h2>
 		<button
-			class="list-button"
+			class="list-button bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200"
 			[routerLink]="'/dashboard/medications'"
 			routerLinkActive="active"
+			aria-label="Ver detalhes dos medicamentos"
 		>
 			<app-icon
 				[src]="'../../../../../assets/images/info-icon.svg'"
-				class="icon"
-				[alt]="'List'"
+				class="w-5 h-5"
+				[alt]="'Ver lista'"
 			></app-icon>
 		</button>
 	</div>
-	<!-- Table Medications -->
-	@if (medications.length == 0) {
-	<div class="text-center text-base pt-2">Sem medicamentos cadastrados.</div>
-	}@else {
-	<div class="relative rounded-lg overflow-x-hidden border-2">
-		<table class="min-w-full divide-y divide-gray-400">
-			<thead class="bg-gray-50 sticky top-0 z-10">
-				<tr>
-					@for (title of tableHeaders; track $index) { @if ($index%2
-					== 0) {
-					<th
-						scope="col"
-						class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+
+	<!-- Tabela de Medicamentos -->
+	<div class="flex-1 p-4 overflow-hidden">
+		@if (medications.length == 0) {
+		<div
+			class="flex flex-col items-center justify-center h-full py-10 text-gray-500"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-16 w-16 mb-4"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+				/>
+			</svg>
+			<p class="text-lg font-medium">Sem medicamentos cadastrados</p>
+		</div>
+		} @else {
+		<div
+			class="relative rounded-lg overflow-auto max-h-[calc(100%-1rem)] border border-gray-200"
+		>
+			<table class="min-w-full divide-y divide-gray-200">
+				<thead class="bg-gray-100 sticky top-0 z-10">
+					<tr>
+						@for (title of tableHeaders; track $index) {
+						<th
+							scope="col"
+							class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider"
+							[ngClass]="$index % 2 !== 0 ? 'bg-gray-200' : ''"
+						>
+							{{ title }}
+						</th>
+						}
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y divide-gray-200">
+					@for (medication of medications; track $index) {
+					<tr
+						class="text-center hover:bg-gray-50 transition-colors duration-150"
+						[ngClass]="$index % 2 !== 0 ? 'bg-gray-50' : ''"
 					>
-						{{ title }}
-					</th>
-					} @else {
-					<th
-						scope="col"
-						class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-300"
-					>
-						{{ title }}
-					</th>
-					} }
-				</tr>
-			</thead>
-			<tbody class="bg-white divide-y divide-gray-400">
-				@for (medication of medications; track $index) {
-				<tr class="text-center">
-					<td class="px-6 py-4 whitespace-nowrap">
-						{{ medication.name }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
-						{{ medication.alarms }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap">
-						{{ medication.quantity }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
-						{{ medication.compartiment }}
-					</td>
-				</tr>
-				}
-			</tbody>
-		</table>
+						<td class="px-4 py-3 whitespace-nowrap font-medium">
+							{{ medication.name }}
+						</td>
+						<td
+							class="px-4 py-3 whitespace-nowrap"
+							[ngClass]="$index % 2 === 0 ? 'bg-gray-100' : ''"
+						>
+							{{ medication.alarms }}
+						</td>
+						<td class="px-4 py-3 whitespace-nowrap">
+							{{ medication.quantity }}
+						</td>
+						<td
+							class="px-4 py-3 whitespace-nowrap"
+							[ngClass]="$index % 2 === 0 ? 'bg-gray-100' : ''"
+						>
+							{{ medication.compartiment }}
+						</td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		}
 	</div>
-	}
 </div>
