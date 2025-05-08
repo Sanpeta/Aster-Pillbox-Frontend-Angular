@@ -123,5 +123,5 @@ export class CaseService {
 		);
 	}
 
-	public deleteCase() {}
+	public deleteCase(id: number) {}
 }

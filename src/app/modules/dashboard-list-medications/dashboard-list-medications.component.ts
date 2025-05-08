@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByUserID';
 import { CompartmentContentsService } from '../../services/compartment_content/compartment-contents.service';
-import { NewLinePipe } from '../../shared/pipes/new-line.pipe';
 
 interface Alarm {
 	alarm_id: number;
@@ -24,11 +23,11 @@ interface Alarm {
 @Component({
 	selector: 'app-dashboard-list-medications',
 	standalone: true,
-	imports: [CommonModule, RouterModule, NewLinePipe],
+	imports: [CommonModule, RouterModule],
 	templateUrl: './dashboard-list-medications.component.html',
 	styleUrl: './dashboard-list-medications.component.css',
 })
-export class DashboardListMedicationsComponent {
+export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	@Input() alarms: Alarm[] = [];
 	public tableHeaders = [
@@ -51,24 +50,31 @@ export class DashboardListMedicationsComponent {
 		'Sábado',
 	];
 	public displayedTableDataAlarms: Alarm[] = [];
-	public itemsPerPage = 20;
+	public itemsPerPage = 5; // Reduzido para melhor visualização
+	public currentPage = 1;
+	public pageCount = 1;
+	public searchTerm = '';
+	public stateFilter = '';
+	public compartmentFilter = '';
+	public Math = Math;
+	public selectedAlarm: Alarm | null = null;
+	activeAlarmsCount = 0;
+	inactiveAlarmsCount = 0;
 
 	constructor(
 		private compartmentContentsService: CompartmentContentsService
 	) {}
 
-	public booleanToDaysOfWeek(days: boolean[]): string[] {
-		const daysOfWeek: string[] = [];
-		for (let i = 0; i < days.length; i++) {
-			if (days[i]) {
-				daysOfWeek.push(this.daysOfWeek[i]);
-			}
-		}
-		return daysOfWeek;
+	ngOnInit() {
+		this.loadAlarms();
 	}
 
-	ngOnInit() {
-		this.updateDisplayedData();
+	ngOnDestroy() {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
+
+	loadAlarms() {
 		this.compartmentContentsService
 			.getCompartmentContentsWithAlarmAndMedicationByUserID()
 			.pipe(takeUntil(this.destroy$))
@@ -77,9 +83,10 @@ export class DashboardListMedicationsComponent {
 					response: GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse[]
 				) => {
 					console.log('Alarms fetched:', response);
-					const compartmentContents = response;
-					// Iterar sobre os resultados e fazer o que for necessário
-					compartmentContents.map(
+					this.alarms = [];
+
+					// Map API response to our Alarm interface
+					response.forEach(
 						(
 							content: GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse
 						) => {
@@ -101,8 +108,17 @@ export class DashboardListMedicationsComponent {
 								state: content.is_active ? 'Ativo' : 'Inativo',
 								action: '',
 							});
+							if (content.is_active) {
+								this.activeAlarmsCount++;
+							}
+							if (!content.is_active) {
+								this.inactiveAlarmsCount++;
+							}
 						}
 					);
+
+					this.updatePageCount();
+					this.updateDisplayedData();
 				},
 				error: (error) => {
 					console.error('Error fetching alarms:', error);
@@ -113,18 +129,146 @@ export class DashboardListMedicationsComponent {
 			});
 	}
 
-	ngOnDestroy() {
-		this.destroy$.next();
+	public booleanToDaysOfWeek(days: boolean[]): string[] {
+		const daysOfWeek: string[] = [];
+		for (let i = 0; i < days.length; i++) {
+			if (days[i]) {
+				daysOfWeek.push(this.daysOfWeek[i]);
+			}
+		}
+		return daysOfWeek;
+	}
+
+	// Pagination methods
+	updatePageCount() {
+		this.pageCount = Math.ceil(
+			this.getFilteredAlarms().length / this.itemsPerPage
+		);
+		if (this.pageCount === 0) this.pageCount = 1;
+		if (this.currentPage > this.pageCount) {
+			this.currentPage = this.pageCount;
+		}
 	}
 
 	updateDisplayedData() {
-		const startIndex = 0; // Começa do primeiro item
+		const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 		const endIndex = Math.min(
 			startIndex + this.itemsPerPage,
-			this.alarms.length
+			this.getFilteredAlarms().length
 		);
-		this.displayedTableDataAlarms = this.alarms.slice(startIndex, endIndex);
+		this.displayedTableDataAlarms = this.getFilteredAlarms().slice(
+			startIndex,
+			endIndex
+		);
 	}
 
-	getRowValues(_t14: Alarm): any {}
+	prevPage() {
+		if (this.currentPage > 1) {
+			this.currentPage--;
+			this.updateDisplayedData();
+		}
+	}
+
+	nextPage() {
+		if (this.currentPage < this.pageCount) {
+			this.currentPage++;
+			this.updateDisplayedData();
+		}
+	}
+
+	setPage(page: number) {
+		this.currentPage = page;
+		this.updateDisplayedData();
+	}
+
+	// Filter methods
+	getFilteredAlarms(): Alarm[] {
+		return this.alarms.filter((alarm) => {
+			const matchesSearch =
+				this.searchTerm === '' ||
+				alarm.name
+					.toLowerCase()
+					.includes(this.searchTerm.toLowerCase());
+
+			const matchesState =
+				this.stateFilter === '' ||
+				this.stateFilter === 'Filtrar por estado' ||
+				alarm.state === this.stateFilter;
+
+			const matchesCompartment =
+				this.compartmentFilter === '' ||
+				this.compartmentFilter === 'Filtrar por compartimento' ||
+				alarm.compartiment === this.compartmentFilter;
+
+			return matchesSearch && matchesState && matchesCompartment;
+		});
+	}
+
+	applySearchFilter(event: Event) {
+		const target = event.target as HTMLInputElement;
+		this.searchTerm = target.value;
+		this.currentPage = 1;
+		this.updatePageCount();
+		this.updateDisplayedData();
+	}
+
+	applyStateFilter(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		this.stateFilter = target.value;
+		this.currentPage = 1;
+		this.updatePageCount();
+		this.updateDisplayedData();
+	}
+
+	applyCompartmentFilter(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		this.compartmentFilter = target.value;
+		this.currentPage = 1;
+		this.updatePageCount();
+		this.updateDisplayedData();
+	}
+
+	// Delete modal methods
+	confirmDelete(alarm: Alarm) {
+		this.selectedAlarm = alarm;
+		const modal = document.getElementById('deleteModal');
+		if (modal) {
+			modal.classList.remove('hidden');
+		}
+	}
+
+	cancelDelete() {
+		this.selectedAlarm = null;
+		const modal = document.getElementById('deleteModal');
+		if (modal) {
+			modal.classList.add('hidden');
+		}
+	}
+
+	deleteMedication() {
+		if (this.selectedAlarm) {
+			// Here you would call a service to delete the medication
+			console.log('Deleting medication:', this.selectedAlarm);
+
+			// For now, let's just remove it from the local arrays
+			this.alarms = this.alarms.filter(
+				(a) =>
+					a.alarm_id !== this.selectedAlarm?.alarm_id ||
+					a.medication_id !== this.selectedAlarm?.medication_id
+			);
+
+			this.updatePageCount();
+			this.updateDisplayedData();
+			this.cancelDelete();
+		}
+	}
+
+	// Utility methods
+	getAlarmCount(): number {
+		let count = 0;
+		this.alarms.forEach((alarm) => {
+			count += alarm.alarms.length;
+		});
+		return count;
+	}
 }

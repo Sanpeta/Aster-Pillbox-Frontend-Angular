@@ -28,6 +28,8 @@ export class ToastComponent {
 	@Output() closeToast = new EventEmitter<void>();
 
 	showToast = false;
+	isVisible: boolean | undefined;
+	message: string | undefined;
 
 	constructor() {}
 

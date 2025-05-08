@@ -1,150 +1,573 @@
 <ng-template #toastContainer></ng-template>
-<div class="container-pillbox">
-	<div class="flex flex-row items-center justify-between">
-		<h2 class="font-bold text-2xl">Lista das Caixas de Medicamentos</h2>
+<div class="container-pillbox bg-gray-50">
+	<!-- Cabeçalho -->
+	<div
+		class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6"
+	>
+		<div>
+			<h2 class="font-bold text-2xl text-gray-800">
+				Lista das Caixas de Medicamentos
+			</h2>
+			<p class="text-gray-600 mt-1">
+				Gerencie suas caixas de medicamentos e compartimentos
+			</p>
+		</div>
 		<button
 			type="button"
 			routerLink="/dashboard/pillbox"
 			routerLinkActive="active"
-			class="flex w-auto justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+			class="mt-3 md:mt-0 flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 		>
-			+ Adicionar Nova Caixa de Medicamento
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			Adicionar Nova Caixa de Medicamento
 		</button>
 	</div>
 
-	<!-- Table List Pillboxes -->
+	<!-- Status Cards -->
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+		<div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+			<div class="flex items-center">
+				<div class="bg-blue-100 p-3 rounded-full">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6 text-blue-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+						/>
+					</svg>
+				</div>
+				<div class="ml-4">
+					<h3 class="text-sm font-medium text-gray-500">
+						Total de Caixas
+					</h3>
+					<p class="text-lg font-semibold text-gray-800">
+						{{ pillboxes.length }}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+			<div class="flex items-center">
+				<div class="bg-green-100 p-3 rounded-full">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6 text-green-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+						/>
+					</svg>
+				</div>
+				<div class="ml-4">
+					<h3 class="text-sm font-medium text-gray-500">
+						Caixas Ativas
+					</h3>
+					<p class="text-lg font-semibold text-gray-800">
+						{{ activePillboxesCount }}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div
+			class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500"
+		>
+			<div class="flex items-center">
+				<div class="bg-yellow-100 p-3 rounded-full">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6 text-yellow-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+						/>
+					</svg>
+				</div>
+				<div class="ml-4">
+					<h3 class="text-sm font-medium text-gray-500">
+						Total de Compartimentos
+					</h3>
+					<p class="text-lg font-semibold text-gray-800">
+						{{ getTotalCompartments() }}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-white rounded-lg shadow p-4 border-l-4 border-red-500">
+			<div class="flex items-center">
+				<div class="bg-red-100 p-3 rounded-full">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6 text-red-500"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+						/>
+					</svg>
+				</div>
+				<div class="ml-4">
+					<h3 class="text-sm font-medium text-gray-500">
+						Caixas Inativas
+					</h3>
+					<p class="text-lg font-semibold text-gray-800">
+						{{ inactivePillboxesCount }}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Filtros e Pesquisa -->
+	<div class="flex flex-col md:flex-row gap-4 mb-6">
+		<div class="flex-grow">
+			<div class="relative">
+				<div
+					class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+				>
+					<svg
+						class="w-4 h-4 text-gray-500"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 20 20"
+					>
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 19L13.5 13.5M8 16a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+						/>
+					</svg>
+				</div>
+				<input
+					type="text"
+					class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
+					placeholder="Pesquisar caixas de medicamentos..."
+					(input)="applySearchFilter($event)"
+					[value]="searchTerm"
+				/>
+			</div>
+		</div>
+		<div>
+			<select
+				class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+				(change)="applyStatusFilter($event)"
+			>
+				<option selected>Filtrar por estado</option>
+				<option value="Ativo">Ativo</option>
+				<option value="Inativo">Inativo</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Tabela de Caixas de Medicamentos -->
 	@if (pillboxes.length == 0) {
-	<div class="text-center text-base py-16">
-		Sem registro de medicamentos ingerido até o momento.
+	<div class="bg-white rounded-lg shadow-md p-8 text-center">
+		<div class="flex flex-col items-center justify-center">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-16 w-16 text-gray-400 mb-4"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="1"
+					d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+				/>
+			</svg>
+			<h3 class="text-lg font-medium text-gray-600 mb-2">
+				Nenhuma caixa de medicamento encontrada
+			</h3>
+			<p class="text-gray-500 mb-4">
+				Você ainda não cadastrou nenhuma caixa de medicamento.
+			</p>
+			<button
+				type="button"
+				routerLink="/dashboard/pillbox"
+				routerLinkActive="active"
+				class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-5 w-5"
+					viewBox="0 0 20 20"
+					fill="currentColor"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				Adicionar Primeira Caixa de Medicamento
+			</button>
+		</div>
 	</div>
 	} @else {
-	<div class="relative mt-4 rounded-lg overflow-x-hidden border-2">
-		<table class="min-w-full divide-y divide-gray-400">
-			<thead class="bg-gray-50 sticky top-0 z-10">
-				<tr>
-					@for (title of tableHeaders; track $index) { @if ($index%2
-					== 0) {
-					<th
-						scope="col"
-						class="px-6 py-3 text-center text-xs font-medium bg-gray-300 text-gray-500 uppercase tracking-wider"
-					>
-						{{ title }}
-					</th>
-					} @else {
-					<th
-						scope="col"
-						class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-					>
-						{{ title }}
-					</th>
-					} }
-				</tr>
-			</thead>
-			<tbody class="bg-white divide-y divide-gray-400 text-center">
-				<tr *ngFor="let pillbox of pillboxes; let i = index">
-					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
-						{{ pillbox.case_name }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap">
-						{{ pillbox.mac_address }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
-						{{ pillbox.row_size }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap">
-						{{ pillbox.column_size }}
-					</td>
-					<td class="px-6 py-4 whitespace-nowrap bg-gray-300">
-						{{ pillbox.status ? "Ativo" : "Inativo" }}
-					</td>
-					<td class="px-6 py-4">
-						<a
-							[routerLink]="[
-								'/dashboard',
-								'update-pillbox',
-								pillbox.id
-							]"
-							routerLinkActive="active"
-							class="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-300"
-							>Editar</a
+	<div
+		class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"
+	>
+		<div class="overflow-x-auto">
+			<table class="min-w-full divide-y divide-gray-200">
+				<thead class="bg-gray-50 sticky top-0 z-10">
+					<tr>
+						@for (title of tableHeaders; track $index) {
+						<th
+							scope="col"
+							class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 						>
-						<a
-							href="#"
-							class="font-medium text-red-600 dark:text-red-500 pl-4 hover:text-red-300"
-							>Remover</a
+							{{ title }}
+						</th>
+						}
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y divide-gray-200">
+					@for (pillbox of displayedTableDataPillboxes; track $index)
+					{
+					<tr class="hover:bg-gray-50 transition-colors">
+						<td class="px-6 py-4 whitespace-nowrap">
+							<div class="flex items-center">
+								<div
+									class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600"
+								>
+									{{
+										pillbox.case_name
+											.charAt(0)
+											.toUpperCase()
+									}}
+								</div>
+								<div class="ml-4">
+									<div
+										class="text-sm font-medium text-gray-900"
+									>
+										{{ pillbox.case_name }}
+									</div>
+								</div>
+							</div>
+						</td>
+						<td
+							class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
 						>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+							<span
+								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+							>
+								{{ pillbox.mac_address }}
+							</span>
+						</td>
+						<td
+							class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+						>
+							{{ pillbox.row_size }}
+						</td>
+						<td
+							class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+						>
+							{{ pillbox.column_size }}
+						</td>
+						<td class="px-6 py-4 whitespace-nowrap">
+							@if (pillbox.status) {
+							<span
+								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+							>
+								Ativo
+							</span>
+							} @else {
+							<span
+								class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+							>
+								Inativo
+							</span>
+							}
+						</td>
+						<td
+							class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+						>
+							<div class="flex space-x-2">
+								<a
+									[routerLink]="[
+										'/dashboard',
+										'update-pillbox',
+										pillbox.id
+									]"
+									class="text-blue-600 hover:text-blue-900 flex items-center"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-4 w-4 mr-1"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+										/>
+									</svg>
+									Editar
+								</a>
+								<button
+									class="text-red-600 hover:text-red-900 flex items-center cursor-pointer"
+									(click)="confirmDelete(pillbox)"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-4 w-4 mr-1"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+										/>
+									</svg>
+									Remover
+								</button>
+							</div>
+						</td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Paginação -->
+		<div
+			class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+		>
+			<div class="flex-1 flex justify-between sm:hidden">
+				<a
+					href="#"
+					class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+				>
+					Anterior
+				</a>
+				<a
+					href="#"
+					class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+				>
+					Próximo
+				</a>
+			</div>
+			<div
+				class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+			>
+				<div>
+					<p class="text-sm text-gray-700">
+						Mostrando
+						<span class="font-medium">{{
+							(currentPage - 1) * itemsPerPage + 1
+						}}</span>
+						a de
+						<span class="font-medium">{{ pillboxes.length }}</span>
+						resultados
+					</p>
+				</div>
+				<div>
+					<nav
+						class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+						aria-label="Pagination"
+					>
+						<button
+							(click)="prevPage()"
+							[disabled]="currentPage === 1"
+							class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+							[ngClass]="{
+								'opacity-50 cursor-not-allowed':
+									currentPage === 1
+							}"
+						>
+							<span class="sr-only">Anterior</span>
+							<svg
+								class="h-5 w-5"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+						</button>
+
+						<!-- Páginas dinamicamente geradas -->
+						@for (page of [1, 2, 3, 4, 5].slice(0, pageCount); track
+						page) {
+						<button
+							(click)="setPage(page)"
+							class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+							[ngClass]="
+								page === currentPage
+									? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+									: 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+							"
+						>
+							{{ page }}
+						</button>
+						}
+
+						<button
+							(click)="nextPage()"
+							[disabled]="currentPage === pageCount"
+							class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+							[ngClass]="{
+								'opacity-50 cursor-not-allowed':
+									currentPage === pageCount
+							}"
+						>
+							<span class="sr-only">Próximo</span>
+							<svg
+								class="h-5 w-5"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+						</button>
+					</nav>
+				</div>
+			</div>
+		</div>
 	</div>
 	}
-	<!-- <nav
-		class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-		aria-label="Table navigation"
+
+	<!-- Modal de confirmação de exclusão -->
+	<div
+		id="deleteModal"
+		class="hidden fixed z-10 inset-0 overflow-y-auto"
+		aria-labelledby="modal-title"
+		role="dialog"
+		aria-modal="true"
 	>
-		<span
-			class="text-base font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto"
-			>Showing
-			<span class="font-semibold text-gray-900 dark:text-black"
-				>1-10</span
-			>
-			of
-			<span class="font-semibold text-gray-900 dark:text-black"
-				>1000</span
-			></span
+		<div
+			class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
 		>
-		<ul class="inline-flex -space-x-px rtl:space-x-reverse text-base h-8">
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					><</a
+			<div
+				class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+				aria-hidden="true"
+			></div>
+			<span
+				class="hidden sm:inline-block sm:align-middle sm:h-screen"
+				aria-hidden="true"
+				>&#8203;</span
+			>
+			<div
+				class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+			>
+				<div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+					<div class="sm:flex sm:items-start">
+						<div
+							class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+						>
+							<svg
+								class="h-6 w-6 text-red-600"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+								/>
+							</svg>
+						</div>
+						<div
+							class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"
+						>
+							<h3
+								class="text-lg leading-6 font-medium text-gray-900"
+								id="modal-title"
+							>
+								Confirmar Exclusão
+							</h3>
+							<div class="mt-2">
+								<p class="text-sm text-gray-500">
+									Tem certeza que deseja remover esta caixa de
+									medicamento? Esta ação não pode ser
+									desfeita.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div
+					class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
 				>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>1</a
-				>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>2</a
-				>
-			</li>
-			<li>
-				<a
-					href="#"
-					aria-current="page"
-					class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-					>3</a
-				>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>4</a
-				>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>5</a
-				>
-			</li>
-			<li>
-				<a
-					href="#"
-					class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>></a
-				>
-			</li>
-		</ul>
-	</nav> -->
+					<button
+						type="button"
+						class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+						(click)="deletePillbox()"
+					>
+						Confirmar
+					</button>
+					<button
+						type="button"
+						class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+						(click)="cancelDelete()"
+					>
+						Cancelar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

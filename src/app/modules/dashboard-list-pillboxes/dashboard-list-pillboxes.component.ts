@@ -1,16 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCaseResponse } from '../../models/interfaces/case/GetCase';
 import { CaseService } from './../../services/case/case.service';
 
-interface Pillbox {
-	case_name: string;
-	mac_address: string;
-	row_size: number;
-	column_size: number;
+interface Pillbox extends GetCaseResponse {
 	status: boolean;
 }
 
@@ -21,11 +17,23 @@ interface Pillbox {
 	templateUrl: './dashboard-list-pillboxes.component.html',
 	styleUrl: './dashboard-list-pillboxes.component.css',
 })
-export class DashboardListPillboxesComponent {
+export class DashboardListPillboxesComponent implements OnInit, OnDestroy {
 	private destroy$ = new Subject<void>();
 	public pillbox_id: number = 0;
+	private selectedPillbox: Pillbox | null = null;
 
-	public pillboxes: GetCaseResponse[] = [];
+	// Variáveis de estado
+	public searchTerm: string = '';
+	public currentPage: number = 1;
+	public itemsPerPage: number = 10;
+	public statusFilter: string = 'all';
+	public showDeleteModal: boolean = false;
+
+	// Dados
+	public pillboxes: Pillbox[] = [];
+	public displayedTableDataPillboxes: Pillbox[] = [];
+
+	// Cabeçalhos da tabela
 	tableHeaders = [
 		'Nome da Caixa de Medicamento',
 		'Endereço MAC',
@@ -34,6 +42,7 @@ export class DashboardListPillboxesComponent {
 		'Status',
 		'Ações',
 	];
+	Math: any;
 
 	constructor(
 		private caseService: CaseService,
@@ -41,40 +50,126 @@ export class DashboardListPillboxesComponent {
 		private router: Router
 	) {}
 
-	displayedTableDataMedications: Pillbox[] = [];
-	itemsPerPage = 20;
-
 	ngOnInit() {
-		// this.updateDisplayedData();
+		this.loadPillboxes();
+	}
+
+	ngOnDestroy() {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
+
+	// Carregar dados
+	private loadPillboxes() {
 		this.caseService
 			.getCasesByUserID()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (response: GetCaseResponse[]) => {
-					console.log(response);
-					response.forEach((element) => {
-						this.pillboxes.push(element);
-					});
-					// this.pillboxes = response;
+					this.pillboxes = response.map((p) => ({
+						...p,
+						status: p.status,
+					}));
+					this.applyFilters();
 				},
-				error: (err) => {
-					console.log(err);
-				},
-				complete: () => {
-					console.log('complete');
-				},
+				error: (err) => console.error(err),
 			});
 	}
 
-	updateDisplayedData() {
-		const startIndex = 0; // Começa do primeiro item
-		const endIndex = Math.min(
-			startIndex + this.itemsPerPage,
-			this.pillboxes.length
+	// Filtros e pesquisa
+	applySearchFilter(event: Event) {
+		this.searchTerm = (
+			event.target as HTMLInputElement
+		).value.toLowerCase();
+		this.currentPage = 1;
+		this.applyFilters();
+	}
+
+	applyStatusFilter(event: Event) {
+		this.statusFilter = (event.target as HTMLSelectElement).value;
+		this.currentPage = 1;
+		this.applyFilters();
+	}
+
+	private applyFilters() {
+		let filtered = this.pillboxes.filter((p) => {
+			const matchesSearch = p.case_name
+				.toLowerCase()
+				.includes(this.searchTerm);
+			const matchesStatus =
+				this.statusFilter === 'all' ||
+				(this.statusFilter === 'Ativo' && p.status) ||
+				(this.statusFilter === 'Inativo' && !p.status);
+			return matchesSearch && matchesStatus;
+		});
+
+		// Paginação
+		const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+		const endIndex = startIndex + this.itemsPerPage;
+		this.displayedTableDataPillboxes = filtered.slice(startIndex, endIndex);
+	}
+
+	// Contagens e cálculos
+	get activePillboxesCount(): number {
+		return this.pillboxes.filter((p) => p.status).length;
+	}
+
+	get inactivePillboxesCount(): number {
+		return this.pillboxes.filter((p) => !p.status).length;
+	}
+
+	getTotalCompartments(): number {
+		return this.pillboxes.reduce(
+			(acc, curr) => acc + curr.row_size * curr.column_size,
+			0
 		);
-		this.displayedTableDataMedications = this.pillboxes.slice(
-			startIndex,
-			endIndex
-		);
+	}
+
+	get pageCount(): number {
+		return Math.ceil(this.pillboxes.length / this.itemsPerPage);
+	}
+
+	// Paginação
+	setPage(page: number): void {
+		if (page < 1 || page > this.pageCount) return;
+		this.currentPage = page;
+		this.applyFilters();
+	}
+
+	prevPage(): void {
+		this.setPage(this.currentPage - 1);
+	}
+
+	nextPage(): void {
+		this.setPage(this.currentPage + 1);
+	}
+
+	// Controle do modal
+	confirmDelete(pillbox: Pillbox): void {
+		this.selectedPillbox = pillbox;
+		this.showDeleteModal = true;
+	}
+
+	cancelDelete(): void {
+		this.selectedPillbox = null;
+		this.showDeleteModal = false;
+	}
+
+	deletePillbox(): void {
+		if (!this.selectedPillbox) return;
+
+		// this.caseService
+		// 	.deleteCase(this.selectedPillbox.id)
+		// 	.pipe(takeUntil(this.destroy$))
+		// 	.subscribe({
+		// 		next: () => {
+		// 			this.pillboxes = this.pillboxes.filter(
+		// 				(p) => p.id !== this.selectedPillbox?.id
+		// 			);
+		// 			this.applyFilters();
+		// 			this.cancelDelete();
+		// 		},
+		// 		error: (err) => console.error('Erro ao excluir:', err),
+		// 	});
 	}
 }

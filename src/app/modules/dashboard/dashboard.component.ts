@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import {
 	Component,
 	ComponentFactoryResolver,
@@ -20,7 +19,6 @@ import { ToastComponent } from '../../shared/components/toast/toast.component';
 import { CalendarWeekComponent } from './components/calendar-week/calendar-week.component';
 import { CardInfoUserComponent } from './components/card-info-user/card-info-user.component';
 import { CardMedicationPillboxComponent } from './components/card-medication-pillbox/card-medication-pillbox.component';
-import { CardReminderComponent } from './components/card-reminder/card-reminder.component';
 
 @Component({
 	selector: 'app-dashboard',
@@ -28,14 +26,10 @@ import { CardReminderComponent } from './components/card-reminder/card-reminder.
 	styleUrl: './dashboard.component.scss',
 	standalone: true,
 	imports: [
-		AsyncPipe,
-		ToastComponent,
 		CardInfoUserComponent,
-		CardReminderComponent,
 		CalendarWeekComponent,
 		CardMedicationPillboxComponent,
 		ListMedicationsComponent,
-		DialogComponent,
 		LoaderComponent,
 	],
 })
