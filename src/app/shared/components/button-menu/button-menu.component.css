@@ -1,37 +1,64 @@
-:host {
-	display: block;
-	width: 100%;
-}
-
 button {
 	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
-	border: 0;
-	padding: 16px 10px;
-	text-align: left;
+	padding: 10px 16px;
+	border: none;
+	background: transparent;
+	color: #b7c0cd;
 	font-size: 14px;
-	font-weight: 600;
 	cursor: pointer;
-	background-color: #313a46;
-	color: #6c757d;
+	text-align: left;
+	position: relative;
+	transition: all 0.2s ease;
+	border-radius: 4px;
+	margin: 2px 8px;
+	overflow: hidden;
 }
 
-span {
-	display: inline-block;
-	vertical-align: middle;
-	width: 260;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+button:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
 }
 
 .selected {
+	background-color: rgba(255, 255, 255, 0.15);
 	color: white;
 }
 
-:hover {
-	color: white;
+.icon-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	transition: margin 0.3s ease;
+}
+
+.menu-text {
+	margin-left: 12px;
+	white-space: nowrap;
+	opacity: 1;
+	transition: opacity 0.3s ease, margin 0.3s ease, width 0.3s ease;
+	flex: 1;
+}
+
+.hidden {
+	opacity: 0;
+	width: 0;
+	margin-left: 0;
+}
+
+.active-indicator {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background-color: #3e97ff;
+	border-radius: 0 2px 2px 0;
+}
+
+/* Quando colapsado, centraliza o ícone */
+.collapsed .icon-container {
+	margin: 0 auto;
 }

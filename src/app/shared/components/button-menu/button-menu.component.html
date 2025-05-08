@@ -1,4 +1,7 @@
-<button type="button" (click)="onClick()" [class.selected]="selected">
-	<ng-content></ng-content>
-	<span>{{ description }}</span>
+<button [class]="getButtonClasses()" [attr.title]="description">
+	<div class="icon-container">
+		<ng-content></ng-content>
+	</div>
+	<span class="menu-text" [class.hidden]="collapsed">{{ description }}</span>
+	<div *ngIf="selected" class="active-indicator"></div>
 </button>

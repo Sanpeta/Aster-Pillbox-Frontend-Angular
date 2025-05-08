@@ -1,22 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+// button-menu.component.ts
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'app-button-menu',
 	standalone: true,
-	imports: [],
+	imports: [CommonModule],
 	templateUrl: './button-menu.component.html',
 	styleUrl: './button-menu.component.css',
 })
-export class ButtonMenuComponent implements OnInit {
+export class ButtonMenuComponent {
 	@Input() description = '';
 	@Input() selected = false;
-	@Output() click = new EventEmitter<void>();
+	@Input() collapsed = false;
+	@Input() classes = '';
 
-	constructor() {}
-
-	ngOnInit(): void {}
-
-	onClick() {
-		this.click.emit();
+	getButtonClasses(): string {
+		return `${this.selected ? 'selected' : ''} ${
+			this.collapsed ? 'collapsed' : ''
+		} ${this.classes}`;
 	}
 }

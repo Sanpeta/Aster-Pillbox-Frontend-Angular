@@ -1,119 +1,121 @@
-<div class="sidenav-container">
+<div class="sidenav-container" [class.sidenav-collapsed]="isCollapsed">
+	<div class="toggle-collapse" (click)="toggleCollapse()">
+		<app-icon
+			[src]="'/assets/images/rotate-left.png'"
+			[alt]="'Collapse menu'"
+			[classes]="'h-4 w-4'"
+		/>
+	</div>
+
 	<div class="sidenav-content">
-		<div class="w-full">
-			<app-button-menu
-				[description]="'Dashboard'"
-				[selected]="menuSelected === 'Dashboard'"
-				(click)="onMenuSelected('Dashboard')"
-			>
-				<app-icon
-					[src]="'/assets/images/dashboard-icon.svg'"
-					[alt]="'image dashboard'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+		<div class="menu-section">
+			<div class="menu-group">
+				<div class="menu-group-title">Principal</div>
+				<app-button-menu
+					[description]="'Dashboard'"
+					[selected]="menuSelected === 'Dashboard'"
+					(click)="onMenuSelected('Dashboard')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/dashboard-icon.svg'"
+						[alt]="'image dashboard'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-			<app-button-menu
-				[description]="'Perfil'"
-				[selected]="menuSelected === 'Perfil'"
-				(click)="onMenuSelected('Perfil')"
-			>
-				<app-icon
-					[src]="'/assets/images/perfil-icon.svg'"
-					[alt]="'image perfil'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Perfil'"
+					[selected]="menuSelected === 'Perfil'"
+					(click)="onMenuSelected('Perfil')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/perfil-icon.svg'"
+						[alt]="'image perfil'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</div>
 
-			<app-button-menu
-				[description]="'Caixa de Medicamentos'"
-				[selected]="menuSelected === 'List Pillboxes'"
-				(click)="onMenuSelected('List Pillboxes')"
-			>
-				<app-icon
-					[src]="'/assets/images/medication-icon.svg'"
-					[alt]="'image perfil'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+			<div class="menu-group">
+				<div class="menu-group-title">Medicamentos</div>
+				<app-button-menu
+					[description]="'Caixa de Medicamentos'"
+					[selected]="menuSelected === 'List Pillboxes'"
+					(click)="onMenuSelected('List Pillboxes')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/medication-icon.svg'"
+						[alt]="'image pillbox'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-			<app-button-menu
-				[description]="'Medicamentos'"
-				[selected]="menuSelected === 'List Medications'"
-				(click)="onMenuSelected('List Medications')"
-			>
-				<app-icon
-					[src]="'/assets/images/pill-icon.svg'"
-					[alt]="'image perfil'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Medicamentos'"
+					[selected]="menuSelected === 'List Medications'"
+					(click)="onMenuSelected('List Medications')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/pill-icon.svg'"
+						[alt]="'image medications'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-			<app-button-menu
-				[description]="'Relatório'"
-				[selected]="menuSelected === 'Report'"
-				(click)="onMenuSelected('Report')"
-			>
-				<app-icon
-					[src]="'/assets/images/contact-page-icon.svg'"
-					[alt]="'image add medication'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Relatório'"
+					[selected]="menuSelected === 'Report'"
+					(click)="onMenuSelected('Report')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/contact-page-icon.svg'"
+						[alt]="'image report'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</div>
 
-			<!-- <app-button-menu
-			[description]="'Informações Gerais'"
-			[selected]="menuSelected === 'Information'"
-			(click)="onMenuSelected('Information')"
-		>
-			<app-icon
-				[src]="'/assets/images/info-icon.svg'"
-				[alt]="'image info'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu>
+			<div class="menu-group">
+				<div class="menu-group-title">Sistema</div>
+				<app-button-menu
+					[description]="'Configurações'"
+					[selected]="menuSelected === 'Settings'"
+					(click)="onMenuSelected('Settings')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/settings-icon.svg'"
+						[alt]="'image settings'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
 
-		<app-button-menu
-			[description]="'Feedback'"
-			[selected]="menuSelected === 'Feedback'"
-			(click)="onMenuSelected('Feedback')"
-		>
-			<app-icon
-				[src]="'/assets/images/feedback-icon.svg'"
-				[alt]="'image feedback'"
-				[classes]="'h-6 w-6 ml-2 mr-2'"
-			/>
-		</app-button-menu> -->
-
-			<app-button-menu
-				[description]="'Configurações'"
-				[selected]="menuSelected === 'Settings'"
-				(click)="onMenuSelected('Settings')"
-			>
-				<app-icon
-					[src]="'/assets/images/settings-icon.svg'"
-					[alt]="'image settings'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
-
-			<app-button-menu
-				[description]="'Suporte'"
-				[selected]="menuSelected === 'Support'"
-				(click)="onMenuSelected('Support')"
-			>
-				<app-icon
-					[src]="'/assets/images/help-icon.svg'"
-					[alt]="'image help'"
-					[classes]="'h-6 w-6 ml-2 mr-2'"
-				/>
-			</app-button-menu>
+				<app-button-menu
+					[description]="'Suporte'"
+					[selected]="menuSelected === 'Support'"
+					(click)="onMenuSelected('Support')"
+					[collapsed]="isCollapsed"
+				>
+					<app-icon
+						[src]="'/assets/images/help-icon.svg'"
+						[alt]="'image help'"
+						[classes]="'h-6 w-6 ml-2 mr-2'"
+					/>
+				</app-button-menu>
+			</div>
 		</div>
 
 		<app-button-menu
 			[description]="'Sair'"
 			[selected]="menuSelected === 'Logout'"
 			(click)="onMenuSelected('Logout')"
+			[collapsed]="isCollapsed"
+			[classes]="'mt-4'"
 		>
 			<app-icon
 				[src]="'/assets/images/logout-icon.svg'"
