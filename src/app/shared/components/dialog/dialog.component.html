@@ -1,40 +1,78 @@
-<!-- dialog.component.html -->
-<div class="fixed inset-0 flex items-center justify-center z-50">
-	<!-- Backdrop -->
+<div class="dialog-overlay" [@backdropAnimation] (click)="onBackdropClick()">
+	<!-- Dialog Container -->
 	<div
-		[@backdropAnimation]
-		class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-		(click)="data.buttonTextClose ? onClose() : null"
-	></div>
-
-	<!-- Dialog -->
-	<div
+		class="dialog-container"
 		[@dialogAnimation]
-		class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 relative z-10 overflow-hidden"
+		(click)="$event.stopPropagation()"
+		role="dialog"
+		aria-modal="true"
+		[attr.aria-labelledby]="'dialog-title'"
+		[attr.aria-describedby]="'dialog-content'"
 	>
 		<!-- Header -->
-		<div class="bg-[#479cf8] py-4 px-6">
-			<h3 class="text-lg font-medium text-white">{{ data.title }}</h3>
+		<div [class]="getHeaderClass()">
+			<div class="dialog-header-content">
+				<div class="dialog-icon-wrapper" *ngIf="data.type || data.icon">
+					<svg
+						class="dialog-icon"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							[attr.d]="getDialogIcon()"
+						/>
+					</svg>
+				</div>
+				<h2 id="dialog-title" class="dialog-title">{{ data.title }}</h2>
+			</div>
+
+			<!-- Close button (only if buttonTextClose exists) -->
+			<button
+				*ngIf="data.buttonTextClose"
+				type="button"
+				class="dialog-close-button"
+				(click)="onClose()"
+				aria-label="Fechar diálogo"
+			>
+				<svg
+					class="dialog-close-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
 		</div>
 
 		<!-- Content -->
-		<div class="p-6">
-			<p class="text-gray-700">{{ data.mensage }}</p>
+		<div class="dialog-content">
+			<p id="dialog-content" class="dialog-message">{{ data.mensage }}</p>
 		</div>
 
 		<!-- Actions -->
-		<div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3">
+		<div class="dialog-actions">
 			<button
 				*ngIf="data.buttonTextClose"
+				type="button"
+				class="btn btn-secondary"
 				(click)="onClose()"
-				class="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"
 			>
 				{{ data.buttonTextClose }}
 			</button>
-			<button
-				(click)="onConfirm()"
-				class="px-4 py-2 rounded-md bg-[#479cf8] text-white hover:bg-[#3a7fd0] transition-colors focus:outline-none focus:ring-2 focus:ring-[#479cf8] focus:ring-offset-2"
-			>
+
+			<button type="button" class="btn btn-primary" (click)="onConfirm()">
 				{{ data.buttonTextConfirm }}
 			</button>
 		</div>
