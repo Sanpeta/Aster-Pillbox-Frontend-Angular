@@ -12,6 +12,7 @@ import { AccountService } from '../../services/account/account.service';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { FormUtils } from '../../shared/constants';
 
 @Component({
 	selector: 'app-recover-password',
@@ -26,111 +27,165 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 	styleUrl: './recover-password.component.css',
 })
 export class RecoverPasswordComponent implements OnInit, OnDestroy {
-	private destroy$ = new Subject<void>();
-	public showLoader = false;
+	private readonly destroy$ = new Subject<void>();
+
+	public isLoading = false;
+
 	@ViewChild('dialogContainer', { read: ViewContainerRef })
 	dialogContainer!: ViewContainerRef;
 
-	resetPassword = this.formBuilder.group({
+	public readonly resetPasswordForm = this.formBuilder.group({
 		email: ['', [Validators.required, Validators.email]],
 	});
 
 	constructor(
-		private formBuilder: FormBuilder,
-		private accountService: AccountService
+		private readonly formBuilder: FormBuilder,
+		private readonly accountService: AccountService
 	) {}
 
-	ngOnInit() {
-		this.resetPassword.reset();
+	ngOnInit(): void {
+		this.resetPasswordForm.reset();
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
 	}
 
-	onSubmitResetPassword(): void {
-		this.showLoader = true;
-		if (this.resetPassword.valid && this.resetPassword.value) {
-			this.accountService
-				.createTokenResetPassword(
-					this.resetPassword.value.email as string
-				)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe({
-					next: (response) => {
-						this.showLoader = false;
-						this.openDialog(
-							'Foi enviado um email',
-							'Favor verifique sua caixa de entrada e siga as instruções para redefinir sua senha.',
-							'Ok',
-							'',
-							() => {}
-						);
-					},
-					error: (error) => {
-						console.log(error);
-						this.showLoader = false;
-						switch (error.status) {
-							case 400:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'Cancelar',
-									() => {}
-								);
-								break;
-							case 404:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'Cancelar',
-									() => {}
-								);
-								break;
-							default:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'Cancelar',
-									() => {}
-								);
-								break;
-						}
-					},
-				});
+	public onSubmit(): void {
+		if (this.resetPasswordForm.invalid) {
+			this.handleValidationError();
+			return;
+		}
+
+		const email = this.resetPasswordForm.value.email as string;
+		this.setLoadingState(true);
+
+		this.accountService
+			.createTokenResetPassword(email)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: () => this.handleSuccess(),
+				error: (error) => this.handleError(error),
+			});
+	}
+
+	private handleSuccess(): void {
+		this.setLoadingState(false);
+		this.showSuccessDialog();
+	}
+
+	private handleError(error: any): void {
+		console.error('Password reset error:', error);
+		this.setLoadingState(false);
+
+		const errorMessages = {
+			400: {
+				title: 'Dados inválidos',
+				message: 'Verifique o email informado e tente novamente.',
+			},
+			404: {
+				title: 'Email não encontrado',
+				message:
+					'Este email não está cadastrado em nossa base de dados.',
+			},
+			429: {
+				title: 'Muitas tentativas',
+				message: 'Aguarde alguns minutos antes de tentar novamente.',
+			},
+			default: {
+				title: 'Erro no sistema',
+				message:
+					'Não foi possível processar sua solicitação. Tente novamente.',
+			},
+		};
+
+		const errorInfo =
+			errorMessages[error.status as keyof typeof errorMessages] ||
+			errorMessages.default;
+		this.showErrorDialog(errorInfo.title, errorInfo.message);
+	}
+
+	private handleValidationError(): void {
+		const emailControl = this.resetPasswordForm.get('email');
+
+		if (emailControl?.hasError('required')) {
+			this.showErrorDialog(
+				'Email obrigatório',
+				'Digite seu email para recuperar a senha.'
+			);
+		} else if (emailControl?.hasError('email')) {
+			this.showErrorDialog(
+				'Email inválido',
+				'Digite um email válido para continuar.'
+			);
 		}
 	}
 
-	openDialog(
+	private showSuccessDialog(): void {
+		this.openDialog(
+			'Email enviado com sucesso!',
+			'Verifique sua caixa de entrada e siga as instruções para redefinir sua senha. Se não encontrar o email, verifique também a pasta de spam.',
+			'Entendi',
+			undefined,
+			() => {
+				this.resetPasswordForm.reset();
+			}
+		);
+	}
+
+	private showErrorDialog(title: string, message: string): void {
+		this.openDialog(title, message, 'Tentar novamente');
+	}
+
+	private setLoadingState(loading: boolean): void {
+		this.isLoading = loading;
+	}
+
+	private openDialog(
 		title: string,
-		mensage: string,
-		buttonTextConfirm: string,
-		buttonTextClose?: any | undefined,
-		funcConfirmButton?: any | null
+		message: string,
+		confirmText: string,
+		cancelText?: string,
+		onConfirm?: () => void
 	): void {
 		const componentRef =
 			this.dialogContainer.createComponent(DialogComponent);
 
 		componentRef.instance.data = {
-			title: title,
-			mensage: mensage,
-			buttonTextConfirm: buttonTextConfirm,
-			buttonTextClose: buttonTextClose,
+			title,
+			mensage: message,
+			buttonTextConfirm: confirmText,
+			buttonTextClose: cancelText || 'Fechar',
 		};
 
 		componentRef.instance.close.subscribe(() => {
-			this.dialogContainer.clear(); // Fecha o diálogo
+			this.dialogContainer.clear();
 		});
 
 		componentRef.instance.confirm.subscribe(() => {
-			// Ação a ser executada se o usuário clicar em "Continuar"
-			if (funcConfirmButton) {
-				funcConfirmButton();
+			if (onConfirm) {
+				onConfirm();
 			}
+			this.dialogContainer.clear();
 		});
+	}
+
+	// Métodos públicos para o template
+	public hasEmailError(): boolean {
+		return FormUtils.hasError(this.resetPasswordForm.get('email'));
+	}
+
+	public getEmailErrorMessage(): string {
+		const control = this.resetPasswordForm.get('email');
+
+		if (control?.hasError('required')) {
+			return 'O campo email é obrigatório';
+		}
+		if (control?.hasError('email')) {
+			return 'Digite um email válido';
+		}
+
+		return '';
 	}
 }
