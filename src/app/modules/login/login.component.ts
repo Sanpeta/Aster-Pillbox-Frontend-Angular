@@ -22,167 +22,196 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 	styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnDestroy {
-	private destroy$ = new Subject<void>();
-	public sendedEmail = false;
-	public showLoader = false;
+	private readonly destroy$ = new Subject<void>();
+
+	public isEmailSent = false;
+	public isLoading = false;
+
 	@ViewChild('dialogContainer', { read: ViewContainerRef })
 	dialogContainer!: ViewContainerRef;
 
-	loginForm = this.formBuilder.group({
-		email: ['', [Validators.required, Validators.email]], // Remover o array vazio
-		password: ['', [Validators.required, Validators.minLength(8)]], // Remover o array vazio
+	public readonly loginForm = this.formBuilder.group({
+		email: ['', [Validators.required, Validators.email]],
+		password: ['', [Validators.required, Validators.minLength(8)]],
 	});
 
 	constructor(
-		private formBuilder: FormBuilder,
-		private accountService: AccountService,
-		private cookieService: CookieService,
-		private router: Router
+		private readonly formBuilder: FormBuilder,
+		private readonly accountService: AccountService,
+		private readonly cookieService: CookieService,
+		private readonly router: Router
 	) {}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.loginForm.reset();
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.destroy$.next();
 		this.destroy$.complete();
 	}
 
-	resendEmail() {
-		this.showLoader = true;
+	public resendActivationEmail(): void {
+		const email = this.cookieService.get('ACCOUNT_EMAIL');
+
+		if (!email) {
+			this.showErrorDialog(
+				'Erro',
+				'Email não encontrado. Tente fazer login novamente.'
+			);
+			return;
+		}
+
+		this.setLoadingState(true);
+
 		this.accountService
-			.createTokenAccountActivate(this.cookieService.get('ACCOUNT_EMAIL'))
+			.createTokenAccountActivate(email)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
-				next: (response) => {
-					console.log(response);
-					this.showLoader = false;
-					this.sendedEmail = true;
+				next: () => {
+					this.setLoadingState(false);
+					this.isEmailSent = true;
 				},
-				error: (err) => {
-					console.log(err.error);
-					this.showLoader = false;
-					this.sendedEmail = false;
+				error: (error) => {
+					console.error('Error resending activation email:', error);
+					this.setLoadingState(false);
+					this.isEmailSent = false;
+					this.showErrorDialog(
+						'Erro',
+						'Falha ao reenviar email de ativação.'
+					);
 				},
 			});
 	}
 
-	onSubmitLoginForm(): void {
-		this.showLoader = true;
-		if (this.loginForm.valid && this.loginForm.value) {
-			this.accountService
-				.loginAccount(this.loginForm.value as LoginAccountRequest)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe({
-					next: (response) => {
-						if (response) {
-							this.cookieService.set(
-								'ACCOUNT_EMAIL',
-								response.account.email
-							);
-							if (response.account.active) {
-								this.cookieService.set(
-									'AUTH_TOKEN',
-									response.access_token
-								);
-								this.cookieService.set(
-									'ACCOUNT_ID',
-									response.account.id.toString()
-								);
-								this.showLoader = false;
-								this.loginForm.reset();
-								this.router.navigate(['/dashboard']);
-							} else {
-								this.showLoader = false;
-								this.openDialog(
-									'Conta não ativada.',
-									'Favor solicitar o reenvio do e-mail de ativação da conta ou  entrar em contato com o suporte.',
-									'Solicitar Reenvio',
-									'Cancelar',
-									() => {
-										this.resendEmail();
-										this.loginForm.reset();
-										this.router.navigate([
-											'/check-your-email',
-										]);
-									}
-								);
-							}
-						}
-					},
-					error: (error) => {
-						console.log(error);
-						this.showLoader = false;
-						switch (error.status) {
-							case 401:
-								this.openDialog(
-									'Não Autorizado',
-									'E-Mail ou senha inválido.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							case 404:
-								this.openDialog(
-									'Email não cadastrado',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							default:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-						}
-					},
-				});
-		} else {
-			this.showLoader = false;
-			this.openDialog(
-				'Campo(s) Inválidos',
-				'Favor colocar um e-mail válido ou uma senha de no mínimo 8 digitos.',
-				'Ok',
-				'',
-				() => {}
-			);
+	public onSubmit(): void {
+		if (this.loginForm.invalid) {
+			this.showValidationError();
+			return;
 		}
+
+		const loginData = this.loginForm.value as LoginAccountRequest;
+		this.setLoadingState(true);
+
+		this.accountService
+			.loginAccount(loginData)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: (response) => this.handleLoginSuccess(response),
+				error: (error) => this.handleLoginError(error),
+			});
 	}
 
-	openDialog(
+	private handleLoginSuccess(response: any): void {
+		if (!response?.account) {
+			this.handleLoginError({ status: 500 });
+			return;
+		}
+
+		this.cookieService.set('ACCOUNT_EMAIL', response.account.email);
+
+		if (response.account.active) {
+			this.setAuthCookies(response);
+			this.navigateToDashboard();
+		} else {
+			this.showInactiveAccountDialog();
+		}
+
+		this.setLoadingState(false);
+	}
+
+	private handleLoginError(error: any): void {
+		console.error('Login error:', error);
+		this.setLoadingState(false);
+
+		const errorMessages = {
+			401: {
+				title: 'Não Autorizado',
+				message: 'Email ou senha inválidos.',
+			},
+			404: {
+				title: 'Email não encontrado',
+				message: 'Verifique os dados informados e tente novamente.',
+			},
+			default: {
+				title: 'Erro no sistema',
+				message: 'Ocorreu um erro inesperado. Tente novamente.',
+			},
+		};
+
+		const errorInfo =
+			errorMessages[error.status as keyof typeof errorMessages] ||
+			errorMessages.default;
+		this.showErrorDialog(errorInfo.title, errorInfo.message);
+	}
+
+	private setAuthCookies(response: any): void {
+		this.cookieService.set('AUTH_TOKEN', response.access_token);
+		this.cookieService.set('ACCOUNT_ID', response.account.id.toString());
+	}
+
+	private navigateToDashboard(): void {
+		this.loginForm.reset();
+		this.router.navigate(['/dashboard']);
+	}
+
+	private showInactiveAccountDialog(): void {
+		this.openDialog(
+			'Conta não ativada',
+			'Solicite o reenvio do email de ativação ou entre em contato com o suporte.',
+			'Solicitar Reenvio',
+			'Cancelar',
+			() => this.handleResendActivation()
+		);
+	}
+
+	private handleResendActivation(): void {
+		this.resendActivationEmail();
+		this.loginForm.reset();
+		this.router.navigate(['/check-your-email']);
+	}
+
+	private showValidationError(): void {
+		this.showErrorDialog(
+			'Campos Inválidos',
+			'Informe um email válido e uma senha com no mínimo 8 caracteres.'
+		);
+	}
+
+	private showErrorDialog(title: string, message: string): void {
+		this.openDialog(title, message, 'OK');
+	}
+
+	private setLoadingState(loading: boolean): void {
+		this.isLoading = loading;
+	}
+
+	private openDialog(
 		title: string,
-		mensage: string,
-		buttonTextConfirm: string,
-		buttonTextClose?: any | undefined,
-		funcConfirmButton?: any | null
+		message: string,
+		confirmText: string,
+		cancelText?: string,
+		onConfirm?: () => void
 	): void {
 		const componentRef =
 			this.dialogContainer.createComponent(DialogComponent);
 
 		componentRef.instance.data = {
-			title: title,
-			mensage: mensage,
-			buttonTextConfirm: buttonTextConfirm,
-			buttonTextClose: buttonTextClose,
+			title,
+			mensage: message,
+			buttonTextConfirm: confirmText,
+			buttonTextClose: cancelText || '',
 		};
 
 		componentRef.instance.close.subscribe(() => {
-			this.dialogContainer.clear(); // Fecha o diálogo
+			this.dialogContainer.clear();
 		});
 
 		componentRef.instance.confirm.subscribe(() => {
-			// Ação a ser executada se o usuário clicar em "Continuar"
-			if (funcConfirmButton) {
-				funcConfirmButton();
+			if (onConfirm) {
+				onConfirm();
 			}
+			this.dialogContainer.clear();
 		});
 	}
 }

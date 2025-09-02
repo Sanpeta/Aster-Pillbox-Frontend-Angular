@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AccountService } from '../../services/account/account.service'; // Seu serviço de autenticação
+import { Router, UrlTree } from '@angular/router';
+import { Observable, catchError, map, of } from 'rxjs';
+import { AccountService } from '../../services/account/account.service';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class LoggedGuardService implements CanActivate {
+export class LoggedGuardService {
 	constructor(
-		private accountService: AccountService,
-		private router: Router
+		private readonly accountService: AccountService,
+		private readonly router: Router
 	) {}
 
 	canActivate(): Observable<boolean | UrlTree> {
 		return this.accountService.isLoggedIn().pipe(
-			map(
-				(isAuthenticated: boolean) =>
-					!isAuthenticated || this.router.parseUrl('/dashboard')
-			) // Redireciona para o dashboard se estiver autenticado
+			map((isAuthenticated: boolean) =>
+				isAuthenticated ? this.router.parseUrl('/dashboard') : true
+			),
+			catchError(() => of(true))
 		);
 	}
 }
