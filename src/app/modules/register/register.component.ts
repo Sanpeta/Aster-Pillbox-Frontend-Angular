@@ -16,6 +16,7 @@ import { DialogComponent } from '../../shared/components/dialog/dialog.component
 import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { APP_CONSTANTS, FormUtils, StorageUtils } from '../../shared/constants';
 
 @Component({
 	selector: 'app-register',
@@ -32,27 +33,33 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 	styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-	private destroy$ = new Subject<void>();
-	private emailAccount = '';
-	loading = false; // Inicialmente, a página está carregando
+	private readonly destroy$ = new Subject<void>();
+
+	public isLoading = false;
+
 	@ViewChild('dialogContainer', { read: ViewContainerRef })
 	dialogContainer!: ViewContainerRef;
 
-	constructor(
-		private formBuilder: FormBuilder,
-		private accountService: AccountService,
-		private cookieService: CookieService,
-		private router: Router
-	) {}
-
-	registerForm = this.formBuilder.group({
+	public readonly registerForm = this.formBuilder.group({
 		email: ['', [Validators.required, Validators.email]],
-		password: ['', [Validators.required, Validators.minLength(8)]],
-		terms_and_conditions: [
+		password: [
 			'',
-			[Validators.required, Validators.requiredTrue],
+			[
+				Validators.required,
+				Validators.minLength(
+					APP_CONSTANTS.VALIDATION.MIN_PASSWORD_LENGTH
+				),
+			],
 		],
+		terms_and_conditions: [false, [Validators.requiredTrue]],
 	});
+
+	constructor(
+		private readonly formBuilder: FormBuilder,
+		private readonly accountService: AccountService,
+		private readonly cookieService: CookieService,
+		private readonly router: Router
+	) {}
 
 	ngOnInit(): void {
 		this.registerForm.reset();
@@ -63,169 +70,209 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		this.destroy$.complete();
 	}
 
-	onSubmitRegisterForm(): void {
-		this.loading = true;
-		if (this.registerForm.value && this.registerForm.valid) {
-			console.log(this.registerForm.value);
-			this.accountService
-				.registerAccount(this.registerForm.value as AccountRequest)
-				.pipe(
-					switchMap((response) => {
-						this.cookieService.set(
-							'ACCOUNT_ID',
-							response.id.toString()
-						);
-						this.cookieService.set('ACCOUNT_EMAIL', response.email);
-						this.emailAccount = response.email;
-						return this.accountService.createTokenAccountActivate(
-							this.emailAccount
-						);
-					}),
-					takeUntil(this.destroy$)
-				)
-				.subscribe({
-					next: (response) => {
-						if (response) {
-							this.registerForm.reset();
-							this.loading = false;
-							this.router.navigate(['/check-your-email']);
-						}
-					},
-					complete: () => {
-						this.loading = false;
-					},
-					error: (error) => {
-						console.log(error);
-						this.loading = false;
-						switch (error.status) {
-							case 401:
-								this.openDialog(
-									'Não Autorizado',
-									'E-Mail ou senha inválido.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							case 404:
-								this.openDialog(
-									'Email não cadastrado',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							case 500:
-								this.openDialog(
-									'Email já cadastrado',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							default:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-						}
-					},
-				});
-		} else {
-			this.loading = false;
-			if (this.registerForm.get('email')?.errors) {
-				// Verifica os erros do campo 'email'
-				if (this.registerForm.get('email')?.hasError('required')) {
-					this.openDialog(
-						'Email obrigatório',
-						'O campo email é obrigatório.',
-						'Ok',
-						'',
-						() => {}
-					);
-				}
-				if (this.registerForm.get('email')?.hasError('email')) {
-					this.openDialog(
-						'O e-mail inserido é inválido',
-						'Um e-mail válido é obrigatório',
-						'Ok',
-						'',
-						() => {}
-					);
-				}
-			}
+	public onSubmit(): void {
+		if (this.registerForm.invalid) {
+			this.handleValidationErrors();
+			return;
+		}
 
-			if (this.registerForm.get('password')?.errors) {
-				if (this.registerForm.get('password')?.hasError('required')) {
-					this.openDialog(
-						'Senha é obrigatório',
-						'O campo senha é obrigatório',
-						'Ok',
-						'',
-						() => {}
-					);
-				}
-				if (this.registerForm.get('password')?.hasError('minlength')) {
-					this.openDialog(
-						'Senha inválida',
-						'A senha deve ter no mínimo 8 caracteres',
-						'Ok',
-						'',
-						() => {}
-					);
-				}
-			}
+		const registrationData = this.registerForm
+			.value as unknown as AccountRequest;
+		this.setLoadingState(true);
 
-			if (this.registerForm.get('terms_and_conditions')?.errors) {
-				if (
-					this.registerForm
-						.get('terms_and_conditions')
-						?.hasError('required')
-				) {
-					this.openDialog(
-						'Campo obrigatório',
-						'Você precisa aceitar os termos e condições para continuar.',
-						'Ok',
-						'',
-						() => {}
+		this.accountService
+			.registerAccount(registrationData)
+			.pipe(
+				switchMap((response) => {
+					this.storeAccountData(response);
+					return this.accountService.createTokenAccountActivate(
+						response.email
 					);
-				}
-			}
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe({
+				next: () => this.handleRegistrationSuccess(),
+				error: (error) => this.handleRegistrationError(error),
+				complete: () => this.setLoadingState(false),
+			});
+	}
+
+	private handleRegistrationSuccess(): void {
+		this.registerForm.reset();
+		this.setLoadingState(false);
+		this.router.navigate([APP_CONSTANTS.ROUTES.CHECK_EMAIL]);
+	}
+
+	private handleRegistrationError(error: any): void {
+		console.error('Registration error:', error);
+		this.setLoadingState(false);
+
+		const errorMessages = {
+			401: {
+				title: 'Não Autorizado',
+				message: 'Dados inválidos fornecidos.',
+			},
+			409: {
+				title: 'Email já cadastrado',
+				message:
+					'Este email já está em uso. Tente fazer login ou use outro email.',
+			},
+			500: {
+				title: 'Email já cadastrado',
+				message:
+					'Este email já possui uma conta. Verifique os dados e tente novamente.',
+			},
+			default: {
+				title: 'Erro no cadastro',
+				message: 'Ocorreu um erro inesperado. Tente novamente.',
+			},
+		};
+
+		const errorInfo =
+			errorMessages[error.status as keyof typeof errorMessages] ||
+			errorMessages.default;
+		this.showErrorDialog(errorInfo.title, errorInfo.message);
+	}
+
+	private handleValidationErrors(): void {
+		const emailControl = this.registerForm.get('email');
+		const passwordControl = this.registerForm.get('password');
+		const termsControl = this.registerForm.get('terms_and_conditions');
+
+		// Prioridade: email > senha > termos
+		if (emailControl?.errors) {
+			this.showEmailValidationError(emailControl);
+		} else if (passwordControl?.errors) {
+			this.showPasswordValidationError(passwordControl);
+		} else if (termsControl?.errors) {
+			this.showTermsValidationError();
 		}
 	}
 
-	openDialog(
+	private showEmailValidationError(control: any): void {
+		if (control.hasError('required')) {
+			this.showErrorDialog(
+				'Email obrigatório',
+				'O campo email é obrigatório para criar sua conta.'
+			);
+		} else if (control.hasError('email')) {
+			this.showErrorDialog(
+				'Email inválido',
+				'Digite um email válido para continuar.'
+			);
+		}
+	}
+
+	private showPasswordValidationError(control: any): void {
+		if (control.hasError('required')) {
+			this.showErrorDialog(
+				'Senha obrigatória',
+				'Você precisa definir uma senha para sua conta.'
+			);
+		} else if (control.hasError('minlength')) {
+			this.showErrorDialog(
+				'Senha muito curta',
+				`A senha deve ter pelo menos ${APP_CONSTANTS.VALIDATION.MIN_PASSWORD_LENGTH} caracteres.`
+			);
+		}
+	}
+
+	private showTermsValidationError(): void {
+		this.showErrorDialog(
+			'Termos e condições',
+			'Você precisa aceitar os termos e condições para criar sua conta.'
+		);
+	}
+
+	private storeAccountData(response: any): void {
+		StorageUtils.setCookie(
+			this.cookieService,
+			APP_CONSTANTS.COOKIES.ACCOUNT_ID,
+			response.id.toString()
+		);
+		StorageUtils.setCookie(
+			this.cookieService,
+			APP_CONSTANTS.COOKIES.ACCOUNT_EMAIL,
+			response.email
+		);
+	}
+
+	private setLoadingState(loading: boolean): void {
+		this.isLoading = loading;
+	}
+
+	private showErrorDialog(title: string, message: string): void {
+		this.openDialog(title, message, 'OK');
+	}
+
+	private openDialog(
 		title: string,
-		mensage: string,
-		buttonTextConfirm: string,
-		buttonTextClose?: any | undefined,
-		funcConfirmButton?: any | null
+		message: string,
+		confirmText: string,
+		cancelText?: string,
+		onConfirm?: () => void
 	): void {
 		const componentRef =
 			this.dialogContainer.createComponent(DialogComponent);
 
 		componentRef.instance.data = {
-			title: title,
-			mensage: mensage,
-			buttonTextConfirm: buttonTextConfirm,
-			buttonTextClose: buttonTextClose,
+			title,
+			mensage: message,
+			buttonTextConfirm: confirmText,
+			buttonTextClose: cancelText || 'Fechar',
 		};
 
 		componentRef.instance.close.subscribe(() => {
-			this.dialogContainer.clear(); // Fecha o diálogo
+			this.dialogContainer.clear();
 		});
 
 		componentRef.instance.confirm.subscribe(() => {
-			// Ação a ser executada se o usuário clicar em "Continuar"
-			if (funcConfirmButton) {
-				funcConfirmButton();
+			if (onConfirm) {
+				onConfirm();
 			}
+			this.dialogContainer.clear();
 		});
+	}
+
+	// Métodos públicos para o template
+	public hasEmailError(): boolean {
+		return FormUtils.hasError(this.registerForm.get('email'));
+	}
+
+	public hasPasswordError(): boolean {
+		return FormUtils.hasError(this.registerForm.get('password'));
+	}
+
+	public hasTermsError(): boolean {
+		return FormUtils.hasError(
+			this.registerForm.get('terms_and_conditions')
+		);
+	}
+
+	public getEmailErrorMessage(): string {
+		const control = this.registerForm.get('email');
+		if (control?.hasError('required')) {
+			return 'O campo email é obrigatório';
+		}
+		if (control?.hasError('email')) {
+			return 'Digite um email válido';
+		}
+		return '';
+	}
+
+	public getPasswordErrorMessage(): string {
+		const control = this.registerForm.get('password');
+		if (control?.hasError('required')) {
+			return 'O campo senha é obrigatório';
+		}
+		if (control?.hasError('minlength')) {
+			return `A senha deve ter no mínimo ${APP_CONSTANTS.VALIDATION.MIN_PASSWORD_LENGTH} caracteres`;
+		}
+		return '';
+	}
+
+	public getTermsErrorMessage(): string {
+		return 'Você precisa aceitar os termos e condições para continuar';
 	}
 }

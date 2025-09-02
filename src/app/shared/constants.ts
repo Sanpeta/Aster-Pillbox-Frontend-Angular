@@ -52,8 +52,13 @@ export const APP_CONSTANTS = {
 
 	// Códigos de status HTTP
 	HTTP_STATUS: {
+		OK: 200,
+		CREATED: 201,
+		BAD_REQUEST: 400,
 		UNAUTHORIZED: 401,
+		FORBIDDEN: 403,
 		NOT_FOUND: 404,
+		CONFLICT: 409,
 		INTERNAL_SERVER_ERROR: 500,
 	} as const,
 } as const;
@@ -113,7 +118,6 @@ export class FormUtils {
 	static isValidPassword(password: string): boolean {
 		return !!(
 			password &&
-			typeof password === 'string' &&
 			password.length >= APP_CONSTANTS.VALIDATION.MIN_PASSWORD_LENGTH
 		);
 	}
