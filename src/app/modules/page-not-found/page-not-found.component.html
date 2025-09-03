@@ -1,30 +1,53 @@
-<main
-	class="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
->
-	<div class="text-center">
-		<p class="text-5xl font-semibold text-blue-600">404</p>
-		<h1
-			class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl"
-		>
-			Página não encontrada
-		</h1>
-		<p class="mt-6 text-base leading-7 text-gray-600">
+<main class="not-found-page">
+	<div class="not-found-container">
+		<div class="error-code">404</div>
+		<h1 class="error-title">Página não encontrada</h1>
+		<p class="error-message">
 			Desculpe, não conseguimos encontrar a página que você está
-			procurando.
+			procurando. Verifique se o endereço está correto ou tente novamente.
 		</p>
-		<div class="mt-10 flex items-center justify-center gap-x-6">
-			<a
-				routerLink="/login"
-				routerLinkActive="active"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-				>Voltar para a página inicial</a
-			>
-			<a
-				routerLink="/contact"
-				routerLinkActive="active"
-				class="text-sm font-semibold text-gray-900"
-				>Contate o suporte <span aria-hidden="true">&rarr;</span></a
-			>
+		<div class="error-actions">
+			<a routerLink="/" class="btn btn-primary">
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+					/>
+				</svg>
+				Voltar ao Início
+			</a>
+			<a routerLink="/support" class="link-secondary">
+				Contatar Suporte
+				<svg
+					class="link-arrow"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M17 8l4 4m0 0l-4 4m4-4H3"
+					/>
+				</svg>
+			</a>
 		</div>
+	</div>
+
+	<!-- Decorative elements -->
+	<div class="decoration-elements">
+		<div class="floating-pill pill-1"></div>
+		<div class="floating-pill pill-2"></div>
+		<div class="floating-pill pill-3"></div>
 	</div>
 </main>
