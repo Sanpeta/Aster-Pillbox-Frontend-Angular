@@ -1,33 +1,534 @@
-div {
-	font-family: sans-serif;
-	line-height: 1.6;
-	margin: 20px;
+.eula-page {
+	min-height: 100vh;
+	background: linear-gradient(
+		135deg,
+		var(--primary-50) 0%,
+		var(--gray-50) 100%
+	);
+	padding: var(--spacing-10) var(--spacing-4);
 }
 
-h1,
-h2,
-h3 {
-	color: #333;
+.eula-container {
+	max-width: 64rem;
+	margin: 0 auto;
 }
 
-h2 {
-	margin-top: 30px;
+.eula-header {
+	background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+	color: var(--white);
+	padding: var(--spacing-8);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-xl);
+	margin-bottom: var(--spacing-8);
+	text-align: center;
 }
 
-p {
-	margin-bottom: 15px;
+.eula-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-bottom: var(--spacing-4);
 }
 
-ul {
-	list-style: disc;
-	margin-left: 20px;
+.eula-subtitle {
+	font-size: 1.125rem;
+	opacity: 0.9;
+	margin: 0;
 }
 
-a {
-	color: #007bff; /* Cor azul padrão para links */
+.eula-content {
+	background: var(--white);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-xl);
+	padding: var(--spacing-8);
+}
+
+.intro-section {
+	background: linear-gradient(135deg, var(--primary-50), var(--blue-50));
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	margin-bottom: var(--spacing-8);
+	border-left: 4px solid var(--primary-600);
+}
+
+.company-name,
+.app-name {
+	color: var(--primary-700);
+	font-weight: 600;
+}
+
+.eula-section {
+	margin-bottom: var(--spacing-8);
+	padding-bottom: var(--spacing-6);
+	border-bottom: 1px solid var(--gray-200);
+}
+
+.eula-section:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+
+.section-title {
+	display: flex;
+	align-items: center;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: var(--gray-800);
+	margin-bottom: var(--spacing-6);
+}
+
+.section-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+	color: var(--white);
+	border-radius: 50%;
+	font-weight: 700;
+	margin-right: var(--spacing-4);
+}
+
+.section-content {
+	line-height: 1.7;
+	color: var(--gray-700);
+}
+
+.license-box {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-4);
+	background: var(--success-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--success-200);
+}
+
+.license-icon {
+	width: 3rem;
+	height: 3rem;
+	background: var(--success);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.license-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--white);
+}
+
+.restrictions-grid {
+	display: grid;
+	gap: var(--spacing-4);
+	margin-top: var(--spacing-4);
+}
+
+.restriction-item {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-3);
+	background: var(--error-50);
+	padding: var(--spacing-4);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--error-200);
+}
+
+.restriction-icon {
+	width: 2rem;
+	height: 2rem;
+	color: var(--error);
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.ip-highlight {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-4);
+	background: var(--primary-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--primary-200);
+}
+
+.ip-icon {
+	width: 3rem;
+	height: 3rem;
+	background: var(--primary-600);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.ip-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--white);
+}
+
+.update-grid {
+	display: grid;
+	gap: var(--spacing-4);
+	margin-top: var(--spacing-4);
+}
+
+.update-item {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-3);
+	background: var(--gray-50);
+	padding: var(--spacing-4);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--gray-200);
+}
+
+.update-icon {
+	width: 2rem;
+	height: 2rem;
+	color: var(--primary-600);
+	flex-shrink: 0;
+}
+
+.privacy-notice {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-4);
+	background: var(--warning-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--warning-200);
+}
+
+.privacy-icon {
+	width: 3rem;
+	height: 3rem;
+	background: var(--warning);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.privacy-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--white);
+}
+
+.privacy-link {
+	color: var(--primary-600);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.privacy-link:hover {
+	text-decoration: underline;
+}
+
+.liability-warning {
+	background: var(--error-50);
+	border: 1px solid var(--error-200);
+	border-radius: var(--radius-lg);
+	padding: var(--spacing-6);
+}
+
+.warning-header {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3);
+	margin-bottom: var(--spacing-4);
+	color: var(--error-700);
+}
+
+.warning-header svg {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+.warranty-content p {
+	margin-bottom: var(--spacing-3);
+	color: var(--error-800);
+}
+
+.termination-grid {
+	display: grid;
+	gap: var(--spacing-4);
+}
+
+.termination-item {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-3);
+	padding: var(--spacing-4);
+	border-radius: var(--radius-lg);
+	border: 1px solid;
+}
+
+.termination-item.valid {
+	background: var(--success-50);
+	border-color: var(--success-200);
+}
+
+.termination-item.violation {
+	background: var(--error-50);
+	border-color: var(--error-200);
+}
+
+.termination-item.action {
+	background: var(--warning-50);
+	border-color: var(--warning-200);
+}
+
+.term-icon {
+	width: 2rem;
+	height: 2rem;
+	flex-shrink: 0;
+}
+
+.termination-item.valid .term-icon {
+	color: var(--success);
+}
+
+.termination-item.violation .term-icon {
+	color: var(--error);
+}
+
+.termination-item.action .term-icon {
+	color: var(--warning);
+}
+
+.apple-eula-notice {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-4);
+	background: var(--gray-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--gray-300);
+}
+
+.apple-icon {
+	width: 3rem;
+	height: 3rem;
+	background: var(--gray-600);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.apple-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--white);
+}
+
+.apple-link {
+	color: var(--primary-600);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.apple-link:hover {
+	text-decoration: underline;
+}
+
+.apple-note {
+	font-size: 0.875rem;
+	color: var(--gray-600);
+	font-style: italic;
+	margin-top: var(--spacing-3);
+}
+
+.jurisdiction-info {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--spacing-4);
+	background: var(--primary-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--primary-200);
+}
+
+.jurisdiction-icon {
+	width: 3rem;
+	height: 3rem;
+	background: var(--primary-600);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.jurisdiction-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--white);
+}
+
+.general-provisions {
+	background: var(--gray-50);
+	padding: var(--spacing-6);
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--gray-200);
+}
+
+.severability-note {
+	margin-top: var(--spacing-4);
+	padding: var(--spacing-3);
+	background: var(--primary-50);
+	border-left: 4px solid var(--primary-600);
+	border-radius: var(--radius-md);
+	font-size: 0.875rem;
+	color: var(--primary-800);
+}
+
+.eula-footer {
+	margin-top: var(--spacing-8);
+	background: var(--white);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-lg);
+	overflow: hidden;
+}
+
+.footer-content {
+	padding: var(--spacing-6);
+	text-align: center;
+	background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+	border-top: 4px solid var(--primary-600);
+}
+
+.footer-content p {
+	color: var(--gray-600);
+	margin-bottom: var(--spacing-4);
+}
+
+.footer-links {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-6);
+	flex-wrap: wrap;
+}
+
+.footer-links a {
+	color: var(--primary-600);
+	text-decoration: none;
+	font-weight: 500;
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-md);
+	transition: var(--transition-base);
+}
+
+.footer-links a:hover {
+	background-color: var(--primary-100);
 	text-decoration: none;
 }
 
-a:hover {
-	text-decoration: underline;
+/* Responsividade */
+@media (max-width: 768px) {
+	.eula-title {
+		font-size: 2rem;
+	}
+
+	.eula-subtitle {
+		font-size: 1rem;
+	}
+
+	.section-title {
+		font-size: 1.25rem;
+	}
+
+	.eula-content,
+	.eula-header {
+		padding: var(--spacing-4);
+	}
+
+	.intro-section {
+		padding: var(--spacing-4);
+	}
+
+	.license-box,
+	.ip-highlight,
+	.privacy-notice,
+	.apple-eula-notice,
+	.jurisdiction-info {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.footer-links {
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
+	.section-number {
+		width: 2rem;
+		height: 2rem;
+		font-size: 0.875rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.eula-page {
+		padding: var(--spacing-4) var(--spacing-2);
+	}
+
+	.restrictions-grid,
+	.update-grid,
+	.termination-grid {
+		gap: var(--spacing-2);
+	}
+
+	.restriction-item,
+	.update-item,
+	.termination-item {
+		padding: var(--spacing-3);
+	}
+
+	.general-provisions {
+		padding: var(--spacing-4);
+	}
+}
+
+/* Animações */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.eula-section {
+	animation: fadeInUp 0.6s ease-out;
+	animation-fill-mode: both;
+}
+
+.eula-section:nth-child(1) {
+	animation-delay: 0.1s;
+}
+.eula-section:nth-child(2) {
+	animation-delay: 0.2s;
+}
+.eula-section:nth-child(3) {
+	animation-delay: 0.3s;
+}
+.eula-section:nth-child(4) {
+	animation-delay: 0.4s;
+}
+.eula-section:nth-child(5) {
+	animation-delay: 0.5s;
 }

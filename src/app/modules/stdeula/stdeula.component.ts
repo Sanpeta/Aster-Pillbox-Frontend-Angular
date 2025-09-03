@@ -1,3 +1,4 @@
+// stdeula.component.ts
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -6,6 +7,6 @@ import { RouterModule } from '@angular/router';
 	standalone: true,
 	imports: [RouterModule],
 	templateUrl: './stdeula.component.html',
-	styleUrl: './stdeula.component.css',
+	styleUrls: ['./stdeula.component.scss'],
 })
 export class STDEULAComponent {}
