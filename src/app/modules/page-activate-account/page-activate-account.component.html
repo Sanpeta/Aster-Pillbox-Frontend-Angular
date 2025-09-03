@@ -1,52 +1,143 @@
-<main
-	class="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
->
-	<div class="text-center">
-		<app-loader [isLoading]="loader"></app-loader>
-		<!-- <img
-			src="../../../assets/images/image-email.png"
-			class="bg-blue-400 h-32 w-32 mx-auto my-5"
-			alt=""
-		/> -->
-		<h1
-			class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl"
-		>
-			{{ title }}
-		</h1>
-		<p class="mt-6 text-base leading-7 text-gray-600">
-			{{ description }}
-		</p>
-		<div class="mt-10 flex items-center justify-center gap-x-6">
-			@if (isMobile) {
-			<button
-				onclick="close()"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-			>
-				Ok
-			</button>
-			} @else {
+<div class="activate-page">
+	<!-- Loader -->
+	<app-loader [isLoading]="isLoading"></app-loader>
+
+	<div class="activate-container">
+		<!-- Status Icon -->
+		<div class="status-icon-wrapper" [class]="currentState.type">
+			<div class="status-icon" [innerHTML]="currentState.icon"></div>
+			<div
+				class="status-ring"
+				*ngIf="currentState.type === 'loading'"
+			></div>
+		</div>
+
+		<!-- Content -->
+		<div class="content-section">
+			<h1 class="title">{{ currentState.title }}</h1>
+			<p class="description">{{ currentState.description }}</p>
+		</div>
+
+		<!-- Progress Steps (only during loading) -->
+		<div class="progress-steps" *ngIf="currentState.type === 'loading'">
+			<div class="step-item active">
+				<div class="step-number">1</div>
+				<span>Validando token</span>
+			</div>
+			<div class="step-divider"></div>
+			<div class="step-item" [class.active]="activationProgress >= 2">
+				<div class="step-number">2</div>
+				<span>Ativando conta</span>
+			</div>
+			<div class="step-divider"></div>
+			<div class="step-item" [class.active]="activationProgress >= 3">
+				<div class="step-number">3</div>
+				<span>Concluído</span>
+			</div>
+		</div>
+
+		<!-- Action Buttons -->
+		<div class="action-buttons">
+			<!-- Login Button -->
 			<a
+				*ngIf="currentState.showLoginButton"
 				routerLink="/login"
-				routerLinkActive="active"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-				>Fazer login
+				class="btn btn-primary"
+			>
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+					/>
+				</svg>
+				Fazer Login
 			</a>
-			@if(showResendButton) {
+
+			<!-- Resend Email Button -->
 			<button
+				*ngIf="currentState.showResendButton"
 				(click)="resendEmail()"
-				routerLinkActive="active"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+				class="btn btn-secondary"
+				[disabled]="isLoading"
 			>
-				Reenviar email
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+					/>
+				</svg>
+				Reenviar Email de Ativação
 			</button>
-			}
-			<a
-				routerLink="/contact"
-				routerLinkActive="active"
-				class="text-sm font-semibold text-gray-900"
-				>Contate o suporte <span aria-hidden="true">&rarr;</span></a
+
+			<!-- Close Button (for mobile) -->
+			<button
+				*ngIf="currentState.showCloseButton"
+				(click)="closePage()"
+				class="btn btn-primary"
 			>
-			}
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 13l4 4L19 7"
+					/>
+				</svg>
+				OK
+			</button>
+
+			<!-- Support Link -->
+			<a
+				*ngIf="currentState.type === 'error'"
+				routerLink="/support"
+				class="support-link"
+			>
+				Contatar Suporte
+				<svg
+					class="link-arrow"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M17 8l4 4m0 0l-4 4m4-4H3"
+					/>
+				</svg>
+			</a>
+		</div>
+
+		<!-- Success Celebration -->
+		<div class="celebration" *ngIf="currentState.type === 'success'">
+			<div class="confetti confetti-1"></div>
+			<div class="confetti confetti-2"></div>
+			<div class="confetti confetti-3"></div>
+			<div class="confetti confetti-4"></div>
 		</div>
 	</div>
-</main>
+</div>
