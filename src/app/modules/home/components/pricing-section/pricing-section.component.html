@@ -1,272 +1,256 @@
-<section
-	id="plans"
-	class="w-full py-16 md:py-24 bg-gradient-to-b from-white to-blue-50"
->
-	<div class="container px-4 md:px-6 mx-auto">
-		<!-- Cabeçalho da seção -->
-		<div class="text-center mb-12">
-			<span
-				class="inline-block px-3 py-1 text-sm font-medium text-blue-700 bg-blue-100 rounded-full mb-3"
-				>PLANOS & PREÇOS</span
-			>
-			<h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+<section id="plans" class="pricing-section" aria-labelledby="pricing-title">
+	<div class="pricing-container">
+		<!-- Header da seção -->
+		<header class="pricing-header">
+			<span class="pricing-badge">PLANOS & PREÇOS</span>
+			<h2 id="pricing-title" class="pricing-title">
 				Escolha o plano ideal para sua saúde
 			</h2>
-			<p class="text-gray-600 md:text-lg max-w-3xl mx-auto">
+			<p class="pricing-description">
 				Invista no seu bem-estar e tranquilidade. Nossos planos foram
 				desenvolvidos para atender suas necessidades específicas.
 			</p>
-		</div>
+		</header>
 
-		<!-- Contador de economia (para criar urgência) -->
+		<!-- Banner de economia -->
 		<div
 			*ngIf="savingsBadgeVisible"
-			class="max-w-md mx-auto mb-8 text-center bg-yellow-100 border border-yellow-300 rounded-lg p-4 shadow-sm animate-pulse"
+			class="savings-banner"
+			role="alert"
+			aria-live="polite"
 		>
-			<div class="flex items-center justify-center">
+			<button
+				(click)="dismissSavingsBadge()"
+				class="savings-banner-close"
+				aria-label="Fechar banner de oferta"
+				type="button"
+			>
 				<svg
-					class="w-5 h-5 text-yellow-600 mr-2"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
+			<div class="savings-banner-content">
+				<svg
+					class="savings-banner-icon"
 					fill="currentColor"
 					viewBox="0 0 20 20"
+					aria-hidden="true"
 				>
 					<path
 						fill-rule="evenodd"
 						d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
 						clip-rule="evenodd"
-					></path>
+					/>
 				</svg>
-				<span class="font-medium text-yellow-800"
-					>Oferta por tempo limitado: Economize até 44% no plano
-					anual!</span
-				>
+				<span class="savings-banner-text">
+					Oferta por tempo limitado: Economize até 44% no plano anual!
+				</span>
 			</div>
 		</div>
 
-		<!-- Cards de planos -->
+		<!-- Grid de planos -->
 		<div
-			class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+			class="pricing-grid"
 			[@staggerAnimation]
+			role="list"
+			aria-label="Planos disponíveis"
 		>
-			<div *ngFor="let plan of plans; index as i" class="flex">
-				<div
-					class="flex flex-col w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl"
-					[class.transform]="hoverStates[i]"
-					[class.scale-105]="hoverStates[i] && plan.popular"
-					[class.border-4]="plan.popular"
-					[class.border-blue-500]="plan.popular"
-					[@fadeInUp]
-					(mouseenter)="hoverCard(i)"
-					[ngClass]="{ 'border-2 border-gray-500': !plan.popular }"
-				>
-					<!-- Cabeçalho do card -->
-					<div [ngClass]="['p-6 text-white', plan.color]">
-						<div *ngIf="plan.tag" class="mb-3">
-							<div
-								[ngClass]="[
-									'px-3 py-1 rounded-full text-xs font-bold inline-flex items-center',
-									plan.tagColor
-								]"
+			<article
+				*ngFor="let plan of plans; index as i; trackBy: trackByPlan"
+				class="plan-card"
+				[class.popular]="plan.popular"
+				[class.not-popular]="!plan.popular"
+				[class.shake]="hoverStates[i]"
+				[@fadeInUp]
+				(mouseenter)="hoverCard(i)"
+				role="listitem"
+				[attr.aria-label]="plan.ariaLabel"
+			>
+				<!-- Header do card -->
+				<header class="plan-header" [ngClass]="plan.color">
+					<div *ngIf="plan.tag" class="plan-tag">
+						<div class="plan-tag-badge" [ngClass]="plan.tagColor">
+							<svg
+								*ngIf="plan.popular"
+								class="plan-tag-icon"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
 							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 13l4 4L19 7"
+								/>
+							</svg>
+							<svg
+								*ngIf="i === 2"
+								class="plan-tag-icon"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+								/>
+							</svg>
+							{{ plan.tag }}
+						</div>
+					</div>
+
+					<div>
+						<h3 class="plan-name">{{ plan.name }}</h3>
+						<div class="plan-price-container">
+							<span class="plan-price">{{ plan.price }}</span>
+							<span class="plan-period">{{ plan.period }}</span>
+						</div>
+
+						<div
+							*ngIf="plan.originalPrice"
+							class="plan-original-price"
+						>
+							<span class="plan-original-price-text">{{
+								plan.originalPrice
+							}}</span>
+							<span *ngIf="plan.discount" class="plan-discount">
+								{{ plan.discount }}
+							</span>
+						</div>
+					</div>
+				</header>
+
+				<!-- Corpo do card -->
+				<div class="plan-body">
+					<div class="plan-features-label">O que está incluído:</div>
+
+					<ul class="plan-features-list" role="list">
+						<li
+							*ngFor="let feature of plan.features"
+							class="plan-feature-item"
+							role="listitem"
+						>
+							<div class="plan-feature-icon included">
 								<svg
-									*ngIf="plan.popular"
-									class="w-3 h-3 mr-1"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
+									aria-hidden="true"
 								>
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
 										stroke-width="2"
 										d="M5 13l4 4L19 7"
-									></path>
+									/>
 								</svg>
-								<svg
-									*ngIf="i === 2"
-									class="w-3 h-3 mr-1"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-									></path>
-								</svg>
-								{{ plan.tag }}
 							</div>
-						</div>
+							<span class="plan-feature-text included">{{
+								feature
+							}}</span>
+						</li>
+					</ul>
 
-						<div class="flex flex-col">
-							<h3 class="text-xl font-bold mb-1">
-								{{ plan.name }}
-							</h3>
-
-							<div class="flex items-baseline">
-								<span
-									class="text-3xl md:text-4xl font-extrabold"
-									>{{ plan.price }}</span
-								>
-								<span class="text-sm ml-1 opacity-90">{{
-									plan.period
-								}}</span>
-							</div>
-
-							<div
-								*ngIf="plan.originalPrice"
-								class="mt-1 text-sm"
-							>
-								<span class="line-through opacity-75">{{
-									plan.originalPrice
-								}}</span>
-								<span
-									*ngIf="plan.discount"
-									class="ml-2 font-medium bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs"
-									>{{ plan.discount }}</span
-								>
-							</div>
-						</div>
-					</div>
-
-					<!-- Corpo do card -->
-					<div class="flex-grow bg-white p-6">
-						<div class="mb-4">
-							<span class="text-sm font-medium text-gray-700"
-								>O que está incluído:</span
-							>
-						</div>
-
-						<ul class="space-y-3 mb-6">
+					<!-- Limitações (apenas para plano gratuito) -->
+					<div
+						*ngIf="i === 0 && plan.limitedFeatures"
+						class="plan-limitations"
+					>
+						<div class="plan-limitations-label">Limitações:</div>
+						<ul class="plan-features-list" role="list">
 							<li
-								*ngFor="let feature of plan.features"
-								class="flex items-start"
+								*ngFor="let limitation of plan.limitedFeatures"
+								class="plan-feature-item"
+								role="listitem"
 							>
-								<div
-									class="rounded-full bg-green-500 p-1 mt-0.5 mr-2"
-								>
+								<div class="plan-feature-icon limited">
 									<svg
-										class="h-3 w-3 text-green-100"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
+										aria-hidden="true"
 									>
 										<path
 											stroke-linecap="round"
 											stroke-linejoin="round"
 											stroke-width="2"
-											d="M5 13l4 4L19 7"
-										></path>
+											d="M6 18L18 6M6 6l12 12"
+										/>
 									</svg>
 								</div>
-								<span class="text-sm text-gray-700">{{
-									feature
+								<span class="plan-feature-text limited">{{
+									limitation
 								}}</span>
 							</li>
 						</ul>
-
-						<!-- Apenas para o plano gratuito, mostrar limitações -->
-						<div
-							*ngIf="i === 0 && plan.limitedFeatures"
-							class="mt-4 mb-6"
-						>
-							<span class="text-sm font-medium text-gray-700"
-								>Limitações:</span
-							>
-							<ul class="space-y-3 mt-2">
-								<li
-									*ngFor="
-										let limitation of plan.limitedFeatures
-									"
-									class="flex items-start"
-								>
-									<div
-										class="rounded-full bg-gray-100 p-1 mt-0.5 mr-2"
-									>
-										<svg
-											class="h-3 w-3 text-gray-500"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M6 18L18 6M6 6l12 12"
-											></path>
-										</svg>
-									</div>
-									<span class="text-sm text-gray-500">{{
-										limitation
-									}}</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-					<!-- Rodapé do card -->
-					<div class="p-6 bg-gray-50 border-t border-gray-100">
-						<button
-							(click)="selectPlan(i)"
-							class="w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 text-center"
-							[ngClass]="{
-								'bg-blue-600 hover:bg-blue-700 text-white':
-									plan.popular,
-								'bg-indigo-900 hover:bg-indigo-800 text-white':
-									i === 2,
-								'border border-blue-600 text-blue-600 hover:bg-blue-50':
-									i === 0
-							}"
-							[class.animate-pulse]="
-								plan.popular && !hoverStates[i]
-							"
-							[class.shadow-lg]="plan.popular"
-							(mouseenter)="startShake(i)"
-						>
-							{{ plan.buttonText }}
-							<span
-								*ngIf="i === 1"
-								class="block text-xs mt-1 font-normal"
-								>Sem compromisso. Cancele quando quiser.</span
-							>
-							<span
-								*ngIf="i === 2"
-								class="block text-xs mt-1 font-normal"
-								>Menos de R$8,33 por mês</span
-							>
-						</button>
 					</div>
 				</div>
-			</div>
+
+				<!-- Footer do card -->
+				<footer class="plan-footer">
+					<button
+						(click)="selectPlan(i)"
+						(mouseenter)="startShake(i)"
+						class="plan-button"
+						[ngClass]="{
+							popular: plan.popular,
+							premium: i === 2,
+							free: i === 0,
+							pulse: plan.popular && !hoverStates[i],
+							shadow: plan.popular
+						}"
+						type="button"
+						[attr.aria-label]="'Selecionar ' + plan.name"
+					>
+						{{ plan.buttonText }}
+						<span *ngIf="i === 1" class="plan-button-subtitle">
+							Sem compromisso. Cancele quando quiser.
+						</span>
+						<span *ngIf="i === 2" class="plan-button-subtitle">
+							Menos de R$8,33 por mês
+						</span>
+					</button>
+				</footer>
+			</article>
 		</div>
 
 		<!-- Garantia de satisfação -->
-		<div class="bg-white rounded-2xl shadow-md p-6 mb-16 max-w-3xl mx-auto">
-			<div class="flex flex-col md:flex-row items-center">
-				<div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-					<div class="rounded-full bg-blue-100 p-4">
-						<svg
-							class="h-10 w-10 text-blue-600"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-							></path>
-						</svg>
-					</div>
+		<div class="satisfaction-guarantee">
+			<div class="guarantee-content">
+				<div class="guarantee-icon-container">
+					<svg
+						class="guarantee-icon"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+						/>
+					</svg>
 				</div>
-				<div>
-					<h3 class="text-xl font-bold mb-2">
-						Garantia de satisfação de 30 dias
-					</h3>
-					<p class="text-gray-600">
+				<div class="guarantee-text">
+					<h3>Garantia de satisfação de 30 dias</h3>
+					<p>
 						Se você não estiver completamente satisfeito com sua
 						assinatura dentro de 30 dias, nós devolveremos 100% do
 						seu dinheiro. Sem perguntas, sem complicações.
@@ -275,158 +259,106 @@
 			</div>
 		</div>
 
-		<!-- Depoimentos -->
-		<!-- <div class="mb-16">
-			<h3 class="text-2xl font-bold text-center mb-8">
-				O que nossos usuários dizem
-			</h3>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div
-					*ngFor="let testimonial of testimonials"
-					class="bg-white rounded-xl shadow-md p-6 border border-gray-100"
-				>
-					<div class="flex items-start">
-						<div class="flex-shrink-0 mr-4">
-							<div
-								class="w-12 h-12 rounded-full bg-gray-300 overflow-hidden"
-							>
-								<img
-									[src]="testimonial.image"
-									alt="Foto de perfil"
-									class="w-full h-full object-cover"
-									onerror="this.src='/api/placeholder/48/48'"
-								/>
-							</div>
-						</div>
-						<div>
-							<p class="text-gray-700 mb-4">
-								"{{ testimonial.text }}"
-							</p>
-							<div class="font-medium">
-								{{ testimonial.name }},
-								{{ testimonial.age }} anos
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-		<!-- Benefícios em destaque -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+		<!-- Grid de funcionalidades em destaque -->
+		<div class="features-grid">
 			<div
-				*ngFor="let feature of features"
-				class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+				*ngFor="let feature of features; trackBy: trackByFeature"
+				class="feature-card"
 			>
-				<div class="flex items-start">
-					<div class="rounded-full bg-blue-100 p-3 mr-4">
+				<div class="feature-content">
+					<div class="feature-icon-container">
 						<svg
-							class="h-6 w-6 text-blue-600"
+							class="feature-icon"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							aria-hidden="true"
 						>
-							<!-- Ícone dinâmico baseado no tipo de funcionalidade -->
 							<path
-								*ngIf="feature.icon === 'pill'"
 								stroke-linecap="round"
 								stroke-linejoin="round"
 								stroke-width="2"
-								d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-							></path>
-							<path
-								*ngIf="feature.icon === 'users'"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-							></path>
-							<path
-								*ngIf="feature.icon === 'box'"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-							></path>
-							<path
-								*ngIf="feature.icon === 'headset'"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M18.364 5.636a9 9 0 010 12.728m-3.536-3.536a5 5 0 010-7.07m-3.536 3.536a1 1 0 010-1.414m-1.414 1.414a3 3 0 010-4.243m4.243 4.243a3 3 0 014.243 0"
-							></path>
+								[attr.d]="getIconPath(feature.icon)"
+							/>
 						</svg>
 					</div>
-					<div>
-						<h4 class="text-lg font-medium mb-2">
-							{{ feature.title }}
-						</h4>
-						<p class="text-gray-600 text-sm">
-							{{ feature.description }}
-						</p>
+					<div class="feature-text">
+						<h4>{{ feature.title }}</h4>
+						<p>{{ feature.description }}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- FAQ - Perguntas frequentes -->
-		<div class="max-w-3xl mx-auto mb-16">
-			<h3 class="text-2xl font-bold text-center mb-8">
-				Perguntas Frequentes
-			</h3>
-			<div class="space-y-4">
+		<!-- FAQ -->
+		<section class="faq-section" aria-labelledby="faq-title">
+			<h3 id="faq-title" class="faq-title">Perguntas Frequentes</h3>
+			<div class="faq-list" role="list">
 				<div
-					*ngFor="let item of faq"
-					class="bg-white rounded-lg border border-gray-200 shadow-sm"
+					*ngFor="let item of faq; index as i; trackBy: trackByFAQ"
+					class="faq-item"
+					role="listitem"
 				>
-					<details class="group">
-						<summary
-							class="flex justify-between items-center font-medium cursor-pointer p-4"
+					<button
+						(click)="toggleFAQ(i)"
+						class="faq-question"
+						type="button"
+						[attr.aria-expanded]="item.expanded"
+						[attr.aria-controls]="'faq-answer-' + i"
+						[attr.id]="'faq-question-' + i"
+					>
+						<span>{{ item.question }}</span>
+						<svg
+							class="faq-icon"
+							[class.expanded]="item.expanded"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							aria-hidden="true"
 						>
-							<span>{{ item.question }}</span>
-							<span class="transition group-open:rotate-180">
-								<svg
-									class="h-5 w-5 text-gray-500"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M19 9l-7 7-7-7"
-									></path>
-								</svg>
-							</span>
-						</summary>
-						<div class="p-4 pt-0 text-gray-600">
-							<p>{{ item.answer }}</p>
-						</div>
-					</details>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M19 9l-7 7-7-7"
+							/>
+						</svg>
+					</button>
+					<div
+						*ngIf="item.expanded"
+						class="faq-answer"
+						[attr.id]="'faq-answer-' + i"
+						[attr.aria-labelledby]="'faq-question-' + i"
+						role="region"
+					>
+						<p>{{ item.answer }}</p>
+					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 
 		<!-- CTA Final -->
-		<div class="text-center">
+		<div class="final-cta">
 			<button
 				(click)="selectPlan(1)"
-				class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+				class="final-cta-button"
+				type="button"
+				aria-label="Começar teste gratuito do plano premium"
 			>
 				<span>Começar agora grátis</span>
 				<svg
-					class="h-5 w-5 ml-2"
+					class="final-cta-icon"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
+					aria-hidden="true"
 				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						stroke-width="2"
 						d="M14 5l7 7m0 0l-7 7m7-7H3"
-					></path>
+					/>
 				</svg>
 			</button>
 		</div>

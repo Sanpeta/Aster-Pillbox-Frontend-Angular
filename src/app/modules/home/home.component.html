@@ -1,258 +1,89 @@
-<div class="h-screen w-screen overflow-scroll">
-	<main class="flex min-h-screen flex-col items-center">
-		<app-loader [isLoading]="loading"></app-loader>
+<!-- Skip Link para acessibilidade -->
+<!-- <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a> -->
+
+<div class="home-container">
+	<main id="main-content" class="home-main">
+		<!-- Loader Component -->
+		<app-loader [isLoading]="loading()"></app-loader>
+
+		<!-- Dialog Container -->
 		<ng-template #dialogContainer></ng-template>
 
-		<!-- Navigation -->
-		<header
-			class="w-full bg-white border-b sticky top-0 z-50 shadow-sm transition-all"
-			[class.shadow-md]="currentSection !== 'home'"
+		<!-- Header Component -->
+		<app-header
+			[currentSection]="currentSection()"
+			[isLogged]="isLogged()"
+			(navigationClick)="onNavigationClick($event)"
+		></app-header>
+
+		<!-- Seções com referencias ViewChild -->
+		<section #homeSection id="home-section" aria-label="Seção inicial">
+			<app-hero-section></app-hero-section>
+		</section>
+
+		<section id="showcase-section" aria-label="Demonstração do aplicativo">
+			<app-showcase></app-showcase>
+		</section>
+
+		<section
+			#featuresSection
+			id="features-section"
+			aria-label="Funcionalidades"
 		>
-			<div
-				class="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 md:px-6"
-			>
-				<a routerLink="/" class="flex items-center gap-2">
-					<img
-						src="/assets/images/logo-dark.png"
-						alt="Aster Pillbox Logo"
-						class="h-8 sm:h-10 w-auto"
-					/>
-				</a>
+			<app-features-section></app-features-section>
+		</section>
 
-				<!-- Desktop Navigation -->
-				<nav class="hidden md:flex gap-4 lg:gap-6">
-					<a
-						(click)="scrollToSection('home')"
-						class="text-sm font-medium transition-colors cursor-pointer"
-						[class.text-[#479cf8]]="currentSection === 'home'"
-						[class.text-gray-700]="currentSection !== 'home'"
-						>Home</a
-					>
-					<a
-						(click)="scrollToSection('features')"
-						class="text-sm font-medium transition-colors cursor-pointer"
-						[class.text-[#479cf8]]="currentSection === 'features'"
-						[class.text-gray-700]="currentSection !== 'features'"
-						>Funcionalidades</a
-					>
-					<a
-						(click)="scrollToSection('plans')"
-						class="text-sm font-medium transition-colors cursor-pointer"
-						[class.text-[#479cf8]]="currentSection === 'plans'"
-						[class.text-gray-700]="currentSection !== 'plans'"
-						>Planos</a
-					>
-					<a
-						(click)="scrollToSection('contact')"
-						class="text-sm font-medium transition-colors cursor-pointer"
-						[class.text-[#479cf8]]="currentSection === 'contact'"
-						[class.text-gray-700]="currentSection !== 'contact'"
-						>Fale Conosco</a
-					>
-					<a
-						routerLink="/blog"
-						class="text-sm font-medium transition-colors"
-						>Blog</a
-					>
-				</nav>
-
-				<div class="flex items-center gap-2 sm:gap-4">
-					<a
-						*ngIf="!isLogged"
-						routerLink="/login"
-						class="text-sm font-medium hover:text-[#479cf8] transition-colors hidden md:block"
-					>
-						Entrar
-					</a>
-					<a
-						*ngIf="isLogged"
-						routerLink="/dashboard"
-						class="text-sm font-medium hover:text-[#479cf8] transition-colors hidden md:block"
-					>
-						Meu Pillbox
-					</a>
-					<button
-						(click)="openWhatsApp()"
-						class="bg-[#25D366] hover:bg-[#1da851] px-3 sm:px-4 py-2 rounded-md text-white flex items-center transition-all hover:shadow-md text-sm"
-					>
-						<!-- WhatsApp Icon SVG -->
-						<svg
-							class="h-4 w-4 sm:mr-2"
-							fill="currentColor"
-							viewBox="0 0 448 512"
-						>
-							<path
-								d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
-							/>
-						</svg>
-						<span class="hidden sm:inline">WhatsApp</span>
-					</button>
-					<button
-						(click)="toggleMobileMenu()"
-						class="md:hidden border p-1.5 sm:p-2 rounded-md hover:bg-gray-100 transition-colors focus:outline-none"
-						aria-label="Menu mobile"
-					>
-						<svg
-							*ngIf="!isMobileMenuOpen"
-							class="h-5 w-5 sm:h-6 sm:w-6"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							viewBox="0 0 24 24"
-						>
-							<line x1="4" x2="20" y1="12" y2="12" />
-							<line x1="4" x2="20" y1="6" y2="6" />
-							<line x1="4" x2="20" y1="18" y2="18" />
-						</svg>
-						<svg
-							*ngIf="isMobileMenuOpen"
-							class="h-5 w-5 sm:h-6 sm:w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							stroke-width="2"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
-				</div>
-			</div>
-
-			<!-- Mobile Menu -->
-			<div
-				*ngIf="isMobileMenuOpen"
-				[@slideInOut]
-				class="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full max-w-full z-40"
-			>
-				<nav class="flex flex-col p-4 space-y-3">
-					<a
-						(click)="scrollToSection('home'); closeMobileMenu()"
-						class="text-sm font-medium py-2 px-3 rounded transition-colors cursor-pointer"
-						[class.bg-[#479cf8]]="currentSection === 'home'"
-						[class.text-[#479cf8]]="currentSection === 'home'"
-						>Home</a
-					>
-					<a
-						(click)="scrollToSection('features'); closeMobileMenu()"
-						class="text-sm font-medium py-2 px-3 rounded transition-colors cursor-pointer"
-						[class.bg-[#479cf8]]="currentSection === 'features'"
-						[class.text-[#479cf8]]="currentSection === 'features'"
-						>Funcionalidades</a
-					>
-					<a
-						(click)="scrollToSection('plans'); closeMobileMenu()"
-						class="text-sm font-medium py-2 px-3 rounded transition-colors cursor-pointer"
-						[class.bg-[#479cf8]]="currentSection === 'plans'"
-						[class.text-[#479cf8]]="currentSection === 'plans'"
-						>Planos</a
-					>
-					<a
-						(click)="scrollToSection('contact'); closeMobileMenu()"
-						class="text-sm font-medium py-2 px-3 rounded transition-colors cursor-pointer"
-						[class.bg-[#479cf8]]="currentSection === 'contact'"
-						[class.text-[#479cf8]]="currentSection === 'contact'"
-						>Fale Conosco</a
-					>
-					<a
-						routerLink="/blog"
-						(click)="closeMobileMenu()"
-						class="text-sm font-medium py-2 px-3 rounded transition-colors"
-						>Blog</a
-					>
-					<div class="border-t border-gray-100 pt-2">
-						<a
-							*ngIf="!isLogged"
-							routerLink="/login"
-							class="text-sm font-medium py-2 px-3 rounded transition-colors block hover:bg-gray-50"
-							(click)="closeMobileMenu()"
-						>
-							Entrar
-						</a>
-						<a
-							*ngIf="isLogged"
-							routerLink="/dashboard"
-							class="text-sm font-medium py-2 px-3 rounded transition-colors block hover:bg-gray-50"
-							(click)="closeMobileMenu()"
-						>
-							Meu Pillbox
-						</a>
-					</div>
-				</nav>
-			</div>
-		</header>
-
-		<!-- Sections with ViewChild references -->
-		<div #homeSection>
-			<app-hero-section />
-		</div>
-
-		<app-showcase />
-
-		<!-- <app-professional-section
-			(submitForm)="onSubmitContactProfessional()"
-			[formGroup]="sendContactProfessionalForm"
-		/> -->
-
-		<!-- <div #videoSection>
-			<app-video-section />
-		</div> -->
-
-		<div #featuresSection>
-			<app-features-section />
-		</div>
-
-		<app-whatsapp-community />
-
-		<div #plansSection>
+		<section #plansSection id="plans-section" aria-label="Planos e preços">
 			<app-pricing-section
 				(freePlanSelected)="freePlan()"
 				(premiumMonthlySelected)="premiumPlan30Days()"
 				(premiumYearlySelected)="premiumPlan1year()"
-			/>
-		</div>
-
-		<app-blog-preview-section />
-
-		<!-- <div #contactSection>
-			<app-contact-section
-				(submitForm)="onSubmitMessage()"
-				[formGroup]="sendMessageForm"
-			/>
-		</div> -->
+			>
+			</app-pricing-section>
+		</section>
 
 		<!-- Footer -->
-		<footer class="w-full bg-white border-t py-6">
-			<div class="container px-4 md:px-6">
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-					<div>
-						<a routerLink="/" class="flex items-center gap-2">
+		<footer class="home-footer" role="contentinfo">
+			<div class="footer-container">
+				<div class="footer-grid">
+					<!-- Branding -->
+					<div class="footer-brand">
+						<a
+							routerLink="/"
+							class="footer-logo"
+							aria-label="Aster Pillbox"
+						>
 							<img
 								src="/assets/images/logo-dark.png"
-								alt="Aster Pillbox Logo"
-								class="h-10 w-auto"
+								alt="Aster Pillbox"
+								class="footer-logo-image"
+								width="120"
+								height="40"
 							/>
 						</a>
-						<p class="mt-2 text-sm text-gray-500">
+						<p class="footer-description">
 							Seu aliado na gestão da medicação para uma vida mais
 							saudável e tranquila.
 						</p>
 					</div>
-					<div>
-						<h3 class="text-sm font-medium mb-4">Links Rápidos</h3>
-						<ul class="space-y-2">
+
+					<!-- Links Rápidos -->
+					<div class="footer-section">
+						<h3>Links Rápidos</h3>
+						<ul class="footer-links" role="list">
 							<li>
 								<a
 									(click)="scrollToSection('home')"
-									class="text-sm text-gray-500 hover:text-[#479cf8] cursor-pointer flex items-center"
+									(keydown.enter)="scrollToSection('home')"
+									class="footer-link"
+									tabindex="0"
+									role="button"
 								>
 									<svg
-										class="w-3 h-3 mr-2"
+										class="footer-link-icon"
 										fill="currentColor"
 										viewBox="0 0 20 20"
+										aria-hidden="true"
 									>
 										<path
 											fill-rule="evenodd"
@@ -266,12 +97,18 @@
 							<li>
 								<a
 									(click)="scrollToSection('features')"
-									class="text-sm text-gray-500 hover:text-[#479cf8] cursor-pointer flex items-center"
+									(keydown.enter)="
+										scrollToSection('features')
+									"
+									class="footer-link"
+									tabindex="0"
+									role="button"
 								>
 									<svg
-										class="w-3 h-3 mr-2"
+										class="footer-link-icon"
 										fill="currentColor"
 										viewBox="0 0 20 20"
+										aria-hidden="true"
 									>
 										<path
 											fill-rule="evenodd"
@@ -285,12 +122,16 @@
 							<li>
 								<a
 									(click)="scrollToSection('plans')"
-									class="text-sm text-gray-500 hover:text-[#479cf8] cursor-pointer flex items-center"
+									(keydown.enter)="scrollToSection('plans')"
+									class="footer-link"
+									tabindex="0"
+									role="button"
 								>
 									<svg
-										class="w-3 h-3 mr-2"
+										class="footer-link-icon"
 										fill="currentColor"
 										viewBox="0 0 20 20"
+										aria-hidden="true"
 									>
 										<path
 											fill-rule="evenodd"
@@ -302,14 +143,12 @@
 								</a>
 							</li>
 							<li>
-								<a
-									routerLink="/blog"
-									class="text-sm text-gray-500 hover:text-[#479cf8] flex items-center"
-								>
+								<a routerLink="/blog" class="footer-link">
 									<svg
-										class="w-3 h-3 mr-2"
+										class="footer-link-icon"
 										fill="currentColor"
 										viewBox="0 0 20 20"
+										aria-hidden="true"
 									>
 										<path
 											fill-rule="evenodd"
@@ -322,39 +161,24 @@
 							</li>
 						</ul>
 					</div>
-					<div>
-						<h3 class="text-sm font-medium mb-4">Comunidade</h3>
-						<ul class="space-y-2">
-							<li>
-								<a
-									(click)="openWhatsApp()"
-									class="text-sm text-gray-500 hover:text-[#25D366] flex items-center transition-colors cursor-pointer"
-								>
-									<!-- WhatsApp Icon SVG -->
-									<svg
-										class="mr-2 h-4 w-4"
-										fill="currentColor"
-										viewBox="0 0 448 512"
-									>
-										<path
-											d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
-										/>
-									</svg>
-									Grupo de Usuários
-								</a>
-							</li>
+
+					<!-- Redes Sociais -->
+					<div class="footer-section">
+						<h3>Redes Sociais</h3>
+						<ul class="footer-links" role="list">
 							<li>
 								<a
 									href="https://instagram.com/astertechofficial"
 									target="_blank"
 									rel="noopener noreferrer"
-									class="text-sm text-gray-500 hover:text-[#E4405F] flex items-center transition-colors"
+									class="footer-link footer-social-link instagram"
+									aria-label="Seguir no Instagram - abre em nova aba"
 								>
-									<!-- Instagram Icon -->
 									<svg
-										class="mr-2 h-4 w-4"
+										class="footer-link-icon"
 										fill="currentColor"
 										viewBox="0 0 448 512"
+										aria-hidden="true"
 									>
 										<path
 											d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
@@ -363,22 +187,49 @@
 									Instagram
 								</a>
 							</li>
+							<li>
+								<a
+									href="https://facebook.com/astertechofficial"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="footer-link footer-social-link facebook"
+									aria-label="Seguir no Facebook - abre em nova aba"
+								>
+									<svg
+										class="footer-link-icon"
+										fill="currentColor"
+										viewBox="0 0 320 512"
+										aria-hidden="true"
+									>
+										<path
+											d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+										/>
+									</svg>
+									Facebook
+								</a>
+							</li>
 						</ul>
 					</div>
-					<div>
-						<h3 class="text-sm font-medium mb-4">Contato</h3>
-						<ul class="space-y-2">
+
+					<!-- Contato -->
+					<div class="footer-section">
+						<h3>Contato</h3>
+						<ul class="footer-links" role="list">
 							<li>
 								<a
 									(click)="scrollToSection('contact')"
-									class="text-sm text-gray-500 hover:text-[#479cf8] cursor-pointer flex items-center"
+									(keydown.enter)="scrollToSection('contact')"
+									class="footer-link"
+									tabindex="0"
+									role="button"
 								>
 									<svg
-										class="w-4 h-4 mr-2"
+										class="footer-link-icon"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
 										stroke-width="2"
+										aria-hidden="true"
 									>
 										<path
 											stroke-linecap="round"
@@ -391,15 +242,17 @@
 							</li>
 							<li>
 								<a
-									href="mailto:contato@asterpillbox.com.br"
-									class="text-sm text-gray-500 hover:text-[#479cf8] flex items-center"
+									href="mailto:contato&#64;asterpillbox.com.br"
+									class="footer-link"
+									aria-label="Enviar email para contato@asterpillbox.com.br"
 								>
 									<svg
-										class="w-4 h-4 mr-2"
+										class="footer-link-icon"
 										fill="none"
 										stroke="currentColor"
 										viewBox="0 0 24 24"
 										stroke-width="2"
+										aria-hidden="true"
 									>
 										<path
 											stroke-linecap="round"
@@ -413,75 +266,55 @@
 						</ul>
 					</div>
 				</div>
-				<div class="mt-8 border-t pt-6 text-center">
-					<p class="text-xs text-gray-500">
+
+				<!-- Footer Bottom -->
+				<div class="footer-bottom">
+					<p class="footer-copyright">
 						© 2025 Aster Tech — &#64;astertechofficial
 					</p>
-					<div
-						class="mt-2 flex justify-center space-x-4 text-xs text-gray-400"
-					>
+					<nav class="footer-legal" aria-label="Links legais">
 						<a
 							href="/termos-de-uso"
-							class="hover:text-[#479cf8] transition-colors"
-							>Termos de Uso</a
+							class="footer-legal-link"
+							rel="noopener"
 						>
+							Termos de Uso
+						</a>
 						<a
 							href="/politica-de-privacidade"
-							class="hover:text-[#479cf8] transition-colors"
-							>Política de Privacidade</a
+							class="footer-legal-link"
+							rel="noopener"
 						>
-					</div>
+							Política de Privacidade
+						</a>
+					</nav>
 				</div>
 			</div>
 		</footer>
 
-		<!-- Fixed WhatsApp Button -->
-		<div class="fixed bottom-6 right-6 z-50 group">
-			<div
-				class="absolute bottom-full right-0 mb-2 w-48 p-2 bg-white rounded-lg shadow-lg text-xs text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-			>
-				Fale conosco pelo WhatsApp para tirar dúvidas ou começar hoje
-				mesmo!
-			</div>
+		<!-- Botão Voltar ao Topo -->
+		<div *ngIf="currentSection() !== 'home'" class="back-to-top">
 			<button
-				(click)="openWhatsApp()"
-				class="rounded-full w-14 h-14 bg-[#25D366] hover:bg-[#1da851] shadow-lg flex items-center justify-center transition-all hover:scale-110"
-				aria-label="Contato via WhatsApp"
+				(click)="scrollToSection('home')"
+				class="back-to-top-btn"
+				aria-label="Voltar ao topo"
+				type="button"
 			>
-				<!-- WhatsApp Icon SVG -->
 				<svg
-					class="h-6 w-6 text-white"
-					fill="currentColor"
-					viewBox="0 0 448 512"
+					class="back-to-top-icon"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					stroke-width="2"
+					aria-hidden="true"
 				>
 					<path
-						d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M5 10l7-7m0 0l7 7m-7-7v18"
 					/>
 				</svg>
-				<span class="sr-only">Contato via WhatsApp</span>
 			</button>
 		</div>
-
-		<!-- Back to top button -->
-		<button
-			*ngIf="currentSection !== 'home'"
-			(click)="scrollToSection('home')"
-			class="fixed bottom-6 left-6 z-40 rounded-full w-10 h-10 bg-white border shadow-md flex items-center justify-center transition-all hover:shadow-lg"
-			aria-label="Voltar ao topo"
-		>
-			<svg
-				class="h-4 w-4 text-gray-600"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-				stroke-width="2"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M5 10l7-7m0 0l7 7m-7-7v18"
-				/>
-			</svg>
-		</button>
 	</main>
 </div>

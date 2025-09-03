@@ -1,1 +1,189 @@
-<p>contact-section works!</p>
+<section id="contact" class="contact-section" aria-labelledby="contact-title">
+	<div class="contact-container">
+		<div class="contact-grid">
+			<div [@fadeInLeft] class="contact-info">
+				<h2 id="contact-title" class="contact-title">Fale Conosco</h2>
+				<p class="contact-description">
+					Mande sua mensagem ou dúvida para nós e entraremos em
+					contato assim que possível.
+				</p>
+
+				<div class="contact-details">
+					<h3 class="contact-details-title">
+						Informações de Contato
+					</h3>
+					<ul class="contact-list" role="list">
+						<li class="contact-item" role="listitem">
+							<div class="contact-icon contact-icon-email">
+								<svg
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									viewBox="0 0 24 24"
+									aria-hidden="true"
+								>
+									<rect
+										width="20"
+										height="16"
+										x="2"
+										y="4"
+										rx="2"
+									/>
+									<path
+										d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+									/>
+								</svg>
+							</div>
+							<span>contato&#64;asterpillbox.com.br</span>
+						</li>
+						<li class="contact-item" role="listitem">
+							<div class="contact-icon contact-icon-whatsapp">
+								<svg
+									fill="currentColor"
+									viewBox="0 0 448 512"
+									aria-hidden="true"
+								>
+									<path
+										d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157z"
+									/>
+								</svg>
+							</div>
+							<span>(47) 99282-0932 (WhatsApp)</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div [@fadeInRight] class="contact-form-container">
+				<form
+					[formGroup]="formGroup"
+					(ngSubmit)="onSubmit()"
+					class="contact-form"
+					novalidate
+				>
+					<div class="form-field">
+						<label for="contact-name" class="form-label"
+							>Nome*</label
+						>
+						<input
+							id="contact-name"
+							formControlName="name"
+							class="form-input"
+							[class.form-input-error]="
+								formGroup.get('name')?.invalid &&
+								formGroup.get('name')?.touched
+							"
+							required
+							aria-describedby="name-error"
+						/>
+						<div
+							*ngIf="
+								formGroup.get('name')?.invalid &&
+								formGroup.get('name')?.touched
+							"
+							id="name-error"
+							class="form-error"
+							role="alert"
+						>
+							Nome é obrigatório (mínimo 3 caracteres)
+						</div>
+					</div>
+
+					<div class="form-field">
+						<label for="contact-email" class="form-label"
+							>Email*</label
+						>
+						<input
+							id="contact-email"
+							type="email"
+							formControlName="email"
+							class="form-input"
+							[class.form-input-error]="
+								formGroup.get('email')?.invalid &&
+								formGroup.get('email')?.touched
+							"
+							required
+							aria-describedby="email-error"
+						/>
+						<div
+							*ngIf="
+								formGroup.get('email')?.invalid &&
+								formGroup.get('email')?.touched
+							"
+							id="email-error"
+							class="form-error"
+							role="alert"
+						>
+							Email válido é obrigatório
+						</div>
+					</div>
+
+					<div class="form-field">
+						<label for="contact-message" class="form-label"
+							>Mensagem*</label
+						>
+						<textarea
+							id="contact-message"
+							formControlName="message"
+							class="form-textarea"
+							[class.form-input-error]="
+								formGroup.get('message')?.invalid &&
+								formGroup.get('message')?.touched
+							"
+							rows="5"
+							required
+							aria-describedby="message-error"
+						>
+						</textarea>
+						<div
+							*ngIf="
+								formGroup.get('message')?.invalid &&
+								formGroup.get('message')?.touched
+							"
+							id="message-error"
+							class="form-error"
+							role="alert"
+						>
+							Mensagem é obrigatória (mínimo 10 caracteres)
+						</div>
+					</div>
+
+					<button
+						type="submit"
+						class="form-submit"
+						[disabled]="formGroup.invalid"
+						[attr.aria-describedby]="
+							formGroup.invalid ? 'form-invalid' : null
+						"
+					>
+						Enviar Mensagem
+					</button>
+
+					<div class="whatsapp-alternative">
+						<p class="whatsapp-text">
+							Ou fale diretamente pelo WhatsApp
+						</p>
+						<button
+							type="button"
+							(click)="openWhatsApp()"
+							class="whatsapp-button"
+						>
+							<svg
+								class="whatsapp-icon"
+								fill="currentColor"
+								viewBox="0 0 448 512"
+								aria-hidden="true"
+							>
+								<path
+									d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157z"
+								/>
+							</svg>
+							Falar pelo WhatsApp
+						</button>
+						<p class="response-time">Respondemos em até 2 horas</p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

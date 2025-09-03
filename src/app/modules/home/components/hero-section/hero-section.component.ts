@@ -1,10 +1,13 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
 	AfterViewInit,
 	Component,
 	ElementRef,
+	inject,
+	OnDestroy,
 	OnInit,
+	PLATFORM_ID,
 	signal,
 	ViewChild,
 } from '@angular/core';
@@ -13,8 +16,9 @@ import { RouterModule } from '@angular/router';
 @Component({
 	selector: 'app-hero-section',
 	standalone: true,
-	imports: [CommonModule, RouterModule, NgClass],
+	imports: [CommonModule, RouterModule],
 	templateUrl: './hero-section.component.html',
+	styleUrls: ['./hero-section.component.css'],
 	animations: [
 		trigger('fadeInUp', [
 			transition(':enter', [
@@ -33,70 +37,140 @@ import { RouterModule } from '@angular/router';
 		]),
 	],
 })
-export class HeroSection implements OnInit, AfterViewInit {
-	isPlaying = signal(false);
-	isVideoLoaded = signal(false);
-	showPlayButton = signal(true);
-	videoUrl = 'assets/videos/app-demo.mp4'; // Update with your actual video path
+export class HeroSection implements OnInit, AfterViewInit, OnDestroy {
+	private readonly platformId = inject(PLATFORM_ID);
+	private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-	@ViewChild('videoRef') videoRef!: ElementRef<HTMLVideoElement>;
+	// Signals para controle de estado
+	readonly isPlaying = signal(false);
+	readonly isVideoLoaded = signal(false);
+	readonly showPlayButton = signal(true);
+
+	// Configuração do vídeo
+	readonly videoUrl = 'assets/videos/app-demo.mp4';
+	readonly posterUrl = 'assets/images/app-preview.jpg';
+
+	// ViewChild para referência ao vídeo
+	@ViewChild('videoRef', { static: false })
+	videoRef!: ElementRef<HTMLVideoElement>;
 
 	ngOnInit(): void {
-		// Initialize any data needed
+		// Componente inicializado
 	}
 
 	ngAfterViewInit(): void {
-		const video = this.videoRef.nativeElement;
-
-		// Add event listeners
-		video.addEventListener('loadeddata', () => {
-			this.isVideoLoaded.set(true);
-		});
-
-		video.addEventListener('play', () => {
-			this.isPlaying.set(true);
-			this.showPlayButton.set(false);
-		});
-
-		video.addEventListener('pause', () => {
-			this.isPlaying.set(false);
-			this.showPlayButton.set(true);
-		});
-
-		video.addEventListener('ended', () => {
-			this.isPlaying.set(false);
-			this.showPlayButton.set(true);
-			// Optionally reset video position
-			video.currentTime = 0;
-		});
-	}
-
-	togglePlay(): void {
-		const video = this.videoRef.nativeElement;
-		if (this.isPlaying()) {
-			video.pause();
-		} else {
-			// Add a promise to handle autoplay restrictions
-			const playPromise = video.play();
-
-			if (playPromise !== undefined) {
-				playPromise
-					.then(() => {
-						// Video started playing successfully
-					})
-					.catch((error) => {
-						// Auto-play was prevented
-						console.error('Play was prevented:', error);
-						this.isPlaying.set(false);
-					});
-			}
+		if (this.isBrowser && this.videoRef) {
+			this.setupVideoEventListeners();
 		}
 	}
 
-	// Helper method to handle touch events and hover on mobile
+	ngOnDestroy(): void {
+		if (this.isBrowser && this.videoRef?.nativeElement) {
+			this.removeVideoEventListeners();
+		}
+	}
+
+	private setupVideoEventListeners(): void {
+		const video = this.videoRef.nativeElement;
+
+		// Event listeners para controle do vídeo
+		video.addEventListener('loadeddata', this.onVideoLoaded);
+		video.addEventListener('play', this.onVideoPlay);
+		video.addEventListener('pause', this.onVideoPause);
+		video.addEventListener('ended', this.onVideoEnded);
+		video.addEventListener('error', this.onVideoError);
+	}
+
+	private removeVideoEventListeners(): void {
+		const video = this.videoRef.nativeElement;
+
+		video.removeEventListener('loadeddata', this.onVideoLoaded);
+		video.removeEventListener('play', this.onVideoPlay);
+		video.removeEventListener('pause', this.onVideoPause);
+		video.removeEventListener('ended', this.onVideoEnded);
+		video.removeEventListener('error', this.onVideoError);
+	}
+
+	private readonly onVideoLoaded = (): void => {
+		this.isVideoLoaded.set(true);
+	};
+
+	private readonly onVideoPlay = (): void => {
+		this.isPlaying.set(true);
+		this.showPlayButton.set(false);
+	};
+
+	private readonly onVideoPause = (): void => {
+		this.isPlaying.set(false);
+		this.showPlayButton.set(true);
+	};
+
+	private readonly onVideoEnded = (): void => {
+		this.isPlaying.set(false);
+		this.showPlayButton.set(true);
+		// Reset video position
+		if (this.videoRef?.nativeElement) {
+			this.videoRef.nativeElement.currentTime = 0;
+		}
+	};
+
+	private readonly onVideoError = (event: Event): void => {
+		console.error('Erro ao carregar vídeo:', event);
+		this.isVideoLoaded.set(false);
+	};
+
+	togglePlay(): void {
+		if (!this.isBrowser || !this.videoRef?.nativeElement) return;
+
+		const video = this.videoRef.nativeElement;
+
+		if (this.isPlaying()) {
+			video.pause();
+		} else {
+			this.playVideo(video);
+		}
+	}
+
+	private async playVideo(video: HTMLVideoElement): Promise<void> {
+		try {
+			await video.play();
+		} catch (error) {
+			console.error('Erro ao reproduzir vídeo:', error);
+			this.isPlaying.set(false);
+			this.showPlayButton.set(true);
+		}
+	}
+
 	onTouchStart(): void {
 		if (!this.isPlaying()) {
 			this.showPlayButton.set(true);
 		}
+	}
+
+	onKeyboardInteraction(event: KeyboardEvent): void {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			this.togglePlay();
+		}
+	}
+
+	// Métodos para navegação externa
+	openAppStore(): void {
+		if (!this.isBrowser) return;
+		window.open('#', '_blank', 'noopener,noreferrer');
+	}
+
+	openPlayStore(): void {
+		if (!this.isBrowser) return;
+		window.open('#', '_blank', 'noopener,noreferrer');
+	}
+
+	joinCommunity(): void {
+		if (!this.isBrowser) return;
+		const message = encodeURIComponent(
+			'Olá! Gostaria de participar da comunidade Aster Pillbox.'
+		);
+		const whatsappUrl = `https://wa.me/5547992820932?text=${message}`;
+		window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 	}
 }

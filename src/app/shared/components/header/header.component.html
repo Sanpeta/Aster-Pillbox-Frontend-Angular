@@ -1,0 +1,264 @@
+<header
+	class="header"
+	[class.header--scrolled]="isScrolled()"
+	role="banner"
+	(keydown)="onEscapeKey($event)"
+>
+	<div class="header__container">
+		<!-- Logo -->
+		<a
+			routerLink="/"
+			class="header__logo"
+			aria-label="Ir para página inicial do Aster Pillbox"
+		>
+			<img
+				src="/assets/images/logo-dark.png"
+				alt="Aster Pillbox"
+				class="header__logo-image"
+				width="120"
+				height="32"
+			/>
+		</a>
+
+		<!-- Desktop Navigation -->
+		<nav
+			class="header__nav header__nav--desktop"
+			role="navigation"
+			aria-label="Navegação principal"
+		>
+			<a
+				*ngFor="let item of navigationItems"
+				(click)="onNavigationClick(item.id)"
+				(keydown)="onKeyboardNavigate($event, item.id)"
+				class="header__nav-link"
+				[class.header__nav-link--active]="currentSection === item.id"
+				[attr.aria-label]="item.ariaLabel"
+				tabindex="0"
+				role="button"
+			>
+				{{ item.label }}
+			</a>
+
+			<!-- Blog Link -->
+			<a
+				(click)="navigateToBlog()"
+				(keydown.enter)="navigateToBlog()"
+				(keydown.space)="navigateToBlog()"
+				class="header__nav-link"
+				tabindex="0"
+				role="button"
+				aria-label="Ir para blog"
+			>
+				Blog
+			</a>
+		</nav>
+
+		<!-- Header Actions -->
+		<div class="header__actions">
+			<!-- Login/Dashboard Button -->
+			<button
+				*ngIf="!isLogged"
+				(click)="navigateToLogin()"
+				class="header__btn header__btn--secondary"
+				aria-label="Fazer login"
+				type="button"
+			>
+				<svg
+					class="header__btn-icon"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+					/>
+				</svg>
+				<span class="header__btn-text">Entrar</span>
+			</button>
+
+			<button
+				*ngIf="isLogged"
+				(click)="navigateToDashboard()"
+				class="header__btn header__btn--primary"
+				aria-label="Acessar dashboard"
+				type="button"
+			>
+				<svg
+					class="header__btn-icon"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+					/>
+				</svg>
+				<span class="header__btn-text">Dashboard</span>
+			</button>
+
+			<!-- Mobile Menu Toggle -->
+			<button
+				(click)="toggleMobileMenu()"
+				class="header__mobile-toggle"
+				[attr.aria-expanded]="isMobileMenuOpen()"
+				aria-label="Menu de navegação"
+				aria-controls="mobile-menu"
+				type="button"
+			>
+				<svg
+					*ngIf="!isMobileMenuOpen()"
+					class="header__mobile-icon"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M4 6h16M4 12h16M4 18h16"
+					/>
+				</svg>
+				<svg
+					*ngIf="isMobileMenuOpen()"
+					class="header__mobile-icon"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
+		</div>
+	</div>
+</header>
+
+<!-- Mobile Menu Backdrop and Content -->
+<div
+	*ngIf="isMobileMenuOpen()"
+	@fadeBackdrop
+	class="header__mobile-backdrop"
+	(click)="onBackdropClick($event)"
+>
+	<nav
+		@slideInOut
+		id="mobile-menu"
+		class="header__mobile-menu"
+		role="navigation"
+		aria-label="Menu de navegação mobile"
+	>
+		<div class="header__mobile-content">
+			<!-- Mobile Navigation Links -->
+			<div class="header__mobile-nav">
+				<a
+					*ngFor="let item of navigationItems"
+					(click)="onNavigationClick(item.id)"
+					(keydown)="onKeyboardNavigate($event, item.id)"
+					class="header__mobile-link"
+					[class.header__mobile-link--active]="
+						currentSection === item.id
+					"
+					[attr.aria-label]="item.ariaLabel"
+					tabindex="0"
+					role="button"
+				>
+					<span class="header__mobile-link-text">{{
+						item.label
+					}}</span>
+					<svg
+						*ngIf="currentSection === item.id"
+						class="header__mobile-link-icon"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						aria-hidden="true"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+				</a>
+
+				<!-- Blog Link -->
+				<a
+					(click)="navigateToBlog()"
+					(keydown.enter)="navigateToBlog()"
+					(keydown.space)="navigateToBlog()"
+					class="header__mobile-link"
+					tabindex="0"
+					role="button"
+					aria-label="Ir para blog"
+				>
+					<span class="header__mobile-link-text">Blog</span>
+				</a>
+			</div>
+
+			<!-- Mobile Actions -->
+			<div class="header__mobile-actions">
+				<button
+					*ngIf="!isLogged"
+					(click)="navigateToLogin()"
+					class="header__mobile-btn header__mobile-btn--secondary"
+					aria-label="Fazer login"
+					type="button"
+				>
+					<svg
+						class="header__mobile-btn-icon"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+						/>
+					</svg>
+					Entrar
+				</button>
+
+				<button
+					*ngIf="isLogged"
+					(click)="navigateToDashboard()"
+					class="header__mobile-btn header__mobile-btn--primary"
+					aria-label="Acessar dashboard"
+					type="button"
+				>
+					<svg
+						class="header__mobile-btn-icon"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+						/>
+					</svg>
+					Acessar Dashboard
+				</button>
+			</div>
+		</div>
+	</nav>
+</div>

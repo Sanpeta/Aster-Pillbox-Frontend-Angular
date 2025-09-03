@@ -13,6 +13,7 @@
 html {
 	height: 100%;
 	font-size: 16px;
+	overflow-x: hidden; /* Previne scroll horizontal */
 }
 
 body {
@@ -26,6 +27,26 @@ body {
 	background-color: #ffffff;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden; /* Previne scroll horizontal */
+}
+
+/* Reset para app-root e componentes principais */
+app-root {
+	display: block;
+	width: 100%;
+	min-height: 100vh;
+}
+
+/* Reset para componentes Angular que devem ocupar largura total */
+app-header,
+app-home,
+app-hero-section,
+app-showcase,
+app-features-section,
+app-pricing-section {
+	display: block;
+	width: 100%;
+	max-width: none;
 }
 
 img,
@@ -118,6 +139,13 @@ a {
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 var(--spacing-4);
+}
+
+/* Utility para largura completa sem container */
+.full-width {
+	width: 100vw;
+	margin-left: calc(-50vw + 50%);
+	margin-right: calc(-50vw + 50%);
 }
 
 .flex {
@@ -448,6 +476,21 @@ a {
 	}
 }
 
+/* ===== FIXES PARA LARGURA COMPLETA ===== */
+/* Garante que seções ocupem largura total */
+section {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+/* Prevenção de overflow horizontal */
+.home-container,
+.home-main {
+	overflow-x: hidden;
+	max-width: 100vw;
+}
+
 /* ===== RESPONSIVIDADE ===== */
 @media (min-width: 768px) {
 	.md\:flex {
@@ -464,6 +507,10 @@ a {
 
 	.md\:w-1\/2 {
 		width: 50%;
+	}
+
+	.container {
+		padding: 0 var(--spacing-6);
 	}
 }
 
@@ -486,5 +533,9 @@ a {
 
 	.lg\:w-1\/2 {
 		width: 50%;
+	}
+
+	.container {
+		padding: 0 var(--spacing-8);
 	}
 }

@@ -1,211 +1,337 @@
 <section
 	id="features"
-	class="w-full py-14 md:py-24 bg-gradient-to-b from-gray-50 to-white"
+	class="features-section"
+	aria-labelledby="features-title"
 >
-	<div class="container px-4 md:px-6 mx-auto">
-		<div class="text-center mb-12">
-			<h2
-				class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900"
-			>
-				Funcionalidades
+	<div class="features-container">
+		<!-- Header da Seção -->
+		<div class="features-header">
+			<span class="features-badge">TECNOLOGIA AVANÇADA</span>
+			<h2 id="features-title" class="features-title">
+				Recursos que Revolucionam o Cuidado com a Saúde
 			</h2>
-			<p class="text-gray-600 md:text-lg/relaxed mt-4 max-w-2xl mx-auto">
-				Conheça os recursos que tornam o Aster Pillbox a solução
-				definitiva para gerenciar seus medicamentos com precisão e
-				tranquilidade.
+			<p class="features-description">
+				Nossa plataforma combina IoT, inteligência artificial e medicina
+				de precisão para ofertar uma experiência única de gestão de
+				medicamentos e saúde.
 			</p>
 		</div>
 
-		<!-- Loading state -->
-		<div *ngIf="isLoading" class="flex justify-center items-center py-20">
-			<div
-				class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#479cf8]"
-			></div>
-		</div>
-
-		<!-- Features grid -->
+		<!-- Métricas de Impacto -->
 		<div
-			*ngIf="!isLoading"
-			[@staggerAnimation]
-			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+			*ngIf="healthMetrics.length > 0"
+			@fadeInScale
+			class="health-metrics"
 		>
-			<div
-				*ngFor="let feature of features; index as i; trackBy: trackByFn"
-				class="h-full group"
-			>
-				<div
-					class="h-full transition-all duration-300 bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md hover:border-[#479cf8]/20 hover:translate-y-[-4px]"
-				>
-					<div class="p-6 md:p-8 flex flex-col h-full">
-						<!-- Icon container with transition effect -->
-						<div
-							class="mb-5 bg-blue-50 p-3 rounded-lg inline-flex transition-all duration-300 group-hover:bg-[#479cf8]/10"
+			<div *ngFor="let metric of healthMetrics" class="metric-card">
+				<div class="metric-icon">
+					<svg
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							[attr.d]="metric.icon"
+						></path>
+					</svg>
+				</div>
+				<div class="metric-content">
+					<div class="metric-value">
+						{{ metric.value }}
+						<span
+							class="metric-trend"
+							[class.trend-up]="metric.trend === 'up'"
+							[class.trend-down]="metric.trend === 'down'"
+							[class.trend-stable]="metric.trend === 'stable'"
+							[attr.aria-label]="'Tendência: ' + metric.trend"
 						>
-							<ng-container [ngSwitch]="feature.icon">
-								<svg
-									*ngSwitchCase="'clock'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-									/>
-								</svg>
-								<svg
-									*ngSwitchCase="'history'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-									/>
-								</svg>
-								<svg
-									*ngSwitchCase="'bell'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-									/>
-								</svg>
-								<svg
-									*ngSwitchCase="'package'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-									/>
-								</svg>
-								<svg
-									*ngSwitchCase="'calendar'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-									/>
-								</svg>
-								<svg
-									*ngSwitchCase="'users'"
-									class="h-8 w-8 text-[#479cf8]"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-									/>
-								</svg>
-							</ng-container>
-						</div>
-
-						<!-- Content -->
-						<h3
-							class="text-xl font-bold mb-3 text-gray-900 group-hover:text-[#479cf8] transition-colors duration-300"
-						>
-							{{ feature.title }}
-						</h3>
-						<p class="text-gray-600 flex-grow leading-relaxed">
-							{{ feature.description }}
-						</p>
-
-						<!-- Actions -->
-						<div class="mt-6 flex flex-wrap gap-3">
-							<button
-								(click)="
-									handleActionClick(
-										feature.primaryAction,
-										feature.title
-									)
-								"
-								class="bg-[#479cf8] text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[#3682d8] focus:ring-2 focus:ring-[#479cf8]/50 focus:outline-none"
+							<svg
+								*ngIf="metric.trend === 'up'"
+								width="12"
+								height="12"
+								fill="currentColor"
+								viewBox="0 0 16 16"
 							>
-								{{ feature.primaryAction }}
-							</button>
-							<button
-								(click)="
-									handleActionClick(
-										feature.secondaryAction,
-										feature.title
-									)
-								"
-								class="text-[#479cf8] bg-transparent border-[#479cf8] border px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-[#479cf8]/10 focus:ring-2 focus:ring-[#479cf8]/50 focus:outline-none"
+								<path
+									d="M8 0a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L9 3.414V13a1 1 0 11-2 0V3.414L5.707 4.707a1 1 0 11-1.414-1.414l3-3A1 1 0 018 0z"
+								/>
+							</svg>
+							<svg
+								*ngIf="metric.trend === 'down'"
+								width="12"
+								height="12"
+								fill="currentColor"
+								viewBox="0 0 16 16"
 							>
-								{{ feature.secondaryAction }}
-							</button>
-						</div>
+								<path
+									d="M8 16a1 1 0 01-.707-.293l-3-3a1 1 0 111.414-1.414L7 12.586V3a1 1 0 112 0v9.586l1.293-1.293a1 1 0 111.414 1.414l-3 3A1 1 0 018 16z"
+								/>
+							</svg>
+							<svg
+								*ngIf="metric.trend === 'stable'"
+								width="12"
+								height="12"
+								fill="currentColor"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M1 8a1 1 0 011-1h12a1 1 0 110 2H2a1 1 0 01-1-1z"
+								/>
+							</svg>
+						</span>
 					</div>
+					<div class="metric-name">{{ metric.name }}</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- CTA Section -->
+		<!-- Estado de Loading -->
 		<div
-			class="mt-16 bg-gradient-to-r from-[#479cf8] to-[#3682d8] rounded-xl p-8 shadow-md"
+			*ngIf="isLoading"
+			class="features-loading"
+			role="status"
+			aria-label="Carregando funcionalidades"
 		>
-			<div
-				class="flex flex-col md:flex-row items-center justify-between gap-6"
+			<div class="loading-spinner"></div>
+			<span class="visually-hidden">Carregando funcionalidades...</span>
+		</div>
+
+		<!-- Controle de Visualização -->
+		<div *ngIf="!isLoading" class="features-controls">
+			<button
+				(click)="toggleAdvancedFeatures()"
+				class="toggle-advanced-btn"
+				[class.active]="showAdvancedFeatures"
+				type="button"
+				[attr.aria-label]="
+					showAdvancedFeatures
+						? 'Ocultar recursos profissionais'
+						: 'Mostrar todos os recursos'
+				"
 			>
-				<div class="flex items-center gap-5">
-					<div class="bg-white/20 p-3 rounded-full">
+				<span class="toggle-text">
+					{{
+						showAdvancedFeatures
+							? "Recursos Essenciais"
+							: "Ver Todos os Recursos"
+					}}
+				</span>
+				<svg
+					class="toggle-icon"
+					[class.rotated]="showAdvancedFeatures"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M19 9l-7 7-7-7"
+					/>
+				</svg>
+			</button>
+		</div>
+
+		<!-- Grid de Funcionalidades -->
+		<div
+			*ngIf="!isLoading"
+			@staggerAnimation
+			class="features-grid"
+			role="list"
+		>
+			<article
+				*ngFor="
+					let feature of getFilteredFeatures();
+					index as i;
+					trackBy: trackByFn
+				"
+				class="feature-card"
+				[class.premium-feature]="feature.requiresPremium"
+				[attr.data-complexity]="feature.complexity"
+				role="listitem"
+				[attr.aria-label]="feature.ariaLabel || feature.title"
+			>
+				<!-- Header do Card -->
+				<div class="feature-card-header">
+					<div class="feature-icon-container">
 						<svg
-							class="h-8 w-8 text-white"
+							class="feature-icon"
 							fill="none"
 							stroke="currentColor"
 							stroke-width="2"
 							viewBox="0 0 24 24"
+							[attr.aria-hidden]="true"
 						>
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
-								d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+								[attr.d]="getIconPath(feature.icon)"
+							></path>
+						</svg>
+					</div>
+
+					<div class="feature-metadata">
+						<span
+							class="complexity-badge"
+							[ngClass]="getComplexityColor(feature.complexity)"
+						>
+							{{ getComplexityLabel(feature.complexity) }}
+						</span>
+						<span
+							*ngIf="feature.requiresPremium"
+							class="premium-badge"
+							aria-label="Recurso premium"
+						>
+							<svg
+								width="12"
+								height="12"
+								fill="currentColor"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M8 0l2.5 5h5.5l-4.5 3.5 1.5 5.5L8 10.5 3.5 14l1.5-5.5L0 5h5.5L8 0z"
+								/>
+							</svg>
+							Premium
+						</span>
+					</div>
+				</div>
+
+				<!-- Conteúdo do Card -->
+				<div class="feature-card-content">
+					<h3 class="feature-title">{{ feature.title }}</h3>
+
+					<p class="feature-description">{{ feature.description }}</p>
+
+					<!-- Lista de Benefícios -->
+					<ul class="feature-benefits" role="list">
+						<li
+							*ngFor="let benefit of feature.benefits"
+							class="benefit-item"
+							role="listitem"
+						>
+							<svg
+								class="benefit-icon"
+								fill="currentColor"
+								viewBox="0 0 20 20"
+								aria-hidden="true"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							<span>{{ benefit }}</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Footer do Card -->
+				<div class="feature-card-footer">
+					<div class="feature-actions">
+						<button
+							(click)="
+								handleActionClick(
+									feature.primaryAction,
+									feature
+								)
+							"
+							class="feature-btn feature-btn-primary"
+							type="button"
+							[attr.aria-label]="
+								'Executar ação principal para ' + feature.title
+							"
+						>
+							{{ feature.primaryAction }}
+						</button>
+						<button
+							(click)="
+								handleActionClick(
+									feature.secondaryAction,
+									feature
+								)
+							"
+							class="feature-btn feature-btn-secondary"
+							type="button"
+							[attr.aria-label]="
+								'Executar ação secundária para ' + feature.title
+							"
+						>
+							{{ feature.secondaryAction }}
+						</button>
+					</div>
+				</div>
+			</article>
+		</div>
+
+		<!-- Seção CTA Melhorada -->
+		<div class="features-cta" @fadeInScale>
+			<div class="cta-background">
+				<div class="cta-pattern"></div>
+			</div>
+			<div class="cta-content">
+				<div class="cta-info">
+					<div class="cta-icon-container">
+						<svg
+							class="cta-icon"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							viewBox="0 0 24 24"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M13 10V3L4 14h7v7l9-11h-7z"
 							/>
 						</svg>
 					</div>
-					<div>
-						<h3 class="text-xl md:text-2xl font-bold text-white">
-							Quer mais dicas de saúde?
-						</h3>
-						<p class="text-white/80 md:text-lg">
-							Participe da nossa comunidade no WhatsApp
+					<div class="cta-text">
+						<h3>Pronto para Transformar sua Rotina de Saúde?</h3>
+						<p>
+							Junte-se a milhares de famílias que já descobriram
+							uma forma mais inteligente de cuidar da medicação
 						</p>
 					</div>
 				</div>
-				<button
-					class="bg-white text-[#479cf8] px-6 py-3 rounded-lg whitespace-nowrap font-medium transition-all duration-200 hover:bg-gray-100 focus:ring-2 focus:ring-white/50 focus:outline-none shadow-sm"
-				>
-					Participar Agora <span class="ml-1">→</span>
-				</button>
+				<div class="cta-buttons">
+					<button
+						class="cta-button cta-button-primary"
+						type="button"
+						aria-label="Começar teste gratuito de 7 dias"
+					>
+						Teste Grátis 7 Dias
+						<svg
+							class="button-arrow"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							viewBox="0 0 24 24"
+							aria-hidden="true"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M14 5l7 7m0 0l-7 7m7-7H3"
+							/>
+						</svg>
+					</button>
+					<button
+						class="cta-button cta-button-secondary"
+						type="button"
+						aria-label="Ver demonstração interativa"
+					>
+						Ver Demonstração
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

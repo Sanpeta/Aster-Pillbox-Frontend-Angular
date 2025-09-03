@@ -1,0 +1,489 @@
+/* ===== HERO SECTION STYLES ===== */
+
+.hero-section {
+	width: 100%;
+	padding: var(--spacing-12) 0;
+	background-color: var(--white);
+	min-height: 80vh;
+	display: flex;
+	align-items: center;
+}
+
+.hero-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-4);
+}
+
+.hero-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--spacing-6);
+	align-items: center;
+}
+
+/* ===== CONTEÚDO TEXTUAL ===== */
+.hero-content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-4);
+	text-align: center;
+}
+
+.hero-title {
+	font-size: 1.875rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: var(--gray-900);
+	letter-spacing: -0.025em;
+}
+
+.hero-description {
+	color: var(--gray-600);
+	font-size: 1rem;
+	line-height: 1.6;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+/* ===== BOTÕES DE DOWNLOAD ===== */
+.download-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-4);
+	padding-top: var(--spacing-2);
+}
+
+.download-btn {
+	height: 48px;
+	padding: 0 var(--spacing-6);
+	border-radius: var(--radius-md);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-base);
+	text-decoration: none;
+	font-weight: 500;
+	cursor: pointer;
+	border: none;
+}
+
+.download-btn-google {
+	background-color: #0f9d58;
+	color: var(--white);
+}
+
+.download-btn-google:hover {
+	background-color: #0b8043;
+}
+
+.download-btn-apple {
+	background-color: #000000;
+	color: var(--white);
+}
+
+.download-btn-apple:hover {
+	background-color: #333333;
+}
+
+.download-btn-icon {
+	margin-right: var(--spacing-2);
+	height: 20px;
+	width: 20px;
+}
+
+/* ===== BOTÃO COMUNIDADE ===== */
+.community-section {
+	margin-top: var(--spacing-6);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-2);
+	align-items: center;
+}
+
+.community-btn {
+	color: #479cf8;
+	border: 1px solid #479cf8;
+	height: 48px;
+	padding: 0 var(--spacing-6);
+	border-radius: var(--radius-md);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-base);
+	text-decoration: none;
+	background-color: transparent;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.community-btn:hover {
+	background-color: #479cf8;
+	color: var(--white);
+}
+
+.community-btn-icon {
+	margin-right: var(--spacing-2);
+	height: 16px;
+	width: 16px;
+	color: #25d366;
+	transition: var(--transition-base);
+}
+
+.community-btn:hover .community-btn-icon {
+	color: var(--white);
+}
+
+.community-description {
+	font-size: 0.875rem;
+	color: var(--gray-500);
+	max-width: 384px;
+	text-align: center;
+}
+
+/* ===== BADGES DE AVALIAÇÃO ===== */
+.rating-badges {
+	padding-top: var(--spacing-4);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-4);
+	justify-content: center;
+}
+
+.rating-badge {
+	display: flex;
+	align-items: center;
+	background-color: var(--gray-50);
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-lg);
+}
+
+.rating-stars {
+	display: flex;
+	color: #fbbf24;
+	gap: 1px;
+}
+
+.rating-star {
+	width: 16px;
+	height: 16px;
+}
+
+.rating-text {
+	margin-left: var(--spacing-2);
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--gray-600);
+}
+
+.download-badge {
+	background-color: var(--gray-50);
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-lg);
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--gray-600);
+}
+
+/* ===== MOCKUP DO TELEFONE ===== */
+.phone-mockup-container {
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.phone-mockup {
+	position: relative;
+}
+
+.phone-frame {
+	position: relative;
+	width: 280px;
+	height: 580px;
+	background-color: var(--gray-900);
+	border-radius: 40px;
+	padding: 12px;
+	box-shadow: var(--shadow-xl);
+	border: 8px solid var(--gray-800);
+	overflow: hidden;
+}
+
+.phone-inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 32px;
+	overflow: hidden;
+	background-color: var(--white);
+}
+
+.phone-notch {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 33.33%;
+	height: 24px;
+	background-color: var(--gray-900);
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	z-index: 10;
+}
+
+/* ===== CONTEÚDO DO VÍDEO ===== */
+.phone-content {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.phone-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity 300ms ease-in-out;
+}
+
+.phone-image.hidden {
+	opacity: 0;
+}
+
+.phone-image.visible {
+	opacity: 1;
+}
+
+.phone-video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity 300ms ease-in-out;
+}
+
+.phone-video.hidden {
+	opacity: 0;
+}
+
+.phone-video.visible {
+	opacity: 1;
+}
+
+/* ===== BOTÃO DE PLAY ===== */
+.play-button-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transition: all 300ms ease-in-out;
+}
+
+.play-button-container.hidden {
+	opacity: 0;
+	transform: translate(-50%, -50%) scale(0.9);
+}
+
+.play-button-container.visible {
+	opacity: 1;
+	transform: translate(-50%, -50%) scale(1);
+}
+
+.play-button-container.visible:hover {
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-button {
+	border-radius: 50%;
+	width: 64px;
+	height: 64px;
+	background-color: rgba(71, 156, 248, 0.9);
+	color: var(--white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: var(--transition-base);
+	box-shadow: var(--shadow-lg);
+	border: none;
+	cursor: pointer;
+}
+
+.play-button:hover {
+	background-color: #479cf8;
+}
+
+.play-button:focus {
+	outline: 2px solid #479cf8;
+	outline-offset: 2px;
+}
+
+.play-icon {
+	height: 32px;
+	width: 32px;
+	margin-left: 4px;
+}
+
+/* ===== ELEMENTOS DECORATIVOS ===== */
+.decorative-element {
+	position: absolute;
+	border-radius: 50%;
+	animation: pulse 2s ease-in-out infinite;
+}
+
+.decorative-element-1 {
+	top: -24px;
+	left: -24px;
+	width: 96px;
+	height: 96px;
+	background-color: rgba(71, 156, 248, 0.1);
+}
+
+.decorative-element-2 {
+	bottom: -24px;
+	right: -24px;
+	width: 128px;
+	height: 128px;
+	background-color: rgba(71, 156, 248, 0.1);
+	animation-delay: 1s;
+}
+
+.decorative-element-3 {
+	top: 50%;
+	right: -16px;
+	width: 64px;
+	height: 64px;
+	background-color: rgba(15, 157, 88, 0.1);
+	animation-delay: 0.5s;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 0.1;
+	}
+	50% {
+		transform: scale(1.1);
+		opacity: 0.2;
+	}
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (min-width: 640px) {
+	.hero-section {
+		padding: var(--spacing-16) 0;
+	}
+
+	.download-buttons {
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.rating-badges {
+		justify-content: center;
+	}
+}
+
+@media (min-width: 768px) {
+	.hero-title {
+		font-size: 2.25rem;
+	}
+
+	.hero-description {
+		font-size: 1.25rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.hero-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-12);
+	}
+
+	.hero-content {
+		text-align: left;
+	}
+
+	.rating-badges {
+		justify-content: flex-start;
+	}
+
+	.download-buttons {
+		justify-content: flex-start;
+	}
+
+	.community-section {
+		align-items: flex-start;
+	}
+
+	.community-description {
+		text-align: left;
+	}
+
+	.phone-mockup-container {
+		justify-content: flex-end;
+	}
+}
+
+@media (min-width: 1200px) {
+	.hero-title {
+		font-size: 3rem;
+	}
+
+	.hero-description {
+		font-size: 1.25rem;
+	}
+}
+
+/* ===== ESTADOS DE CARREGAMENTO ===== */
+.phone-content.loading .phone-image,
+.phone-content.loading .phone-video {
+	filter: blur(1px);
+}
+
+.phone-content.loading .play-button-container {
+	opacity: 0.5;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+@media (prefers-reduced-motion: reduce) {
+	.decorative-element {
+		animation: none;
+	}
+
+	.play-button-container,
+	.phone-image,
+	.phone-video {
+		transition: none;
+	}
+}
+
+/* ===== MODO ESCURO (caso seja implementado no futuro) ===== */
+@media (prefers-color-scheme: dark) {
+	.hero-section {
+		background-color: var(--gray-900);
+	}
+
+	.hero-title {
+		color: var(--white);
+	}
+
+	.hero-description {
+		color: var(--gray-300);
+	}
+
+	.rating-badge,
+	.download-badge {
+		background-color: var(--gray-800);
+		color: var(--gray-300);
+	}
+}
+
+/* ===== FOCUS STYLES APRIMORADOS ===== */
+.download-btn:focus,
+.community-btn:focus,
+.play-button:focus {
+	outline: 2px solid #479cf8;
+	outline-offset: 2px;
+}
