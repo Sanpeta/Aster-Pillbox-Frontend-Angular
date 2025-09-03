@@ -1,47 +1,155 @@
-<main
-	class="grid h-screen place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8"
->
-	<div class="text-center">
-		<app-loader [isLoading]="loader"></app-loader>
-		<!-- <img
-			src="../../../assets/images/image-email.png"
-			class="bg-blue-400 h-32 w-32 mx-auto my-5"
-			alt=""
-		/> -->
-		<h1
-			class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl"
-		>
-			Confirmação de e-mail
-		</h1>
-		<p class="mt-6 text-base leading-7 text-gray-600">
-			Enviamos um e-mail para você com um link para ativar sua conta.
-			<br />
-			Por favor, verifique sua caixa de entrada ou spam e clique no link
-			para concluir o processo. <br />O link expirará em 24 horas.
-		</p>
-		<div class="mt-10 flex items-center justify-center gap-x-6">
-			<a
-				routerLink="/login"
-				routerLinkActive="active"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-				>Voltar para a página inicial</a
+<div class="check-email-page">
+	<!-- Loader -->
+	<app-loader [isLoading]="isLoading"></app-loader>
+
+	<div class="check-email-container">
+		<!-- Email Icon -->
+		<div class="email-icon-wrapper">
+			<svg
+				class="email-icon"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
 			>
-			@if (!sendedEmail) {
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+				/>
+			</svg>
+			<div class="pulse-ring"></div>
+		</div>
+
+		<!-- Content -->
+		<div class="content-section">
+			<h1 class="title">{{ pageTitle }}</h1>
+			<div class="description" [innerHTML]="pageDescription"></div>
+		</div>
+
+		<!-- Status Indicator -->
+		<div class="status-section" *ngIf="!isEmailSent">
+			<div class="status-item">
+				<div class="step-icon active">1</div>
+				<span>Email enviado</span>
+			</div>
+			<div class="status-divider"></div>
+			<div class="status-item">
+				<div class="step-icon">2</div>
+				<span>Verificar caixa de entrada</span>
+			</div>
+			<div class="status-divider"></div>
+			<div class="status-item">
+				<div class="step-icon">3</div>
+				<span>Clicar no link</span>
+			</div>
+		</div>
+
+		<!-- Success Message -->
+		<div class="success-message" *ngIf="isEmailSent">
+			<div class="success-icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 13l4 4L19 7"
+					/>
+				</svg>
+			</div>
+			<p>Email reenviado com sucesso! Verifique sua caixa de entrada.</p>
+		</div>
+
+		<!-- Action Buttons -->
+		<div class="action-buttons">
+			<a routerLink="/login" class="btn btn-primary">
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+					/>
+				</svg>
+				Voltar ao Login
+			</a>
+
 			<button
+				*ngIf="showResendButton && !isEmailSent"
 				(click)="resendEmail()"
-				routerLinkActive="active"
-				type="button"
-				class="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+				class="btn btn-secondary"
+				[disabled]="isLoading"
 			>
-				Reenviar email
+				<svg
+					class="btn-icon"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+					/>
+				</svg>
+				Reenviar Email
 			</button>
-			}
-			<a
-				routerLink="/contact"
-				routerLinkActive="active"
-				class="text-sm font-semibold text-gray-900"
-				>Contate o suporte <span aria-hidden="true">&rarr;</span></a
-			>
+
+			<a routerLink="/support" class="support-link">
+				Contatar Suporte
+				<svg
+					class="link-arrow"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M17 8l4 4m0 0l-4 4m4-4H3"
+					/>
+				</svg>
+			</a>
+		</div>
+
+		<!-- Help Section -->
+		<div class="help-section">
+			<h3 class="help-title">Não recebeu o email?</h3>
+			<div class="help-tips">
+				<div class="tip-item">
+					<div class="tip-icon">📧</div>
+					<span>Verifique sua pasta de spam ou lixo eletrônico</span>
+				</div>
+				<div class="tip-item">
+					<div class="tip-icon">⏰</div>
+					<span
+						>Aguarde alguns minutos - emails podem demorar para
+						chegar</span
+					>
+				</div>
+				<div class="tip-item">
+					<div class="tip-icon">🔍</div>
+					<span
+						>Procure por emails da Aster Tech ou Aster Pillbox</span
+					>
+				</div>
+			</div>
 		</div>
 	</div>
-</main>
+</div>
