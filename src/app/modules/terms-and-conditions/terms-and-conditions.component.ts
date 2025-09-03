@@ -1,3 +1,4 @@
+// terms-and-conditions.component.ts
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -6,6 +7,6 @@ import { RouterModule } from '@angular/router';
 	standalone: true,
 	imports: [RouterModule],
 	templateUrl: './terms-and-conditions.component.html',
-	styleUrl: './terms-and-conditions.component.css',
+	styleUrls: ['./terms-and-conditions.component.css'],
 })
-export class TermsAndConditionsComponent {}
+export class TermsAndConditionsComponent {} //

@@ -200,7 +200,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			title,
 			mensage: message,
 			buttonTextConfirm: confirmText,
-			buttonTextClose: cancelText || '',
+			buttonTextClose: cancelText,
 		};
 
 		componentRef.instance.close.subscribe(() => {
