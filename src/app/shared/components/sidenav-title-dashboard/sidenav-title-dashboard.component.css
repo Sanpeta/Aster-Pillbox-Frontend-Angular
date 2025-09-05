@@ -1,13 +1,135 @@
+/* ===== SIDENAV TITLE ===== */
 .sidenav-title {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #313a46;
+	background: var(--sidebar-bg, #2d3748);
 	text-align: center;
 	height: 70px;
-	width: 260px;
+	width: 100%;
+	border-right: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	position: relative;
+	overflow: hidden;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidenav-title img {
+.logo-link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	text-decoration: none;
+	padding: 0.5rem 1rem;
+	border-radius: 12px;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	color: inherit;
+}
+
+.logo-link:hover {
+	background: rgba(255, 255, 255, 0.05);
+	transform: scale(1.02);
+}
+
+.logo-link:focus {
+	outline: 2px solid var(--accent-blue, #667eea);
+	outline-offset: 2px;
+}
+
+.logo-image {
+	width: 40px;
 	height: 40px;
+	border-radius: 12px;
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	padding: 8px;
+	box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+	transition: all 0.3s ease;
+}
+
+.logo-image:hover {
+	transform: rotate(-5deg) scale(1.05);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.logo-text {
+	font-size: 1.25rem;
+	font-weight: 700;
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	white-space: nowrap;
+	opacity: 1;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== ESTADOS COLLAPSED ===== */
+.sidenav-title.collapsed .logo-text {
+	opacity: 0;
+	width: 0;
+	overflow: hidden;
+}
+
+.sidenav-title.collapsed .logo-link {
+	gap: 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+	.sidenav-title {
+		display: none;
+	}
+}
+
+/* ===== HOVER EXPANSÃO DESKTOP ===== */
+@media (min-width: 1025px) {
+	.sidenav-title.collapsed:hover .logo-text {
+		opacity: 1;
+		width: auto;
+		overflow: visible;
+	}
+
+	.sidenav-title.collapsed:hover .logo-link {
+		gap: 0.75rem;
+	}
+}
+
+/* ===== DARK THEME ===== */
+.dark-theme .sidenav-title {
+	background: #1a1f2e;
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes logoGlow {
+	0%,
+	100% {
+		box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+	}
+	50% {
+		box-shadow: 0 6px 24px rgba(102, 126, 234, 0.5);
+	}
+}
+
+.logo-image {
+	animation: logoGlow 3s ease-in-out infinite;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+@media (prefers-reduced-motion: reduce) {
+	.logo-image,
+	.logo-link,
+	.logo-text {
+		transition: none;
+		animation: none;
+	}
+
+	.logo-image:hover {
+		transform: none;
+	}
+}
+
+/* ===== FALLBACK PARA NAVEGADORES ANTIGOS ===== */
+@supports not (background-clip: text) {
+	.logo-text {
+		color: #667eea;
+	}
 }

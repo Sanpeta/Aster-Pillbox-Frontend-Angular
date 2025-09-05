@@ -1,74 +1,106 @@
-<div class="toolbar-container">
-	<div class="toolbar-group-start">
+<div class="toolbar">
+	<div class="toolbar-start">
 		<button
-			mat-icon-button
-			class=""
-			aria-label="Example icon-button with menu icon"
+			class="menu-toggle"
+			(click)="onToggleMobileMenu()"
+			aria-label="Abrir menu"
 		>
-			<app-icon
-				[src]="'/assets/images/menu-icon.svg'"
-				[alt]="'menu icon'"
-				[classes]="'h-6 w-6 ml-4 mr-2'"
-			/>
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+				<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+			</svg>
 		</button>
-		<div class="group-header-title col">
-			<h1>Dashboard</h1>
-		</div>
+		<h1 class="toolbar-title">{{ getPageTitle() }}</h1>
 	</div>
-	<div class="toolbar-group-end">
-		<!-- Notifications -->
+
+	<div class="toolbar-end">
+		<!-- Notificações -->
 		<button
-			mat-icon-button
-			class="example-icon"
-			aria-label="Example icon-button with menu icon"
+			class="toolbar-button"
+			[class.active]="hasNotifications"
+			aria-label="Notificações"
+			(click)="openNotifications()"
 		>
-			<app-icon
-				[src]="'/assets/images/notification-icon.svg'"
-				[alt]="'notification icon'"
-				[classes]="'h-6 w-6 ml-4 mr-2'"
-			/>
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+				<path
+					d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+				/>
+			</svg>
+			<div class="notification-badge" *ngIf="notificationCount > 0"></div>
 		</button>
 
-		<!-- Theme -->
+		<!-- Theme Toggle -->
 		<button
-			mat-icon-button
-			class="example-icon"
-			aria-label="Example icon-button with menu icon"
-			(click)="toggleTheme()"
+			class="toolbar-button"
+			[class.active]="isDarkTheme"
+			(click)="onToggleTheme()"
+			aria-label="Alternar tema"
 		>
-			<app-icon
-				[src]="srcImage"
-				[alt]="'menu icon'"
-				[classes]="'h-6 w-6 ml-4 mr-2'"
-			/>
+			<svg
+				*ngIf="!isDarkTheme"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+			>
+				<path
+					d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+				/>
+			</svg>
+			<svg
+				*ngIf="isDarkTheme"
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+			>
+				<path
+					d="M21.752 15.002A9.717 9.717 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+				/>
+			</svg>
 		</button>
 
-		<!-- Settings -->
+		<!-- Configurações -->
 		<button
-			mat-icon-button
-			class="example-icon"
-			aria-label="Example icon-button with menu icon"
+			class="toolbar-button"
+			aria-label="Configurações"
+			[routerLink]="'/dashboard/settings'"
+			routerLinkActive="active"
 		>
-			<!-- <mat-icon>settings</mat-icon> -->
-			<app-icon
-				[src]="'/assets/images/settings-icon.svg'"
-				[alt]="'settings icon'"
-				[classes]="'h-6 w-6 ml-4 mr-2'"
-			/>
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+				<path
+					d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"
+				/>
+			</svg>
 		</button>
 
-		<!-- Info User  -->
-		<div class="info-user-container">
-			<img
-				class="info-user-container-img"
-				src="assets/images/perfil-icon.svg"
-				[src]="this.user.image_url"
-				alt="image perfil"
-			/>
-			<div class="info-user-container-text">
-				<span class="name">{{ this.user.name }}</span>
-				<!-- <span class="role">{{ "this.user.age" }}</span> -->
+		<!-- Perfil do usuário -->
+		<div class="user-profile" (click)="openUserMenu()">
+			<div class="user-avatar">
+				<img
+					*ngIf="user.image_url; else initials"
+					[src]="user.image_url"
+					[alt]="user.name"
+					class="avatar-image"
+				/>
+				<ng-template #initials>
+					{{ getUserInitials() }}
+				</ng-template>
 			</div>
+			<div class="user-info">
+				<div class="user-name">{{ user.name || "Usuário" }}</div>
+				<div class="user-role">Paciente</div>
+			</div>
+			<svg
+				class="dropdown-icon"
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="currentColor"
+			>
+				<path
+					d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+				/>
+			</svg>
 		</div>
 	</div>
 </div>

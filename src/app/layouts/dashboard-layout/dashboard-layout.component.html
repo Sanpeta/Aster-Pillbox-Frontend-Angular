@@ -1,10 +1,39 @@
-<div class="h-screen w-screen">
-	<div class="flex flex-row">
-		<app-sidenav-title-dashboard></app-sidenav-title-dashboard>
-		<app-toolbar-dashboard></app-toolbar-dashboard>
-	</div>
-	<div class="flex flex-row">
-		<app-sidenav-dashboard></app-sidenav-dashboard>
+<div
+	class="dashboard-layout"
+	[class.collapsed]="isCollapsed"
+	[class.mobile-open]="isMobileMenuOpen"
+>
+	<!-- Logo Sidebar -->
+	<app-sidenav-title-dashboard [isCollapsed]="isCollapsed">
+	</app-sidenav-title-dashboard>
+
+	<!-- Toolbar -->
+	<app-toolbar-dashboard
+		[isCollapsed]="isCollapsed"
+		[isMobileMenuOpen]="isMobileMenuOpen"
+		(toggleMobileMenu)="toggleMobileMenu()"
+		(toggleTheme)="toggleTheme()"
+	>
+	</app-toolbar-dashboard>
+
+	<!-- Sidebar -->
+	<app-sidenav-dashboard
+		[isCollapsed]="isCollapsed"
+		[isMobileMenuOpen]="isMobileMenuOpen"
+		(toggleCollapse)="toggleCollapse()"
+		(closeMobileMenu)="closeMobileMenu()"
+	>
+	</app-sidenav-dashboard>
+
+	<!-- Overlay para mobile -->
+	<div
+		class="sidebar-overlay"
+		[class.active]="isMobileMenuOpen"
+		(click)="closeMobileMenu()"
+	></div>
+
+	<!-- Conteúdo principal -->
+	<div class="main-content">
 		<router-outlet></router-outlet>
 	</div>
 </div>

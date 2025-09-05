@@ -1,30 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ButtonMenuComponent } from '../button-menu/button-menu.component';
-import { IconComponent } from '../icon/icon.component';
-import { AccountService } from './../../../services/account/account.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { AccountService } from '../../../services/account/account.service';
 
 @Component({
 	selector: 'app-sidenav-dashboard',
 	standalone: true,
-	imports: [ButtonMenuComponent, IconComponent, CommonModule],
+	imports: [CommonModule, RouterModule],
 	templateUrl: './sidenav-dashboard.component.html',
 	styleUrl: './sidenav-dashboard.component.css',
 })
 export class SidenavDashboardComponent implements OnInit {
+	@Input() isCollapsed = false;
+	@Input() isMobileMenuOpen = false;
+
+	@Output() toggleCollapse = new EventEmitter<void>();
+	@Output() closeMobileMenu = new EventEmitter<void>();
+
 	menuSelected = 'Dashboard';
 	menuItemsSelected = '';
-	isCollapsed = false;
-	userName = '';
-	userRole = '';
-	userInitials = '';
-
-	// Detectar tamanho da tela para colapsar automaticamente em mobile
-	@HostListener('window:resize', ['$event'])
-	onResize(event: any) {
-		this.checkScreenSize();
-	}
 
 	constructor(
 		private accountService: AccountService,
@@ -32,41 +26,9 @@ export class SidenavDashboardComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.checkScreenSize();
-		this.loadUserInfo();
-
 		// Definir menu selecionado baseado na rota atual
 		const currentUrl = this.router.url;
 		this.setInitialMenuSelection(currentUrl);
-	}
-
-	loadUserInfo() {
-		// // Exemplo - idealmente você buscaria esses dados do seu AccountService
-		// this.accountService.getCurrentUser().subscribe((user) => {
-		// 	if (user) {
-		// 		this.userName = user.name || 'Usuário';
-		// 		this.userRole = user.role || 'Paciente';
-		// 		this.userInitials = this.getInitials(this.userName);
-		// 	}
-		// });
-	}
-
-	getInitials(name: string): string {
-		if (!name) return 'U';
-		return name
-			.split(' ')
-			.map((part) => part.charAt(0))
-			.join('')
-			.substring(0, 2)
-			.toUpperCase();
-	}
-
-	checkScreenSize() {
-		this.isCollapsed = window.innerWidth < 768;
-	}
-
-	toggleCollapse() {
-		this.isCollapsed = !this.isCollapsed;
 	}
 
 	setInitialMenuSelection(url: string) {
@@ -87,8 +49,17 @@ export class SidenavDashboardComponent implements OnInit {
 		}
 	}
 
+	onToggleCollapse() {
+		this.toggleCollapse.emit();
+	}
+
 	onMenuSelected(menu: string) {
 		this.menuSelected = menu;
+
+		// Fechar menu mobile após seleção
+		if (this.isMobileMenuOpen) {
+			this.closeMobileMenu.emit();
+		}
 
 		switch (this.menuSelected) {
 			case 'Dashboard':
@@ -115,13 +86,26 @@ export class SidenavDashboardComponent implements OnInit {
 				this.router.navigate(['/dashboard', 'support']);
 				break;
 			case 'Logout':
-				// Adicionar confirmação antes de sair
-				if (confirm('Tem certeza que deseja sair?')) {
-					this.accountService.logoutAccount();
-				}
+				this.handleLogout();
 				break;
 			default:
-				console.log('Default');
+				console.log('Menu não reconhecido:', menu);
 		}
+	}
+
+	private handleLogout() {
+		const confirmed = confirm('Tem certeza que deseja sair?');
+		if (confirmed) {
+			this.accountService.logoutAccount();
+		} else {
+			// Reset selection if user cancels
+			this.menuSelected = this.getPreviousSelection();
+		}
+	}
+
+	private getPreviousSelection(): string {
+		const currentUrl = this.router.url;
+		this.setInitialMenuSelection(currentUrl);
+		return this.menuSelected;
 	}
 }
