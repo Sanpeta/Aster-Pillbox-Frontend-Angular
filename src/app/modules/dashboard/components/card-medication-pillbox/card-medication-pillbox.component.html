@@ -1,60 +1,73 @@
-<div
-	class="widget-container bg-white rounded-xl h-full flex flex-col overflow-hidden"
->
-	<div
-		class="widget-header flex justify-between items-center p-6 bg-blue-50 border-b border-gray-200"
-	>
-		<h2 class="widget-title text-xl font-bold text-gray-800">
-			Caixa de Medicamentos
-		</h2>
+<div class="pillbox-card">
+	<div class="card-header">
+		<h2 class="card-title">Caixa de Medicamentos</h2>
 		<button
-			class="edit-button bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200"
+			class="info-button"
 			[routerLink]="'/dashboard/pillboxes'"
 			routerLinkActive="active"
 			aria-label="Editar caixa de medicamentos"
 		>
 			<app-icon
 				[src]="'../../../../../assets/images/info-icon.svg'"
-				class="w-5 h-5"
 				[alt]="'Editar'"
 			></app-icon>
 		</button>
 	</div>
 
-	<div class="flex-1 p-6">
-		<!-- Seletor de Pillbox -->
+	<div class="card-content">
 		@if (listCase.length > 0) {
-		<form class="mb-6" [formGroup]="selectForm">
-			<label
-				for="pillbox"
-				class="block text-sm font-medium text-gray-700 mb-1"
-				>Selecionar caixa</label
-			>
+		<form class="select-container" [formGroup]="selectForm">
+			<label for="pillbox-select" class="select-label">
+				Selecionar caixa
+			</label>
 			<select
-				class="block w-full rounded-lg py-2.5 px-3 text-gray-900 border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-sm transition-all duration-200"
-				data-toggle="select"
+				id="pillbox-select"
+				class="select-input"
 				formControlName="pillbox"
 				name="pillbox"
-				id="pillbox"
 				required
 			>
 				<option value="" disabled>
 					Selecione a Caixa de Medicamento
 				</option>
 				@for (pillbox of listCase; track $index) {
-				<option value="{{ $index }}">
+				<option [value]="$index">
 					{{ pillbox.case_name }}
 				</option>
 				}
 			</select>
 		</form>
-		} @else {
+
+		<!-- Grid da Caixa de Medicamentos -->
+		@if (columns > 0 && rows > 0) {
 		<div
-			class="flex flex-col items-center justify-center h-40 text-gray-500"
+			class="pills-grid"
+			[style.grid-template-columns]="'repeat(' + columns + ', 1fr)'"
+			[style.grid-template-rows]="'repeat(' + rows + ', 1fr)'"
 		>
+			@for (index of createRange(rows * columns); track $index) {
+			<div
+				class="pill-slot"
+				[class.occupied]="index + 1 <= 5"
+				[attr.aria-label]="'Compartimento ' + (index + 1)"
+				tabindex="0"
+				role="button"
+			>
+				{{ index + 1 }}
+			</div>
+			}
+		</div>
+		} @else {
+		<div class="grid-placeholder">
+			<p class="placeholder-text">
+				Selecione uma caixa para visualizar os compartimentos
+			</p>
+		</div>
+		} } @else {
+		<div class="empty-state">
 			<svg
+				class="empty-icon"
 				xmlns="http://www.w3.org/2000/svg"
-				class="h-16 w-16 mb-4"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
@@ -66,25 +79,15 @@
 					d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
 				/>
 			</svg>
-			<p class="text-lg font-medium">
-				Nenhuma caixa de medicamento cadastrada
-			</p>
+			<p class="empty-message">Nenhuma caixa de medicamento cadastrada</p>
+			<button
+				class="add-pillbox-button"
+				[routerLink]="'/dashboard/pillboxes'"
+				routerLinkActive="active"
+			>
+				Cadastrar Nova Caixa
+			</button>
 		</div>
 		}
-
-		<!-- Grid da Caixa de Medicamentos -->
-		<div
-			class="pills-grid gap-2 mt-4"
-			[style.gridTemplateColumns]="'repeat(' + columns + ', 1fr)'"
-			[style.gridTemplateRows]="'repeat(' + rows + ', 1fr)'"
-		>
-			@for (index of createRange(rows * columns); track $index) {
-			<div
-				class="pill-box flex items-center justify-center p-3 bg-gray-100 hover:bg-blue-50 border border-gray-300 rounded-lg font-medium text-gray-800 transition-colors duration-200"
-			>
-				{{ index + 1 }}
-			</div>
-			}
-		</div>
 	</div>
 </div>

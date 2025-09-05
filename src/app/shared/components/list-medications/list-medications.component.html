@@ -1,35 +1,25 @@
-<div
-	class="widget-container bg-white rounded-xl h-full flex flex-col overflow-hidden"
->
-	<div
-		class="widget-header flex justify-between items-center p-6 bg-blue-50 border-b border-gray-200"
-	>
-		<h2 class="widget-title text-xl font-bold text-gray-800">
-			Medicamentos
-		</h2>
+<div class="medications-card">
+	<div class="card-header">
+		<h2 class="card-title">Medicamentos</h2>
 		<button
-			class="list-button bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors duration-200"
+			class="info-button"
 			[routerLink]="'/dashboard/medications'"
 			routerLinkActive="active"
 			aria-label="Ver detalhes dos medicamentos"
 		>
 			<app-icon
 				[src]="'../../../../../assets/images/info-icon.svg'"
-				class="w-5 h-5"
 				[alt]="'Ver lista'"
 			></app-icon>
 		</button>
 	</div>
 
-	<!-- Tabela de Medicamentos -->
-	<div class="flex-1 p-4 overflow-hidden">
+	<div class="card-content">
 		@if (medications.length == 0) {
-		<div
-			class="flex flex-col items-center justify-center h-full py-10 text-gray-500"
-		>
+		<div class="empty-state">
 			<svg
+				class="empty-icon"
 				xmlns="http://www.w3.org/2000/svg"
-				class="h-16 w-16 mb-4"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
@@ -41,49 +31,42 @@
 					d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
 				/>
 			</svg>
-			<p class="text-lg font-medium">Sem medicamentos cadastrados</p>
+			<p class="empty-message">Sem medicamentos cadastrados</p>
 		</div>
 		} @else {
-		<div
-			class="relative rounded-lg overflow-auto max-h-[calc(100%-1rem)] border border-gray-200"
-		>
-			<table class="min-w-full divide-y divide-gray-200">
-				<thead class="bg-gray-100 sticky top-0 z-10">
+		<div class="table-container">
+			<table class="medications-table">
+				<thead>
 					<tr>
 						@for (title of tableHeaders; track $index) {
-						<th
-							scope="col"
-							class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider"
-							[ngClass]="$index % 2 !== 0 ? 'bg-gray-200' : ''"
-						>
+						<th scope="col" class="table-header">
 							{{ title }}
 						</th>
 						}
 					</tr>
 				</thead>
-				<tbody class="bg-white divide-y divide-gray-200">
+				<tbody>
 					@for (medication of medications; track $index) {
-					<tr
-						class="text-center hover:bg-gray-50 transition-colors duration-150"
-						[ngClass]="$index % 2 !== 0 ? 'bg-gray-50' : ''"
-					>
-						<td class="px-4 py-3 whitespace-nowrap font-medium">
+					<tr class="table-row" [attr.data-index]="$index">
+						<td class="table-cell medication-name">
 							{{ medication.name }}
 						</td>
-						<td
-							class="px-4 py-3 whitespace-nowrap"
-							[ngClass]="$index % 2 === 0 ? 'bg-gray-100' : ''"
-						>
-							{{ medication.alarms }}
+						<td class="table-cell medication-alarms">
+							<div class="alarms-list">
+								@for (alarm of medication.alarms; track alarm) {
+								<span class="alarm-badge">{{ alarm }}</span>
+								}
+							</div>
 						</td>
-						<td class="px-4 py-3 whitespace-nowrap">
-							{{ medication.quantity }}
+						<td class="table-cell medication-quantity">
+							<span class="quantity-badge">{{
+								medication.quantity
+							}}</span>
 						</td>
-						<td
-							class="px-4 py-3 whitespace-nowrap"
-							[ngClass]="$index % 2 === 0 ? 'bg-gray-100' : ''"
-						>
-							{{ medication.compartiment }}
+						<td class="table-cell medication-compartment">
+							<span class="compartment-badge">{{
+								medication.compartiment
+							}}</span>
 						</td>
 					</tr>
 					}

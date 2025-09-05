@@ -1,25 +1,26 @@
-<div
-	class="calendar-container bg-white rounded-xl h-full flex flex-col overflow-hidden"
->
+<div class="calendar-card">
 	<!-- Cabeçalho do calendário -->
-	<div class="bg-blue-600 px-6 py-4 text-white">
-		<h2 class="text-xl font-bold mb-3">
+	<div class="calendar-header">
+		<h2 class="calendar-title">
 			{{ weekDays[0].date | date : "MMMM yyyy" }}
 		</h2>
 
-		<div class="week-container grid grid-cols-7 gap-1">
+		<div class="week-grid">
 			@for (day of weekDays; track $index) {
 			<div
-				class="day flex flex-col items-center p-2 rounded-lg cursor-pointer transition-all duration-200"
-				[class.bg-white]="isSameDay(day.date, selectedDate)"
-				[class.text-blue-600]="isSameDay(day.date, selectedDate)"
-				[class.bg-blue-700]="!isSameDay(day.date, selectedDate)"
+				class="day-item"
+				[class.selected]="isSameDay(day.date, selectedDate)"
 				(click)="onDayClick(day)"
+				tabindex="0"
+				role="button"
+				[attr.aria-label]="
+					'Selecionar ' + day.dayName + ', ' + (day.date | date : 'd')
+				"
 			>
-				<div class="day-header text-sm font-medium">
+				<div class="day-name">
 					{{ day.dayName }}
 				</div>
-				<div class="day-number text-xl font-bold mt-1">
+				<div class="day-number">
 					{{ day.date | date : "d" }}
 				</div>
 			</div>
@@ -29,14 +30,12 @@
 
 	<!-- Conteúdo do calendário -->
 	@if (selectedDate) {
-	<div class="flex-1 p-4 overflow-auto">
+	<div class="calendar-content">
 		@if (getMedicationsForDay(selectedDate).length == 0) {
-		<div
-			class="flex flex-col items-center justify-center h-full py-10 text-gray-500"
-		>
+		<div class="empty-state">
 			<svg
+				class="empty-icon"
 				xmlns="http://www.w3.org/2000/svg"
-				class="h-16 w-16 mb-4"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
@@ -48,76 +47,74 @@
 					d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
 				/>
 			</svg>
-			<p class="text-lg font-medium">Sem medicamentos para hoje</p>
+			<p class="empty-message">Sem medicamentos para hoje</p>
 		</div>
 		} @else {
-		<ul class="space-y-4">
+		<div class="medication-list">
 			@for (medication of getMedicationsForDay(selectedDate); track
 			$index) {
-			<li>
+			<div class="medication-group">
 				@for (time of medication.alarms; track $index) {
 				<div
-					class="flex flex-col md:flex-row items-center md:justify-between p-4 rounded-xl mb-3 shadow-sm"
+					class="medication-item"
 					[ngClass]="getAlarmStatusClass(time)"
 				>
-					<div class="flex flex-col items-start mb-3 md:mb-0">
-						<span class="text-sm text-gray-600">Remédio</span>
-						<span class="font-bold text-lg">{{
-							medication.name.toUpperCase()
-						}}</span>
-						<span class="text-2xl font-bold mt-1">{{ time }}</span>
+					<div class="medication-header">
+						<div class="medication-info">
+							<h3 class="medication-name">
+								{{ medication.name.toUpperCase() }}
+							</h3>
+							<div class="medication-time">{{ time }}</div>
+						</div>
 					</div>
 
-					<div class="flex flex-wrap gap-6 justify-center">
-						<div class="flex flex-col items-center">
-							<span class="text-sm text-gray-600"
-								>Compartimento</span
-							>
-							<span class="font-bold text-lg">{{
-								medication.compartiment
-							}}</span>
+					<div class="medication-details">
+						<div class="detail-item">
+							<div class="detail-label">Compartimento</div>
+							<div class="detail-value">
+								{{ medication.compartiment }}
+							</div>
 						</div>
 
-						<div class="flex flex-col items-center">
-							<span class="text-sm text-gray-600"
-								>Quantidade</span
-							>
-							<span class="font-bold text-lg">{{
-								medication.quantity
-							}}</span>
+						<div class="detail-item">
+							<div class="detail-label">Quantidade</div>
+							<div class="detail-value">
+								{{ medication.quantity }}
+							</div>
 						</div>
+					</div>
 
-						<button
-							type="button"
-							(click)="
-								onTakeMedication(
-									medication.id,
-									medication.quantity,
-									time
-								)
-							"
-							class="flex items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white font-medium transition-colors duration-200 shadow-sm"
+					<button
+						type="button"
+						class="take-button"
+						(click)="
+							onTakeMedication(
+								medication.id,
+								medication.quantity,
+								time
+							)
+						"
+						[attr.aria-label]="
+							'Tomar ' + medication.name + ' às ' + time
+						"
+					>
+						<svg
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="currentColor"
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="h-5 w-5 mr-2"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-							Tomar Agora
-						</button>
-					</div>
+							<path
+								d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+							/>
+						</svg>
+						Tomar Agora
+					</button>
 				</div>
 				}
-			</li>
+			</div>
 			}
-		</ul>
+		</div>
 		}
 	</div>
 	}

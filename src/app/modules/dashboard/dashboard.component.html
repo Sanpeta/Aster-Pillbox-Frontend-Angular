@@ -1,29 +1,23 @@
-<div
-	class="dashboard-container flex flex-col p-6 bg-gray-50 min-h-screen space-y-6"
->
+<div class="dashboard-container">
 	<!-- Loader e Containers de Toast/Dialog -->
 	<app-loader [isLoading]="showLoader"></app-loader>
 	<div #toastContainer></div>
 	<div #dialogContainer></div>
 
 	<!-- Primeira seção: Informações do usuário e Calendário semanal -->
-	<div class="grid grid-cols-12 gap-6">
+	<div class="dashboard-row primary">
 		<app-card-info-user
-			class="col-span-12 md:col-span-4 lg:col-span-3 h-auto shadow-lg rounded-xl"
+			class="card-component"
 			[user]="userInfo"
 		></app-card-info-user>
-		<app-calendar-week
-			class="col-span-12 md:col-span-8 lg:col-span-9 h-auto shadow-lg rounded-xl"
-		></app-calendar-week>
+		<app-calendar-week class="card-component"></app-calendar-week>
 	</div>
 
 	<!-- Segunda seção: Lista de medicamentos e Caixa de medicamentos -->
-	<div class="grid grid-cols-12 gap-6">
-		<app-list-medications
-			class="col-span-12 lg:col-span-6 h-auto shadow-lg rounded-xl"
-		></app-list-medications>
+	<div class="dashboard-row secondary">
+		<app-list-medications class="card-component"></app-list-medications>
 		<app-card-medication-pillbox
-			class="col-span-12 lg:col-span-6 h-auto shadow-lg rounded-xl"
+			class="card-component"
 		></app-card-medication-pillbox>
 	</div>
 </div>

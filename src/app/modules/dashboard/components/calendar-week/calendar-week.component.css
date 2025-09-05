@@ -1,62 +1,335 @@
-/* Calendar Container */
-.calendar-container {
+/* ===== CALENDÁRIO ===== */
+.calendar-card {
+	display: flex;
+	flex-direction: column;
+	height: 500px;
+}
+
+.calendar-header {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	color: white;
+	padding: 1.5rem;
+	border-radius: 24px 24px 0 0;
+}
+
+.calendar-title {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin: 0 0 1rem 0;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.week-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 0.5rem;
+}
+
+.day-item {
+	padding: 0.75rem 0.5rem;
+	text-align: center;
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border: 2px solid transparent;
+}
+
+.day-item:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.day-item:focus {
+	outline: none;
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+.day-item.selected {
+	background: white;
+	color: #667eea;
+	font-weight: 700;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.day-name {
+	font-size: 0.75rem;
+	font-weight: 500;
+	opacity: 0.9;
+	margin-bottom: 0.25rem;
+	text-transform: capitalize;
+}
+
+.day-number {
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.calendar-content {
+	flex: 1;
+	padding: 1.5rem;
+	overflow-y: auto;
+}
+
+.empty-state {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	border-radius: 20px;
-	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.85);
-	color: #000;
-	width: 100%;
-	height: 100%;
-}
-
-/* Media queries para responsividade (copiar e colar do código original) */
-@media (max-width: 1200px) {
-	/* ... */
-}
-@media (max-width: 992px) {
-	/* ... */
-}
-@media (max-width: 768px) {
-	/* ... */
-}
-@media (max-width: 576px) {
-	/* ... */
-}
-
-/* Header */
-.header {
-	display: flex;
 	justify-content: center;
-	align-items: center;
-	width: 100%;
+	height: 100%;
+	color: #718096;
+	text-align: center;
 }
 
-/* WeekContainer */
-.week-container {
+.empty-icon {
+	width: 64px;
+	height: 64px;
+	margin-bottom: 1rem;
+	opacity: 0.5;
+}
+
+.empty-message {
+	font-size: 1.125rem;
+	font-weight: 600;
+	margin: 0;
+}
+
+.medication-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.medication-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.medication-item {
+	background: linear-gradient(
+		135deg,
+		rgba(102, 126, 234, 0.05),
+		rgba(118, 75, 162, 0.05)
+	);
+	border: 2px solid rgba(102, 126, 234, 0.1);
+	border-radius: 16px;
+	padding: 1.5rem;
+	transition: all 0.3s ease;
+}
+
+.medication-item:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 8px 24px rgba(102, 126, 234, 0.1);
+}
+
+/* Status dos alarmes */
+.medication-item.alarm-late {
+	border-color: #e53e3e;
+	background: linear-gradient(
+		135deg,
+		rgba(229, 62, 62, 0.05),
+		rgba(229, 62, 62, 0.1)
+	);
+}
+
+.medication-item.alarm-soon {
+	border-color: #3182ce;
+	background: linear-gradient(
+		135deg,
+		rgba(49, 130, 206, 0.05),
+		rgba(49, 130, 206, 0.1)
+	);
+}
+
+.medication-item.alarm-upcoming {
+	border-color: #718096;
+	background: linear-gradient(
+		135deg,
+		rgba(113, 128, 150, 0.05),
+		rgba(113, 128, 150, 0.1)
+	);
+}
+
+.medication-header {
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
-	padding: 16px;
-	text-align: center;
+	align-items: flex-start;
+	margin-bottom: 1rem;
 }
 
-/* Day */
-.day {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+.medication-info {
+	flex: 1;
+}
+
+.medication-name {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #2d3748;
+	margin: 0 0 0.25rem 0;
+	line-height: 1.2;
+}
+
+.medication-time {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #667eea;
+	margin: 0;
+}
+
+.medication-details {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.detail-item {
 	text-align: center;
-	width: 100%; /* Cada dia ocupa 100% da largura do seu container (ex: .week-container) */
-	font-size: 16px;
+	padding: 0.75rem;
+	background: rgba(102, 126, 234, 0.05);
+	border-radius: 12px;
+	border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.detail-label {
+	font-size: 0.75rem;
+	color: #718096;
 	font-weight: 500;
-	cursor: pointer;
-	color: white; /* Substitua pela sua cor de destaque */
-	border-radius: 4px;
-	transition: background-color 0.3s;
+	margin-bottom: 0.25rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
 }
 
-.day.selected {
-	background-color: white; /* Substitua pela sua cor de destaque */
-	color: #007bff;
+.detail-value {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #2d3748;
+}
+
+.take-button {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	color: white;
+	border: none;
+	padding: 0.75rem 1.5rem;
+	border-radius: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	font-size: 1rem;
+	width: 100%;
+}
+
+.take-button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.take-button:focus {
+	outline: 3px solid rgba(102, 126, 234, 0.5);
+	outline-offset: 2px;
+}
+
+.take-button:active {
+	transform: translateY(0);
+}
+
+.take-button svg {
+	flex-shrink: 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 992px) {
+	.calendar-card {
+		height: auto;
+		min-height: 300px;
+	}
+}
+
+@media (max-width: 768px) {
+	.week-grid {
+		gap: 0.25rem;
+	}
+
+	.day-item {
+		padding: 0.5rem 0.25rem;
+	}
+
+	.day-number {
+		font-size: 1rem;
+	}
+
+	.day-name {
+		font-size: 0.625rem;
+	}
+
+	.medication-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	.medication-time {
+		font-size: 1.5rem;
+	}
+
+	.medication-details {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.take-button {
+		padding: 1rem;
+		font-size: 0.875rem;
+	}
+}
+
+@media (max-width: 576px) {
+	.calendar-header {
+		padding: 1rem;
+	}
+
+	.calendar-title {
+		font-size: 1.25rem;
+	}
+
+	.medication-item {
+		padding: 1rem;
+	}
+
+	.medication-name {
+		font-size: 1rem;
+	}
+
+	.medication-details {
+		grid-template-columns: 1fr;
+		text-align: center;
+	}
+
+	.detail-item {
+		padding: 0.5rem;
+	}
+}
+
+/* ===== DARK MODE ===== */
+@media (prefers-color-scheme: dark) {
+	.medication-name,
+	.detail-value {
+		color: #e2e8f0;
+	}
+
+	.detail-label,
+	.empty-message {
+		color: #a0aec0;
+	}
+
+	.empty-state {
+		color: #a0aec0;
+	}
 }

@@ -1,54 +1,45 @@
-<div
-	class="container-card-info-user flex flex-col items-center p-6 bg-white rounded-xl text-gray-800 h-full"
->
-	<div class="relative w-32 h-32 mb-4">
+<div class="user-card">
+	<div class="user-avatar-container">
 		<img
-			src="{{ user.image_url }}"
-			alt="Foto de {{ user.name }}"
-			class="rounded-full object-cover w-full h-full border-4 border-blue-500 shadow-md"
+			[src]="user.image_url"
+			[alt]="'Foto de ' + user.name"
+			class="user-avatar"
 		/>
 		<button
-			class="action-button absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-md transition-all duration-200"
+			class="edit-button"
 			[routerLink]="'/dashboard/perfil'"
 			routerLinkActive="active"
 			aria-label="Editar perfil"
 		>
 			<app-icon
 				[src]="'../../../../assets/images/edit-icon.svg'"
-				class="w-5 h-5"
 				[alt]="'Editar'"
 			></app-icon>
 		</button>
 	</div>
 
-	<h2 class="text-xl font-bold text-center mb-2">{{ user.name }}</h2>
+	<h2 class="user-name">{{ user.name }}</h2>
 
-	<div class="w-full border-t border-gray-200 my-3"></div>
-
-	<div class="flex flex-wrap justify-center gap-2 mb-4 text-sm">
-		<span class="px-3 py-1 bg-gray-100 rounded-full">
-			Idade: <span class="font-semibold">{{ user.age }}</span>
+	<div class="user-tags">
+		<span class="user-tag">
+			Idade: <span class="tag-value">{{ user.age }}</span>
 		</span>
-		<span class="px-3 py-1 bg-gray-100 rounded-full">
-			Sangue: <span class="font-semibold">{{ user.blood }}</span>
+		<span class="user-tag">
+			Sangue: <span class="tag-value">{{ user.blood }}</span>
 		</span>
-		<span class="px-3 py-1 bg-gray-100 rounded-full">
-			Sexo: <span class="font-semibold">{{ user.gender }}</span>
+		<span class="user-tag">
+			Sexo: <span class="tag-value">{{ user.gender }}</span>
 		</span>
 	</div>
 
-	<div class="grid grid-cols-2 gap-4 w-full">
-		<div class="stat-item p-3 bg-blue-50 rounded-lg text-center">
-			<span class="stat-label text-blue-600 text-sm block">Altura</span>
-			<span class="stat-value font-bold text-lg"
-				>{{ user.height }} cm</span
-			>
+	<div class="user-stats">
+		<div class="stat-item">
+			<div class="stat-label">Altura</div>
+			<div class="stat-value">{{ user.height }} cm</div>
 		</div>
-		<div class="stat-item p-3 bg-blue-50 rounded-lg text-center">
-			<span class="stat-label text-blue-600 text-sm block">Peso</span>
-			<span class="stat-value font-bold text-lg"
-				>{{ user.weight }} kg</span
-			>
+		<div class="stat-item">
+			<div class="stat-label">Peso</div>
+			<div class="stat-value">{{ user.weight }} kg</div>
 		</div>
 	</div>
 </div>
