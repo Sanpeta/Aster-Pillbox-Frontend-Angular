@@ -2,12 +2,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
-import { UpdateAccountActivationRequest } from '../../models/interfaces/account-activation/UpdateAccountActivation';
-import { AccountService } from '../../services/account/account.service';
+import {
+	ResendVerificationRequest,
+	VerifyEmailRequest,
+	VerifyEmailResponse,
+} from '../../models/interfaces/auth/auth.interface';
+import { AuthService } from '../../services/auth/auth.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { APP_CONSTANTS } from '../../shared/constants';
 
 interface ActivationState {
 	icon: string;
@@ -36,7 +38,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	private token: string | null = null;
 	private emailAccount = '';
 
-	// Estados possíveis da página - usando readonly para evitar problemas de index signature
+	// Estados possíveis da página
 	private readonly states = {
 		loading: {
 			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 3rem; height: 3rem;">
@@ -71,7 +73,8 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
       </svg>`,
 			title: 'Token Inválido',
-			description: 'O token fornecido é inválido ou malformado.',
+			description:
+				'O token fornecido é inválido ou malformado. Solicite um novo email de verificação.',
 			type: 'error' as const,
 			showResendButton: true,
 		},
@@ -80,7 +83,8 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>`,
 			title: 'Token Expirado',
-			description: 'O token de ativação expirou ou já foi utilizado.',
+			description:
+				'O token de ativação expirou ou já foi utilizado. Solicite um novo email de verificação.',
 			type: 'error' as const,
 			showResendButton: true,
 		},
@@ -94,13 +98,23 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 			type: 'error' as const,
 			showResendButton: true,
 		},
+		accountAlreadyActive: {
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 3rem; height: 3rem;">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>`,
+			title: 'Conta Já Ativada',
+			description:
+				'Sua conta já está ativa. Você pode fazer login normalmente.',
+			type: 'success' as const,
+			showLoginButton: true,
+		},
 		genericError: {
 			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 3rem; height: 3rem;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>`,
 			title: 'Erro na Ativação',
 			description:
-				'Ocorreu um erro inesperado durante a ativação da conta.',
+				'Ocorreu um erro inesperado durante a ativação da conta. Tente novamente mais tarde.',
 			type: 'error' as const,
 			showResendButton: true,
 		},
@@ -119,8 +133,7 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	public currentState: ActivationState = this.states.loading;
 
 	constructor(
-		private readonly accountService: AccountService,
-		private readonly cookieService: CookieService,
+		private readonly authService: AuthService,
 		private readonly route: ActivatedRoute,
 		private readonly router: Router
 	) {}
@@ -165,46 +178,76 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	}
 
 	private activateAccount(): void {
-		const activationRequest: UpdateAccountActivationRequest = {
+		const verifyEmailRequest: VerifyEmailRequest = {
 			token: this.token!,
-			email: this.emailAccount,
 		};
 
-		this.accountService
-			.activateAccount(activationRequest)
+		this.authService
+			.verifyEmail(verifyEmailRequest)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
-				next: () => this.handleActivationSuccess(),
+				next: (response) => this.handleActivationSuccess(response),
 				error: (error) => this.handleActivationError(error),
 			});
 	}
 
-	private handleActivationSuccess(): void {
-		console.log('Account activated successfully');
+	private handleActivationSuccess(response: VerifyEmailResponse): void {
+		console.log('Account activated successfully:', response);
 		this.setLoadingState(false);
 
-		this.currentState = this.isMobile
-			? this.states.successMobile
-			: this.states.success;
+		// Verificar se a conta já estava ativa ou foi ativada agora
+		if (response.message.includes('already')) {
+			this.currentState = this.states.accountAlreadyActive;
+		} else {
+			this.currentState = this.isMobile
+				? this.states.successMobile
+				: this.states.success;
+		}
 	}
 
 	private handleActivationError(error: any): void {
 		console.error('Activation error:', error);
 		this.setLoadingState(false);
 
-		switch (error.status) {
-			case 400:
-				this.currentState = this.states.tokenInvalid;
-				break;
-			case 403:
-				this.currentState = this.states.tokenExpired;
-				break;
-			case 404:
-				this.currentState = this.states.accountNotFound;
-				break;
-			default:
-				this.currentState = this.states.genericError;
-				break;
+		// Mapear erros específicos baseados na mensagem de erro
+		const errorMessage = error.message || '';
+
+		if (
+			errorMessage.includes('Invalid token') ||
+			errorMessage.includes('token is invalid')
+		) {
+			this.currentState = this.states.tokenInvalid;
+		} else if (
+			errorMessage.includes('expired') ||
+			errorMessage.includes('Token expired')
+		) {
+			this.currentState = this.states.tokenExpired;
+		} else if (errorMessage.includes('not found') || error.status === 404) {
+			this.currentState = this.states.accountNotFound;
+		} else if (
+			errorMessage.includes('already verified') ||
+			errorMessage.includes('already active')
+		) {
+			this.currentState = this.states.accountAlreadyActive;
+		} else {
+			// Mapear por status HTTP se não houver mensagem específica
+			switch (error.status) {
+				case 400:
+					this.currentState = this.states.tokenInvalid;
+					break;
+				case 403:
+					this.currentState = this.states.tokenExpired;
+					break;
+				case 404:
+					this.currentState = this.states.accountNotFound;
+					break;
+				case 409:
+					this.currentState = this.states.accountAlreadyActive;
+					break;
+				default:
+					this.currentState = this.states.genericError;
+					break;
+			}
 		}
 	}
 
@@ -216,30 +259,50 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 	public resendEmail(): void {
 		if (!this.emailAccount) {
 			console.error('No email account found for resending');
+			// Se não tiver email, redirecionar para página de registro
+			this.router.navigate(['/register']);
 			return;
 		}
 
 		this.setLoadingState(true);
 
-		this.accountService
-			.createTokenAccountActivate(this.emailAccount)
+		const resendRequest: ResendVerificationRequest = {
+			email: this.emailAccount,
+		};
+
+		this.authService
+			.resendVerification(resendRequest)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
-				next: () => this.handleResendSuccess(),
+				next: (response) => this.handleResendSuccess(response),
 				error: (error) => this.handleResendError(error),
 			});
 	}
 
-	private handleResendSuccess(): void {
-		console.log('Email resent successfully');
+	private handleResendSuccess(response: any): void {
+		console.log('Email resent successfully:', response);
 		this.setLoadingState(false);
-		this.router.navigate([APP_CONSTANTS.ROUTES.CHECK_EMAIL]);
+
+		// Navegar para página de verificação de email
+		this.router.navigate(['/check-your-email'], {
+			queryParams: { email: this.emailAccount },
+		});
 	}
 
 	private handleResendError(error: any): void {
 		console.error('Error resending email:', error);
 		this.setLoadingState(false);
-		// Pode mostrar uma mensagem de erro adicional aqui se necessário
+
+		// Mostrar estado de erro mas manter a opção de tentar novamente
+		this.currentState = {
+			...this.currentState,
+			description: `${this.currentState.description} Erro ao reenviar email: ${error.message}`,
+			showResendButton: true,
+		};
+	}
+
+	public navigateToLogin(): void {
+		this.router.navigate(['/login']);
 	}
 
 	public closePage(): void {
@@ -253,5 +316,40 @@ export class PageActivateAccountComponent implements OnInit, OnDestroy {
 
 	private setLoadingState(loading: boolean): void {
 		this.isLoading = loading;
+	}
+
+	// Getter para verificar se deve mostrar o botão de login
+	public get showLoginButton(): boolean {
+		return this.currentState.showLoginButton === true;
+	}
+
+	// Getter para verificar se deve mostrar o botão de reenvio
+	public get showResendButton(): boolean {
+		return this.currentState.showResendButton === true;
+	}
+
+	// Getter para verificar se deve mostrar o botão de fechar
+	public get showCloseButton(): boolean {
+		return this.currentState.showCloseButton === true;
+	}
+
+	// Getter para o ícone do estado atual
+	public get currentIcon(): string {
+		return this.currentState.icon;
+	}
+
+	// Getter para o título do estado atual
+	public get currentTitle(): string {
+		return this.currentState.title;
+	}
+
+	// Getter para a descrição do estado atual
+	public get currentDescription(): string {
+		return this.currentState.description;
+	}
+
+	// Getter para o tipo do estado atual
+	public get currentType(): string {
+		return this.currentState.type;
 	}
 }
