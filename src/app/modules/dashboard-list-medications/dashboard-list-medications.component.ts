@@ -1,9 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component,
+	ComponentFactoryResolver,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	ViewContainerRef,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse } from '../../models/interfaces/compartment_content/GetCompartmentContentsWithAlarmAndMedicationByUserID';
 import { CompartmentContentsService } from '../../services/compartment_content/compartment-contents.service';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
 
 interface Alarm {
 	alarm_id: number;
@@ -23,22 +33,22 @@ interface Alarm {
 @Component({
 	selector: 'app-dashboard-list-medications',
 	standalone: true,
-	imports: [CommonModule, RouterModule],
+	imports: [CommonModule, RouterModule, LoaderComponent],
 	templateUrl: './dashboard-list-medications.component.html',
 	styleUrl: './dashboard-list-medications.component.css',
 })
 export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
-	private destroy$ = new Subject<void>();
-	@Input() alarms: Alarm[] = [];
+	public loading = false;
+	public alarms: Alarm[] = [];
 	public tableHeaders = [
-		'Nome do Medicamento',
-		'Alarmes do Medicamento',
-		'Quantidade de comprimido(s) por horário',
-		'Quantidade existente no compartimento',
-		'Número do Compartimento',
+		'Medicamento',
+		'Alarmes',
+		'Dose',
+		'Estoque',
+		'Compartimento',
 		'Dias da Semana',
-		'Estado',
-		'Ação',
+		'Status',
+		'Ações',
 	];
 	public daysOfWeek = [
 		'Domingo',
@@ -50,18 +60,26 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 		'Sábado',
 	];
 	public displayedTableDataAlarms: Alarm[] = [];
-	public itemsPerPage = 5; // Reduzido para melhor visualização
+	public itemsPerPage = 8;
 	public currentPage = 1;
 	public pageCount = 1;
 	public searchTerm = '';
 	public stateFilter = '';
 	public compartmentFilter = '';
-	public Math = Math;
 	public selectedAlarm: Alarm | null = null;
-	activeAlarmsCount = 0;
-	inactiveAlarmsCount = 0;
+	public activeAlarmsCount = 0;
+	public inactiveAlarmsCount = 0;
+	public Math = Math;
+
+	private destroy$ = new Subject<void>();
+
+	@ViewChild('toastContainer', { read: ViewContainerRef })
+	toast!: ViewContainerRef;
+	@ViewChild('dialogContainer', { read: ViewContainerRef })
+	dialogContainer!: ViewContainerRef;
 
 	constructor(
+		private componentFactoryResolver: ComponentFactoryResolver,
 		private compartmentContentsService: CompartmentContentsService
 	) {}
 
@@ -75,6 +93,7 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 	}
 
 	loadAlarms() {
+		this.loading = true;
 		this.compartmentContentsService
 			.getCompartmentContentsWithAlarmAndMedicationByUserID()
 			.pipe(takeUntil(this.destroy$))
@@ -82,10 +101,10 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 				next: (
 					response: GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse[]
 				) => {
-					console.log('Alarms fetched:', response);
 					this.alarms = [];
+					this.activeAlarmsCount = 0;
+					this.inactiveAlarmsCount = 0;
 
-					// Map API response to our Alarm interface
 					response.forEach(
 						(
 							content: GetCompartmentContentsWithAlarmAndMedicationByUserIDResponse
@@ -108,10 +127,10 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 								state: content.is_active ? 'Ativo' : 'Inativo',
 								action: '',
 							});
+
 							if (content.is_active) {
 								this.activeAlarmsCount++;
-							}
-							if (!content.is_active) {
+							} else {
 								this.inactiveAlarmsCount++;
 							}
 						}
@@ -119,12 +138,18 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 
 					this.updatePageCount();
 					this.updateDisplayedData();
+					this.loading = false;
+					this.toast.clear();
+					this.showToast('Medicamentos carregados com sucesso!');
 				},
 				error: (error) => {
 					console.error('Error fetching alarms:', error);
+					this.loading = false;
+					this.toast.clear();
+					this.showToast('Erro ao carregar medicamentos.', 'error');
 				},
 				complete: () => {
-					console.log('Alarms fetched successfully');
+					this.loading = false;
 				},
 			});
 	}
@@ -151,12 +176,13 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 	}
 
 	updateDisplayedData() {
+		const filteredAlarms = this.getFilteredAlarms();
 		const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 		const endIndex = Math.min(
 			startIndex + this.itemsPerPage,
-			this.getFilteredAlarms().length
+			filteredAlarms.length
 		);
-		this.displayedTableDataAlarms = this.getFilteredAlarms().slice(
+		this.displayedTableDataAlarms = filteredAlarms.slice(
 			startIndex,
 			endIndex
 		);
@@ -181,6 +207,26 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 		this.updateDisplayedData();
 	}
 
+	getPageNumbers(): number[] {
+		const pages: number[] = [];
+		const maxPages = 5;
+		let startPage = Math.max(
+			1,
+			this.currentPage - Math.floor(maxPages / 2)
+		);
+		let endPage = Math.min(this.pageCount, startPage + maxPages - 1);
+
+		if (endPage - startPage + 1 < maxPages) {
+			startPage = Math.max(1, endPage - maxPages + 1);
+		}
+
+		for (let i = startPage; i <= endPage; i++) {
+			pages.push(i);
+		}
+
+		return pages;
+	}
+
 	// Filter methods
 	getFilteredAlarms(): Alarm[] {
 		return this.alarms.filter((alarm) => {
@@ -192,12 +238,12 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 
 			const matchesState =
 				this.stateFilter === '' ||
-				this.stateFilter === 'Filtrar por estado' ||
+				this.stateFilter === 'all' ||
 				alarm.state === this.stateFilter;
 
 			const matchesCompartment =
 				this.compartmentFilter === '' ||
-				this.compartmentFilter === 'Filtrar por compartimento' ||
+				this.compartmentFilter === 'all' ||
 				alarm.compartiment === this.compartmentFilter;
 
 			return matchesSearch && matchesState && matchesCompartment;
@@ -228,21 +274,16 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 		this.updateDisplayedData();
 	}
 
-	// Delete modal methods
+	// Delete methods
 	confirmDelete(alarm: Alarm) {
 		this.selectedAlarm = alarm;
-		const modal = document.getElementById('deleteModal');
-		if (modal) {
-			modal.classList.remove('hidden');
-		}
-	}
-
-	cancelDelete() {
-		this.selectedAlarm = null;
-		const modal = document.getElementById('deleteModal');
-		if (modal) {
-			modal.classList.add('hidden');
-		}
+		this.openDialog(
+			'Confirmar Exclusão',
+			`Tem certeza que deseja remover o medicamento "${alarm.name}"? Esta ação não pode ser desfeita.`,
+			'Confirmar',
+			'Cancelar',
+			() => this.deleteMedication()
+		);
 	}
 
 	deleteMedication() {
@@ -257,18 +298,78 @@ export class DashboardListMedicationsComponent implements OnInit, OnDestroy {
 					a.medication_id !== this.selectedAlarm?.medication_id
 			);
 
+			// Update counters
+			if (this.selectedAlarm.state === 'Ativo') {
+				this.activeAlarmsCount--;
+			} else {
+				this.inactiveAlarmsCount--;
+			}
+
 			this.updatePageCount();
 			this.updateDisplayedData();
-			this.cancelDelete();
+			this.selectedAlarm = null;
+			this.toast.clear();
+			this.showToast('Medicamento removido com sucesso!');
 		}
 	}
 
 	// Utility methods
 	getAlarmCount(): number {
-		let count = 0;
-		this.alarms.forEach((alarm) => {
-			count += alarm.alarms.length;
+		return this.alarms.reduce(
+			(count, alarm) => count + alarm.alarms.length,
+			0
+		);
+	}
+
+	getUniqueCompartments(): string[] {
+		const compartments = this.alarms.map((alarm) => alarm.compartiment);
+		return [...new Set(compartments)].sort(
+			(a, b) => parseInt(a) - parseInt(b)
+		);
+	}
+
+	showToast(
+		mensagem: string,
+		type: 'success' | 'error' | 'info' | 'warning' = 'success'
+	) {
+		const componentFactory =
+			this.componentFactoryResolver.resolveComponentFactory(
+				ToastComponent
+			);
+		this.toast.clear();
+		const componentRef = this.toast.createComponent(componentFactory);
+		componentRef.instance.mensage = mensagem;
+		componentRef.instance.type = type;
+		componentRef.instance.closeToast.subscribe(() => {
+			componentRef.destroy();
 		});
-		return count;
+	}
+
+	openDialog(
+		title: string,
+		mensage: string,
+		buttonTextConfirm: string,
+		buttonTextClose?: any | undefined,
+		funcConfirmButton?: any | null
+	): void {
+		const componentRef =
+			this.dialogContainer.createComponent(DialogComponent);
+
+		componentRef.instance.data = {
+			title: title,
+			mensage: mensage,
+			buttonTextConfirm: buttonTextConfirm,
+			buttonTextClose: buttonTextClose,
+		};
+
+		componentRef.instance.close.subscribe(() => {
+			this.dialogContainer.clear();
+		});
+
+		componentRef.instance.confirm.subscribe(() => {
+			if (funcConfirmButton) {
+				funcConfirmButton();
+			}
+		});
 	}
 }

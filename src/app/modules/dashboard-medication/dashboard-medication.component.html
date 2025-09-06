@@ -1,228 +1,238 @@
 <ng-template #toastContainer></ng-template>
 <app-loader [isLoading]="loading"></app-loader>
 <ng-template #dialogContainer></ng-template>
-<div class="container-pillbox">
-	<div class="header">
-		<img
-			class="logo"
-			src="../../../assets/images/pill-icon.svg"
-			alt="Logo"
-		/>
-		<div class="title-and-subtitle-container">
-			<h1 class="title">Adicionar Novo Medicamento</h1>
-			<h3 class="subtitle">
-				Insira corretamente os dados abaixo para garantir uma gestão
-				eficaz do seu tratamento. <br />
-			</h3>
+
+<div class="medication-container">
+	<!-- Header Section -->
+	<div class="medication-header">
+		<div class="header-content">
+			<div class="medication-icon">
+				<svg
+					width="48"
+					height="48"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+				>
+					<path
+						d="M19,8L15,12L19,16V14H23V10H19V8M5,8V10H1V14H5V16L9,12L5,8M12.5,12.5A0.5,0.5 0 0,1 12,13A0.5,0.5 0 0,1 11.5,12.5A0.5,0.5 0 0,1 12,12A0.5,0.5 0 0,1 12.5,12.5M17,1H7A2,2 0 0,0 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1M17,19H7V5H17V19Z"
+					/>
+				</svg>
+			</div>
+			<div class="header-text">
+				<h1 class="header-title">Adicionar Novo Medicamento</h1>
+				<p class="header-subtitle">
+					Insira corretamente os dados abaixo para garantir uma gestão
+					eficaz do seu tratamento médico.
+				</p>
+			</div>
 		</div>
 	</div>
 
-	<form
-		class="form-container"
-		[formGroup]="medicationForm"
-		(ngSubmit)="onSubmitMedicationForm()"
-	>
-		<!-- Label Pillbox -->
-		<div class="w-full">
-			<div>
-				<label
-					for="pillbox"
-					class="block text-base font-semibold leading-6 text-gray-900"
-					>Selecione a Caixa de Medicamentos</label
-				>
-			</div>
-			<!-- Single Select -->
-			<select
-				class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-				data-toggle="select"
-				formControlName="pillbox"
-				name="pillbox"
-				id="pillbox"
-				required
-			>
-				<option value="" disabled>
-					Selecione a Caixa de Medicamento
-				</option>
-				@for (pillbox of listCase; track $index) {
-				<option value="{{ $index }}">
-					{{ pillbox.case_name }}
-				</option>
-				}
-			</select>
-		</div>
+	<!-- Main Content -->
+	<div class="medication-content">
+		<form
+			class="medication-form"
+			[formGroup]="medicationForm"
+			(ngSubmit)="onSubmitMedicationForm()"
+		>
+			<!-- Pillbox Selection Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">
+					Seleção da Caixa de Medicamentos
+				</h3>
 
-		<!-- Pillbox -->
-		<app-medicine-case-pillbox
-			class="mt-4 w-full"
-			[titleLabel]="
-				'Selecione um compartimento no qual vai adicionar o medicamento'
-			"
-			[columns]="column"
-			[rows]="row"
-			(selectedItemChange)="onSelectedItemPillboxChange($event)"
-		></app-medicine-case-pillbox>
-
-		<!-- Name Medication & QTN medic compart & QTN medic use -->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="name"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Nome do Remédio</label
+				<div class="form-field">
+					<label for="pillbox" class="field-label"
+						>Selecione a Caixa de Medicamentos</label
 					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="name"
-						name="name"
-						type="text"
-						placeholder="O Nome do Remédio"
-						formControlName="name"
+					<select
+						id="pillbox"
+						name="pillbox"
+						formControlName="pillbox"
+						class="field-select"
 						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
+					>
+						<option value="" disabled>
+							Selecione a Caixa de Medicamento
+						</option>
+						@for (pillbox of listCase; track $index) {
+						<option [value]="$index">
+							{{ pillbox.case_name }}
+						</option>
+						}
+					</select>
+				</div>
+
+				<!-- Pillbox Visual Selector -->
+				<div class="pillbox-selector">
+					<app-medicine-case-pillbox
+						[titleLabel]="
+							'Selecione um compartimento para adicionar o medicamento'
+						"
+						[columns]="column"
+						[rows]="row"
+						(selectedItemChange)="
+							onSelectedItemPillboxChange($event)
+						"
+					></app-medicine-case-pillbox>
 				</div>
 			</div>
 
-			<div class="w-full">
-				<div>
-					<label
-						for="dosage"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>A miligramagem(mg) por comprimido:</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="dosage"
-						name="dosage"
-						type="text"
-						placeholder="Digite a miligramagem por comprimido"
-						formControlName="dosage"
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
+			<!-- Medication Information Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Informações do Medicamento</h3>
 
-			<div class="w-full">
-				<div>
-					<label
-						for="quantity_pill_compartment"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Quantidade de comprimidos no compartimento:</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="quantity_pill_compartment"
-						name="quantity_pill_compartment"
-						type="number"
-						placeholder="Digite a quantidade de comprimidos no compartimento"
-						formControlName="quantity_pill_compartment"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
+				<div class="form-grid">
+					<div class="form-field">
+						<label for="name" class="field-label"
+							>Nome do Medicamento</label
+						>
+						<input
+							id="name"
+							name="name"
+							type="text"
+							placeholder="Digite o nome do medicamento"
+							formControlName="name"
+							class="field-input"
+							required
+						/>
+					</div>
 
-			<div class="w-full">
-				<div>
-					<label
-						for="quantity_pill_will_use"
-						class="block text-base font-semibold leading-6 text-gray-900"
-					>
-						Quantos comprimidos vai ingerir em cada alarme?</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="quantity_pill_will_use"
-						name="quantity_pill_will_use"
-						type="number"
-						placeholder="Digite a quantidade de comprimidos que vai tomar"
-						formControlName="quantity_pill_will_use"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-		</div>
+					<div class="form-field">
+						<label for="dosage" class="field-label"
+							>Dosagem (mg)</label
+						>
+						<input
+							id="dosage"
+							name="dosage"
+							type="text"
+							placeholder="Ex: 250mg"
+							formControlName="dosage"
+							class="field-input"
+						/>
+					</div>
 
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="description_pill"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Observação pro medicamento (Opcional)</label
-					>
+					<div class="form-field">
+						<label
+							for="quantity_pill_compartment"
+							class="field-label"
+							>Quantidade no Compartimento</label
+						>
+						<input
+							id="quantity_pill_compartment"
+							name="quantity_pill_compartment"
+							type="number"
+							placeholder="Ex: 30"
+							formControlName="quantity_pill_compartment"
+							class="field-input"
+							required
+							min="1"
+						/>
+					</div>
+
+					<div class="form-field">
+						<label for="quantity_pill_will_use" class="field-label"
+							>Quantidade por Dose</label
+						>
+						<input
+							id="quantity_pill_will_use"
+							name="quantity_pill_will_use"
+							type="number"
+							placeholder="Ex: 1"
+							formControlName="quantity_pill_will_use"
+							class="field-input"
+							required
+							min="1"
+						/>
+					</div>
 				</div>
-				<div class="mt-2">
+
+				<div class="form-field">
+					<label for="description_pill" class="field-label"
+						>Observações do Medicamento (Opcional)</label
+					>
 					<textarea
-						name="description_pill"
-						id="description_pill"
-						cols="30"
-						rows="5"
 						id="description_pill"
 						name="description_pill"
 						formControlName="description_pill"
-						class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+						class="field-textarea"
+						rows="3"
+						placeholder="Adicione informações importantes sobre o medicamento..."
 					></textarea>
 				</div>
 			</div>
-		</div>
 
-		<!-- Dates -->
-		<app-week-days-selector (selectionChange)="onSelectionChange($event)">
-		</app-week-days-selector>
+			<!-- Schedule Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Agendamento dos Alarmes</h3>
 
-		<!-- Form Time List -->
-		<app-form-time-input-list
-			(timeChange)="onTimeChange($event)"
-		></app-form-time-input-list>
-
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="description_alarm"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Observação pros alarme(s) (Opcional)</label
-					>
+				<!-- Week Days Selector -->
+				<div class="schedule-component">
+					<app-week-days-selector
+						(selectionChange)="onSelectionChange($event)"
+					></app-week-days-selector>
 				</div>
-				<div class="mt-2">
+
+				<!-- Time Selector -->
+				<div class="schedule-component">
+					<app-form-time-input-list
+						(timeChange)="onTimeChange($event)"
+					></app-form-time-input-list>
+				</div>
+
+				<div class="form-field">
+					<label for="description_alarm" class="field-label"
+						>Observações dos Alarmes (Opcional)</label
+					>
 					<textarea
-						name="description_alarm"
-						id="description_alarm"
-						cols="30"
-						rows="5"
 						id="description_alarm"
 						name="description_alarm"
 						formControlName="description_alarm"
-						class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
+						class="field-textarea"
+						rows="3"
+						placeholder="Adicione instruções especiais para os alarmes..."
 					></textarea>
 				</div>
 			</div>
-		</div>
 
-		<!-- Button Cancel & Save -->
-		<div class="form-row mt-4">
-			<button
-				routerLink="/dashboard/medications"
-				routerLinkActive="active"
-				type="button"
-				class="flex w-auto justify-center rounded-md bg-gray-500 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
-			>
-				Cancelar
-			</button>
+			<!-- Form Actions -->
+			<div class="form-actions">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					routerLink="/dashboard/medications"
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path
+							d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+						/>
+					</svg>
+					Cancelar
+				</button>
 
-			<button
-				type="submit"
-				class="flex w-auto justify-center rounded-md bg-blue-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
-			>
-				Salvar
-			</button>
-		</div>
-	</form>
+				<button
+					type="submit"
+					class="btn btn-primary"
+					[disabled]="loading || medicationForm.invalid"
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path
+							d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+						/>
+					</svg>
+					Salvar Medicamento
+				</button>
+			</div>
+		</form>
+	</div>
 </div>

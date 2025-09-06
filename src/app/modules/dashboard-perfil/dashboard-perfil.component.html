@@ -1,344 +1,339 @@
 <ng-template #toastContainer></ng-template>
 <app-loader [isLoading]="loading"></app-loader>
 <ng-template #dialogContainer></ng-template>
-<div class="container-perfil">
-	<div class="header">
-		<img
-			class="logo"
-			src="../../../assets/images/perfil-icon.svg"
-			alt="Logo"
-		/>
-		<div class="title-and-subtitle-container">
-			<h1 class="title">Suas informaçoes de perfil</h1>
-			<h3 class="subtitle">
-				Aqui você pode editar suas informações de perfil e seus dados
-				pessoais.
-			</h3>
+
+<div class="profile-container">
+	<!-- Header Section -->
+	<div class="profile-header">
+		<div class="header-content">
+			<div class="profile-icon">
+				<svg
+					width="48"
+					height="48"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+				>
+					<path
+						d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+					/>
+				</svg>
+			</div>
+			<div class="header-text">
+				<h1 class="header-title">Suas informações de perfil</h1>
+				<p class="header-subtitle">
+					Aqui você pode editar suas informações de perfil e seus
+					dados pessoais.
+				</p>
+			</div>
 		</div>
 	</div>
 
-	<div
-		[className]="
-			this.disableButtonImage ? 'image-form-disable' : 'image-form-enable'
-		"
-	>
-		<form [formGroup]="imageForm" (ngSubmit)="uploadImage()">
-			<div class="w-full">
-				<label
-					for="image"
-					class="block text-base font-semibold leading-6 text-gray-900"
-					>Selecionar Imagem de Perfil</label
-				>
+	<!-- Main Content -->
+	<div class="profile-content">
+		<!-- Image Upload Section -->
+		<div class="image-upload-section" [class.disabled]="disableButtonImage">
+			<div class="section-header">
+				<h2 class="section-title">Foto de Perfil</h2>
+				<p class="section-description">
+					Escolha uma imagem para seu perfil
+				</p>
 			</div>
-			<label
-				for="fileInput"
-				class="inline-block rounded-md bg-blue-600 px-4 py-2 mt-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 cursor-pointer"
-			>
-				Selecionar Imagem de Perfil
-			</label>
-			<input
-				id="fileInput"
-				name="fileInput"
-				class="hidden"
-				type="file"
-				(change)="onFileSelected($event)"
-				accept=".png, .svg, .jpeg"
-				formGroupName="image"
-			/>
-			@if (errorMessage) {
-			<div class="error-message">{{ errorMessage }}</div>
-			}
+
+			<form [formGroup]="imageForm" class="image-form">
+				<div class="upload-area">
+					<label for="fileInput" class="upload-button">
+						<svg
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+						>
+							<path
+								d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"
+							/>
+						</svg>
+						<span>Selecionar Imagem</span>
+					</label>
+					<input
+						id="fileInput"
+						name="fileInput"
+						type="file"
+						class="upload-input"
+						(change)="onFileSelected($event)"
+						accept=".png, .svg, .jpeg"
+						formGroupName="image"
+					/>
+				</div>
+
+				<div class="upload-info">
+					<p class="upload-restrictions">
+						Formatos aceitos: PNG, SVG, JPEG • Tamanho máximo: 1MB
+					</p>
+				</div>
+
+				<div class="error-message" *ngIf="errorMessage">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path
+							d="M12,2L13.09,8.26L22,9L13.09,9.74L12,16L10.91,9.74L2,9L10.91,8.26L12,2Z"
+						/>
+					</svg>
+					{{ errorMessage }}
+				</div>
+			</form>
+		</div>
+
+		<!-- Profile Form -->
+		<form
+			class="profile-form"
+			[formGroup]="userForm"
+			(ngSubmit)="onSubmitUserForm()"
+		>
+			<!-- Personal Information Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Informações Pessoais</h3>
+
+				<div class="form-grid">
+					<div class="form-field">
+						<label for="name" class="field-label"
+							>Nome Completo</label
+						>
+						<input
+							id="name"
+							name="name"
+							type="text"
+							placeholder="Digite seu nome completo"
+							formControlName="name"
+							class="field-input"
+							required
+						/>
+					</div>
+
+					<div class="form-field">
+						<label for="email" class="field-label">Email</label>
+						<input
+							id="email"
+							name="email"
+							type="email"
+							placeholder="Seu email"
+							formControlName="email"
+							class="field-input readonly"
+							readonly
+						/>
+					</div>
+
+					<div class="form-field">
+						<label for="cpf_or_id_number" class="field-label"
+							>CPF</label
+						>
+						<input
+							id="cpf_or_id_number"
+							name="cpf_or_id_number"
+							type="text"
+							mask="000.000.000-00"
+							placeholder="000.000.000-00"
+							formControlName="cpf_or_id_number"
+							class="field-input"
+							required
+						/>
+					</div>
+				</div>
+			</div>
+
+			<!-- Contact Information Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Contato e Nascimento</h3>
+
+				<div class="form-grid two-columns">
+					<div class="form-field">
+						<label for="phone_number" class="field-label"
+							>Telefone</label
+						>
+						<input
+							id="phone_number"
+							name="phone_number"
+							type="tel"
+							mask="(00) 0 0000-0000"
+							placeholder="(00) 0 0000-0000"
+							formControlName="phone_number"
+							class="field-input"
+							required
+						/>
+					</div>
+
+					<div class="form-field">
+						<label for="date_of_birth" class="field-label"
+							>Data de Nascimento</label
+						>
+						<input
+							id="date_of_birth"
+							name="date_of_birth"
+							type="date"
+							formControlName="date_of_birth"
+							class="field-input"
+							required
+						/>
+					</div>
+				</div>
+			</div>
+
+			<!-- Physical Information Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Informações Físicas</h3>
+
+				<div class="form-grid">
+					<div class="form-field">
+						<label for="genre" class="field-label">Sexo</label>
+						<select
+							id="genre"
+							name="genre"
+							formControlName="genre"
+							class="field-select"
+							required
+						>
+							<option value="">Selecione</option>
+							<option value="M">Masculino</option>
+							<option value="F">Feminino</option>
+						</select>
+					</div>
+
+					<div class="form-field">
+						<label for="blood_type" class="field-label"
+							>Tipo Sanguíneo</label
+						>
+						<select
+							id="blood_type"
+							name="blood_type"
+							formControlName="blood_type"
+							class="field-select"
+							required
+						>
+							<option value="">Selecione</option>
+							<option value="AB+">AB+</option>
+							<option value="AB-">AB-</option>
+							<option value="A+">A+</option>
+							<option value="A-">A-</option>
+							<option value="B+">B+</option>
+							<option value="B-">B-</option>
+							<option value="O+">O+</option>
+							<option value="O-">O-</option>
+						</select>
+					</div>
+
+					<div class="form-field">
+						<label for="weight" class="field-label"
+							>Peso (kg)</label
+						>
+						<input
+							id="weight"
+							name="weight"
+							type="text"
+							placeholder="Ex: 70"
+							formControlName="weight"
+							class="field-input"
+							required
+						/>
+					</div>
+
+					<div class="form-field">
+						<label for="height" class="field-label"
+							>Altura (m)</label
+						>
+						<input
+							id="height"
+							name="height"
+							type="text"
+							mask="0,00"
+							placeholder="Ex: 1,75"
+							formControlName="height"
+							class="field-input"
+							required
+						/>
+					</div>
+				</div>
+			</div>
+
+			<!-- Care Preferences Section -->
+			<div class="form-section">
+				<h3 class="form-section-title">Preferências de Cuidado</h3>
+
+				<div class="form-grid two-columns">
+					<div class="form-field">
+						<label for="need_a_caretaker" class="field-label"
+							>Necessita de Cuidador?</label
+						>
+						<select
+							id="need_a_caretaker"
+							name="need_a_caretaker"
+							formControlName="need_a_caretaker"
+							class="field-select"
+							required
+						>
+							<option [ngValue]="false">Não</option>
+							<option [ngValue]="true">Sim</option>
+						</select>
+					</div>
+
+					<div class="form-field">
+						<label for="screen_for_elder" class="field-label"
+							>Interface para Idoso?</label
+						>
+						<select
+							id="screen_for_elder"
+							name="screen_for_elder"
+							formControlName="screen_for_elder"
+							class="field-select"
+							required
+						>
+							<option [ngValue]="false">Não</option>
+							<option [ngValue]="true">Sim</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<!-- Form Actions -->
+			<div class="form-actions">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					routerLink="/dashboard"
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path
+							d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+						/>
+					</svg>
+					Cancelar
+				</button>
+
+				<button
+					type="submit"
+					class="btn btn-primary"
+					[disabled]="loading || userForm.invalid"
+				>
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+					>
+						<path
+							d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+						/>
+					</svg>
+					{{ createNewUser ? "Salvar Perfil" : "Atualizar Perfil" }}
+				</button>
+			</div>
 		</form>
 	</div>
-
-	<form
-		[className]="
-			this.disableButtonImage
-				? 'form-container-disable'
-				: 'form-container-enable'
-		"
-		[formGroup]="userForm"
-		(ngSubmit)="onSubmitUserForm()"
-	>
-		<!-- Name & Email & CPF-->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="name"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Nome</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="name"
-						name="name"
-						type="text"
-						autocomplete="name"
-						placeholder="Seu Nome"
-						formControlName="name"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-
-			<div class="w-full">
-				<div>
-					<label
-						for="email"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>Email</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="email"
-						name="email"
-						type="email"
-						placeholder="Seu Email"
-						formControlName="email"
-						[readonly]="true"
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 read-only:bg-gray-50 read-only:text-gray-500 read-only:ring-gray-500 read-only:border-gray-500 cursor-default sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-
-			<div class="w-full">
-				<div>
-					<label
-						for="cpf_or_id_number"
-						class="block text-base font-semibold leading-6 text-gray-900"
-						>CPF ou RG</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="cpf_or_id_number"
-						name="cpf_or_id_number"
-						type="text"
-						mask="000.000.000-00"
-						autocomplete="username"
-						placeholder="Seu CPF ou RG"
-						formControlName="cpf_or_id_number"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-		</div>
-
-		<!-- Phone & Birth -->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="phone_number"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Telefone</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="phone_number"
-						name="phone_number"
-						type="tel"
-						mask="(00) 0 0000-0000"
-						autocomplete="phone_number"
-						placeholder="Seu Telefone"
-						formControlName="phone_number"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-			<div class="w-full">
-				<div>
-					<label
-						for="date_of_birth"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Data de Nascimento</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="date_of_birth"
-						name="date_of_birth"
-						type="date"
-						autocomplete="date_of_birth"
-						placeholder="Sua Data de Nascimento"
-						formControlName="date_of_birth"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-		</div>
-
-		<!-- Sex & BloodType -->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="genre"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Sexo:</label
-					>
-				</div>
-				<!-- Single Select -->
-				<select
-					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					data-toggle="select"
-					formControlName="genre"
-					name="genre"
-					id="genre"
-					required
-				>
-					<option value="M">Homem</option>
-					<option value="F">Mulher</option>
-				</select>
-			</div>
-			<div class="w-full">
-				<div>
-					<label
-						for="blood_type"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Tipo Sanguíneo:</label
-					>
-				</div>
-				<!-- Single Select -->
-				<select
-					id="blood_type"
-					name="blood_type"
-					formControlName="blood_type"
-					required
-					data-toggle="select"
-					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-				>
-					<option value="">Selecione</option>
-					<option value="AB+">AB+</option>
-					<option value="AB-">AB-</option>
-					<option value="A">A+</option>
-					<option value="A-">A-</option>
-					<option value="B+">B+</option>
-					<option value="B-">B-</option>
-					<option value="O+">O+</option>
-					<option value="O-">O-</option>
-				</select>
-			</div>
-		</div>
-
-		<!-- Weight & Height -->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="weight"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Peso</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="weight"
-						name="weight"
-						type="text"
-						autocomplete="weight"
-						placeholder="Seu Peso"
-						formControlName="weight"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-			<div class="w-full">
-				<div>
-					<label
-						for="height"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Altura</label
-					>
-				</div>
-				<div class="mt-2">
-					<input
-						id="height"
-						name="height"
-						type="text"
-						mask="0,00"
-						autocomplete="height"
-						placeholder="Seu Peso"
-						formControlName="height"
-						required
-						class="block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					/>
-				</div>
-			</div>
-		</div>
-
-		<!-- NeedACaretaker & Screen for elder -->
-		<div class="form-row">
-			<div class="w-full">
-				<div>
-					<label
-						for="need_a_caretaker"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Necessita de Cuidador?</label
-					>
-				</div>
-				<!-- Single Select -->
-				<select
-					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					data-toggle="select"
-					formControlName="need_a_caretaker"
-					name="need_a_caretaker"
-					id="need_a_caretaker"
-					required
-				>
-					<option [ngValue]="true">Sim</option>
-					<option [ngValue]="false">Não</option>
-				</select>
-			</div>
-
-			<div class="w-full">
-				<div>
-					<label
-						for="screen_for_elder"
-						class="block text-sm font-semibold leading-6 text-gray-900"
-						>Tela precisa ser adaptada para Idoso?</label
-					>
-				</div>
-				<!-- Single Select -->
-				<select
-					class="mt-2 block w-full rounded-md py-2 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:to-blue-700 sm:text-sm sm:leading-5"
-					data-toggle="select"
-					formControlName="screen_for_elder"
-					name="screen_for_elder"
-					id="screen_for_elder"
-					required
-				>
-					<option [ngValue]="true">Sim</option>
-					<option [ngValue]="false">Não</option>
-				</select>
-			</div>
-		</div>
-
-		<!-- Button Cancel & Save -->
-		<div class="form-row mt-4">
-			<button
-				routerLink="/dashboard"
-				routerLinkActive="active"
-				type="button"
-				class="flex auto justify-center rounded-md bg-gray-500 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
-			>
-				Cancelar
-			</button>
-			<button
-				type="submit"
-				class="flex justify-center rounded-md bg-blue-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
-			>
-				{{ createNewUser ? "Salvar" : "Atualizar" }}
-			</button>
-		</div>
-	</form>
 </div>

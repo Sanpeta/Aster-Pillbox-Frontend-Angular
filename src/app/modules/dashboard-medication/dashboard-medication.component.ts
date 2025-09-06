@@ -1,6 +1,7 @@
 import {
 	Component,
 	ComponentFactoryResolver,
+	OnDestroy,
 	OnInit,
 	ViewChild,
 	ViewContainerRef,
@@ -40,8 +41,6 @@ import { MedicationService } from './../../services/medication/medication.servic
 	standalone: true,
 	imports: [
 		ReactiveFormsModule,
-		DialogComponent,
-		ToastComponent,
 		MedicineCasePillboxComponent,
 		WeekDaysSelectorComponent,
 		FormTimeInputListComponent,
@@ -51,15 +50,9 @@ import { MedicationService } from './../../services/medication/medication.servic
 	templateUrl: './dashboard-medication.component.html',
 	styleUrl: './dashboard-medication.component.css',
 })
-export class DashboardMedicationComponent implements OnInit {
-	private destroy$ = new Subject<void>();
-	private medicationID = 0;
-	private alarmID = 0;
-	private caseID = 0;
-	private compartmentID = 0;
-
-	public selectedItemPillboxIndex: number | null = null;
+export class DashboardMedicationComponent implements OnInit, OnDestroy {
 	public loading = false;
+	public selectedItemPillboxIndex: number | null = null;
 	public listCase: GetCaseResponse[] = [];
 	public column: number = 0;
 	public row: number = 0;
@@ -74,14 +67,20 @@ export class DashboardMedicationComponent implements OnInit {
 	];
 	public alarms: string[] = [];
 
-	@ViewChild('dialogContainer', { read: ViewContainerRef })
-	dialogContainer!: ViewContainerRef;
+	private destroy$ = new Subject<void>();
+	private medicationID = 0;
+	private alarmID = 0;
+	private caseID = 0;
+	private compartmentID = 0;
+
 	@ViewChild('toastContainer', { read: ViewContainerRef })
 	toast!: ViewContainerRef;
+	@ViewChild('dialogContainer', { read: ViewContainerRef })
+	dialogContainer!: ViewContainerRef;
 
 	constructor(
-		private formBuilder: FormBuilder,
 		private componentFactoryResolver: ComponentFactoryResolver,
+		private formBuilder: FormBuilder,
 		private caseService: CaseService,
 		private medicationService: MedicationService,
 		private alarmService: AlarmService,
@@ -94,26 +93,15 @@ export class DashboardMedicationComponent implements OnInit {
 	medicationForm = this.formBuilder.group({
 		pillbox: [{}, [Validators.required]],
 		name: ['', [Validators.required, Validators.minLength(3)]],
-		quantity_pill_compartment: [0, [Validators.required]],
-		quantity_pill_will_use: [0, [Validators.required]],
+		quantity_pill_compartment: [
+			0,
+			[Validators.required, Validators.min(1)],
+		],
+		quantity_pill_will_use: [0, [Validators.required, Validators.min(1)]],
 		dosage: [''],
 		description_pill: [''],
 		description_alarm: [''],
 	});
-
-	onSelectionChange(newSelectedDays: boolean[]) {
-		this.selectedDays = newSelectedDays;
-		console.log('Selected days:', this.selectedDays); // Log the selected days
-	}
-
-	onSelectedItemPillboxChange(index: number) {
-		this.selectedItemPillboxIndex = index;
-	}
-
-	onTimeChange(newAlarms: string[]) {
-		this.alarms = newAlarms;
-		console.log('Selected alarms:', this.alarms); // Log the selected alarms
-	}
 
 	ngOnInit(): void {
 		this.loading = true;
@@ -122,22 +110,26 @@ export class DashboardMedicationComponent implements OnInit {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (response) => {
-					console.log(response);
 					if (response) {
+						this.listCase = response;
 						this.loading = false;
-						response.forEach((pillbox) => {
-							this.listCase.push(pillbox);
-						});
-						console.log(this.listCase);
+						this.toast.clear();
+						this.showToast(
+							'Caixas de medicamentos carregadas com sucesso!'
+						);
 					}
 				},
 				complete: () => {
-					console.log('complete');
 					this.loading = false;
 				},
 				error: (error) => {
 					console.log(error);
 					this.loading = false;
+					this.toast.clear();
+					this.showToast(
+						'Erro ao carregar as caixas de medicamentos.',
+						'error'
+					);
 				},
 			});
 
@@ -145,8 +137,10 @@ export class DashboardMedicationComponent implements OnInit {
 			.get('pillbox')!
 			.valueChanges.pipe(takeUntil(this.destroy$))
 			.subscribe((item) => {
-				this.column = this.listCase[item!].column_size;
-				this.row = this.listCase[item!].row_size;
+				if (item !== null && item !== undefined) {
+					this.column = this.listCase[item].column_size;
+					this.row = this.listCase[item].row_size;
+				}
 			});
 	}
 
@@ -155,19 +149,60 @@ export class DashboardMedicationComponent implements OnInit {
 		this.destroy$.complete();
 	}
 
+	onSelectionChange(newSelectedDays: boolean[]) {
+		this.selectedDays = newSelectedDays;
+	}
+
+	onSelectedItemPillboxChange(index: number) {
+		this.selectedItemPillboxIndex = index;
+	}
+
+	onTimeChange(newAlarms: string[]) {
+		this.alarms = newAlarms;
+	}
+
 	onSubmitMedicationForm(): void {
 		this.loading = true;
-		if (this.medicationForm.value && this.medicationForm.valid) {
-			console.log(this.medicationForm.value);
+
+		if (this.medicationForm.valid && this.medicationForm.value) {
+			if (this.selectedItemPillboxIndex === null) {
+				this.loading = false;
+				this.toast.clear();
+				this.showToast(
+					'Selecione um compartimento na caixa de medicamentos.',
+					'error'
+				);
+				return;
+			}
+
+			if (this.alarms.length === 0) {
+				this.loading = false;
+				this.toast.clear();
+				this.showToast(
+					'Adicione pelo menos um horário de alarme.',
+					'error'
+				);
+				return;
+			}
+
+			if (!this.selectedDays.some((day) => day)) {
+				this.loading = false;
+				this.toast.clear();
+				this.showToast(
+					'Selecione pelo menos um dia da semana.',
+					'error'
+				);
+				return;
+			}
+
+			const formValue = this.medicationForm.value;
 			const medicationRequest: CreateMedicationRequest = {
 				user_id: parseInt(this.cookieService.get('USER_ID')),
-				name: this.medicationForm.value.name!,
-				description: this.medicationForm.value.description_pill ?? '',
-				quantity_use_pill:
-					this.medicationForm.value.quantity_pill_will_use!,
-				quantity_total_pill:
-					this.medicationForm.value.quantity_pill_compartment!,
-				dosage: this.medicationForm.value.dosage ?? '',
+				name: formValue.name!,
+				description: formValue.description_pill ?? '',
+				quantity_use_pill: formValue.quantity_pill_will_use!,
+				quantity_total_pill: formValue.quantity_pill_compartment!,
+				dosage: formValue.dosage ?? '',
 				active: true,
 			};
 
@@ -176,13 +211,8 @@ export class DashboardMedicationComponent implements OnInit {
 				.pipe(
 					concatMap((response) => {
 						if (response === false) {
-							this.openDialog(
-								'Algo deu erro',
-								'Favor verifique os dados informados e tente novamente.',
-								'Ok'
-							);
+							throw new Error('Erro ao criar medicação');
 						}
-						console.log('resposta 1:' + response);
 						const result = response as CreateMedicationResponse;
 						this.medicationID = result.id;
 
@@ -190,19 +220,16 @@ export class DashboardMedicationComponent implements OnInit {
 							time_alarms: this.alarms,
 							is_active: true,
 							days_of_week: this.selectedDays,
-							description:
-								this.medicationForm.value.description_alarm ??
-								'',
+							description: formValue.description_alarm ?? '',
 						};
 						return this.alarmService.createAlarm(alarmRequest);
 					}),
 					concatMap((response) => {
-						console.log('response 2:' + response);
 						const result = response as CreateAlarmResponse;
 						this.alarmID = result.id;
 
 						const compartmentRequest: CreateCompartmentRequest = {
-							case_id: this.listCase[0].id,
+							case_id: this.listCase[formValue.pillbox!].id,
 							description: 'compartment',
 							index_compartment:
 								this.selectedItemPillboxIndex! + 1,
@@ -212,7 +239,6 @@ export class DashboardMedicationComponent implements OnInit {
 						);
 					}),
 					concatMap((response) => {
-						console.log('response 3:' + response);
 						const result = response as CreateCompartmentResponse;
 						this.compartmentID = result.id;
 
@@ -229,13 +255,31 @@ export class DashboardMedicationComponent implements OnInit {
 				)
 				.subscribe({
 					next: (response) => {
-						console.log('response: ' + response);
 						if (response) {
-							this.showToast(
+							this.medicationForm.reset();
+							this.selectedDays = [
+								false,
+								false,
+								false,
+								false,
+								false,
+								false,
+								false,
+							];
+							this.alarms = [];
+							this.selectedItemPillboxIndex = null;
+							this.toast.clear();
+							this.openDialog(
+								'Sucesso!',
 								'Medicação cadastrada com sucesso!',
-								'success'
+								'Continuar',
+								'',
+								() => {
+									this.router.navigate([
+										'/dashboard/medications',
+									]);
+								}
 							);
-							this.router.navigate(['/dashboard/medications']);
 						}
 					},
 					complete: () => {
@@ -244,56 +288,38 @@ export class DashboardMedicationComponent implements OnInit {
 					error: (error) => {
 						console.log(error);
 						this.loading = false;
-						switch (error.status) {
-							case 401:
-								this.openDialog(
-									'Não Autorizado',
-									'E-Mail ou senha inválido.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							case 404:
-								this.openDialog(
-									'Email não cadastrado',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							case 500:
-								this.openDialog(
-									'Email já cadastrado',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-							default:
-								this.openDialog(
-									'Ocorreu um erro',
-									'Favor verifique os dados informados e tente novamente.',
-									'Ok',
-									'',
-									() => {}
-								);
-								break;
-						}
+						this.toast.clear();
+						this.showToast(
+							'Erro ao cadastrar medicação. Tente novamente mais tarde.',
+							'error'
+						);
 					},
 				});
 		} else {
 			this.loading = false;
-			this.openDialog(
-				'Favor preencher todos os campos',
-				'Favor verifique os dados informados e tente novamente.',
-				'Ok',
-				'',
-				() => {}
+			this.toast.clear();
+			this.showToast(
+				'Preencha todos os campos obrigatórios antes de continuar.',
+				'error'
 			);
 		}
+	}
+
+	showToast(
+		mensagem: string,
+		type: 'success' | 'error' | 'info' | 'warning' = 'success'
+	) {
+		const componentFactory =
+			this.componentFactoryResolver.resolveComponentFactory(
+				ToastComponent
+			);
+		this.toast.clear();
+		const componentRef = this.toast.createComponent(componentFactory);
+		componentRef.instance.mensage = mensagem;
+		componentRef.instance.type = type;
+		componentRef.instance.closeToast.subscribe(() => {
+			componentRef.destroy();
+		});
 	}
 
 	openDialog(
@@ -314,31 +340,13 @@ export class DashboardMedicationComponent implements OnInit {
 		};
 
 		componentRef.instance.close.subscribe(() => {
-			this.dialogContainer.clear(); // Fecha o diálogo
+			this.dialogContainer.clear();
 		});
 
 		componentRef.instance.confirm.subscribe(() => {
-			// Ação a ser executada se o usuário clicar em "Continuar"
 			if (funcConfirmButton) {
 				funcConfirmButton();
 			}
-		});
-	}
-
-	showToast(
-		mensagem: string,
-		type: 'success' | 'error' | 'info' | 'warning' = 'success'
-	) {
-		const componentFactory =
-			this.componentFactoryResolver.resolveComponentFactory(
-				ToastComponent
-			);
-		this.toast.clear(); // Limpa o container antes de criar um novo toast
-		const componentRef = this.toast.createComponent(componentFactory);
-		componentRef.instance.mensage = mensagem;
-		componentRef.instance.type = type;
-		componentRef.instance.closeToast.subscribe(() => {
-			componentRef.destroy();
 		});
 	}
 }

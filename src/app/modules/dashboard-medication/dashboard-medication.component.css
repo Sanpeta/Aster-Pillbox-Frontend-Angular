@@ -1,106 +1,459 @@
-.container-pillbox {
-	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	grid-template-rows: repeat(10, 1fr);
-	height: calc(100vh - 70px);
-	width: calc(100vw - 260px);
-	overflow: scroll;
-	padding: 32px;
+/* ===== MEDICATION CONTAINER ===== */
+.medication-container {
+	min-height: calc(100vh - 70px);
+	width: 100%;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	overflow-y: auto;
+	padding: 1.5rem;
+	position: relative;
 }
 
-/* Header */
-.header {
-	grid-column: 1 / 11; /* Ocupa todas as colunas */
-	grid-row: 1 / 3;
+.medication-container::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+	pointer-events: none;
+	z-index: 0;
+}
+
+.medication-container > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* ===== HEADER SECTION ===== */
+.medication-header {
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(20px);
+	border-radius: 24px 24px 0 0;
+	padding: 2rem;
+	margin-bottom: 0;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.header-content {
 	display: flex;
-	justify-content: center;
-	flex-direction: row;
 	align-items: center;
-	background-color: #313a46;
-	gap: 16px;
-	border-radius: 20px 20px 0 0;
+	gap: 1.5rem;
+	max-width: 1200px;
+	margin: 0 auto;
 }
 
-/* Logo */
-.logo {
-	width: 100px;
-	height: 100px;
+.medication-icon {
+	width: 80px;
+	height: 80px;
+	background: linear-gradient(135deg, #667eea, #764ba2);
 	border-radius: 50%;
-	object-fit: cover;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+	flex-shrink: 0;
 }
 
-/* TitleAndSubtitleContainer */
-.title-and-subtitle-container {
+.header-text {
+	flex: 1;
+}
+
+.header-title {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #2d3748;
+	margin: 0 0 0.5rem 0;
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.header-subtitle {
+	font-size: 1.125rem;
+	color: #4a5568;
+	margin: 0;
+	line-height: 1.6;
+}
+
+/* ===== MAIN CONTENT ===== */
+.medication-content {
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(20px);
+	border-radius: 0 0 24px 24px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-top: none;
+	max-width: 1200px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+/* ===== MEDICATION FORM ===== */
+.medication-form {
+	padding: 2rem;
+}
+
+.form-section {
+	margin-bottom: 2.5rem;
+}
+
+.form-section:last-of-type {
+	margin-bottom: 0;
+}
+
+.form-section-title {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #2d3748;
+	margin: 0 0 1.5rem 0;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.form-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.form-field {
 	display: flex;
 	flex-direction: column;
-	margin-left: 8px;
+	gap: 0.5rem;
 }
 
-/* Title */
-.title {
-	color: white;
-	font-weight: bold;
-	font-size: 18px;
+.field-label {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #4a5568;
+	margin: 0;
 }
 
-/* Subtitle */
-.subtitle {
-	color: white;
-	font-weight: normal;
-	font-size: 14px;
+.field-input,
+.field-select,
+.field-textarea {
+	width: 100%;
+	padding: 0.875rem 1rem;
+	border: 2px solid rgba(102, 126, 234, 0.2);
+	border-radius: 12px;
+	font-size: 1rem;
+	background: white;
+	color: #2d3748;
+	transition: all 0.3s ease;
+	appearance: none;
+	font-family: inherit;
 }
 
-/* FormContainer */
-.form-container {
-	grid-column: 1 / 11; /* Ocupa todas as colunas */
-	grid-row: 3 / 11;
-	gap: 16px;
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+	outline: none;
+	border-color: #667eea;
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.field-select {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+	background-position: right 0.5rem center;
+	background-repeat: no-repeat;
+	background-size: 1.5em 1.5em;
+	padding-right: 2.5rem;
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+	color: #a0aec0;
+}
+
+.field-textarea {
+	resize: vertical;
+	min-height: 80px;
+}
+
+/* ===== PILLBOX SELECTOR ===== */
+.pillbox-selector {
+	margin-top: 1.5rem;
+	padding: 1.5rem;
+	background: rgba(102, 126, 234, 0.05);
+	border-radius: 16px;
+	border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+/* ===== SCHEDULE COMPONENTS ===== */
+.schedule-component {
+	margin-bottom: 1.5rem;
+	padding: 1.5rem;
+	background: rgba(102, 126, 234, 0.05);
+	border-radius: 16px;
+	border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+/* ===== FORM ACTIONS ===== */
+.form-actions {
 	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	align-items: start;
-	padding: 16px 48px;
-	background-color: #fff;
-	overflow: scroll;
-	overflow-x: hidden;
-	scrollbar-width: inherit;
-	scrollbar-color: #c1c1c1 #f0f0f0;
+	gap: 1rem;
+	justify-content: flex-end;
+	padding-top: 2rem;
+	border-top: 1px solid rgba(102, 126, 234, 0.1);
+	margin-top: 2rem;
 }
 
-/* StyledLabel */
-.styled-label {
-	display: block;
-	color: #000; /* Substitua pela sua cor */
-	font-size: large;
-	margin-top: 1rem;
-}
-
-/* FormRow */
-.form-row {
+.btn {
 	display: flex;
-	flex-direction: row;
-	justify-content: start;
-	align-items: end;
-	gap: 16px;
-	padding: 8px 0;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.875rem 1.5rem;
+	border-radius: 12px;
+	font-weight: 600;
+	font-size: 0.875rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border: none;
+	text-decoration: none;
+	min-width: 140px;
+	justify-content: center;
+}
+
+.btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.btn-secondary {
+	background: #e2e8f0;
+	color: #4a5568;
+	border: 2px solid #e2e8f0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+	background: #cbd5e0;
+	border-color: #cbd5e0;
+	transform: translateY(-1px);
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	color: white;
+	box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 480px) {
+	.medication-container {
+		padding: 0.75rem;
+	}
+
+	.medication-header,
+	.medication-form {
+		padding: 1rem;
+	}
+
+	.header-title {
+		font-size: 1.25rem;
+	}
+
+	.header-subtitle {
+		font-size: 0.875rem;
+	}
+
+	.field-input,
+	.field-select,
+	.field-textarea {
+		padding: 0.75rem;
+		font-size: 0.875rem;
+	}
+
+	.pillbox-selector,
+	.schedule-component {
+		padding: 0.75rem;
+	}
+
+	.form-grid {
+		gap: 0.75rem;
+	}
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.medication-header,
+.form-section {
+	animation: fadeInUp 0.6s ease-out;
+}
+
+.form-section:nth-child(1) {
+	animation-delay: 0.1s;
+}
+.form-section:nth-child(2) {
+	animation-delay: 0.2s;
+}
+.form-section:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+/* ===== DARK MODE ===== */
+@media (prefers-color-scheme: dark) {
+	.medication-header,
+	.medication-content {
+		background: rgba(26, 32, 44, 0.95);
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.header-title,
+	.form-section-title {
+		color: #e2e8f0;
+	}
+
+	.header-subtitle,
+	.field-label {
+		color: #a0aec0;
+	}
+
+	.field-input,
+	.field-select,
+	.field-textarea {
+		background: rgba(45, 55, 72, 0.8);
+		color: #e2e8f0;
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+
+	.pillbox-selector,
+	.schedule-component {
+		background: rgba(102, 126, 234, 0.1);
+		border-color: rgba(102, 126, 234, 0.2);
+	}
+
+	.btn-secondary {
+		background: rgba(45, 55, 72, 0.8);
+		color: #e2e8f0;
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+
+	.btn-secondary:hover:not(:disabled) {
+		background: rgba(45, 55, 72, 1);
+	}
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus,
+.btn:focus {
+	outline: 2px solid #667eea;
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* ===== SCROLL CUSTOMIZADO ===== */
+.medication-container::-webkit-scrollbar {
+	width: 8px;
+}
+
+.medication-container::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 4px;
+}
+
+.medication-container::-webkit-scrollbar-thumb {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	border-radius: 4px;
+}
+
+.medication-container::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(135deg, #5a6fd8, #6b46a3);
+}
+
+/* ===== CUSTOM COMPONENTS INTEGRATION ===== */
+::ng-deep app-medicine-case-pillbox {
 	width: 100%;
 }
 
-/* ToggleButton */
-.toggle-button {
-	padding: 10px 20px;
-	border: 2px solid #007bff; /* Substitua pela sua cor primária */
-	background-color: white;
-	color: #007bff; /* Substitua pela sua cor primária */
-	cursor: pointer;
-	margin-right: 10px;
+::ng-deep app-week-days-selector {
+	width: 100%;
 }
 
-.toggle-button:focus {
-	outline: none;
+::ng-deep app-form-time-input-list {
+	width: 100%;
 }
 
-.toggle-button.selected {
-	background-color: #007bff; /* Substitua pela sua cor primária */
-	color: white;
+/* ===== VALIDATION STATES ===== */
+.field-input.ng-invalid.ng-touched,
+.field-select.ng-invalid.ng-touched,
+.field-textarea.ng-invalid.ng-touched {
+	border-color: #e53e3e;
+	box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.field-input.ng-valid.ng-touched,
+.field-select.ng-valid.ng-touched,
+.field-textarea.ng-valid.ng-touched {
+	border-color: #38a169;
+	box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+}
+
+/* ===== LOADING STATES ===== */
+.medication-form.loading {
+	pointer-events: none;
+	opacity: 0.7;
+}
+
+.medication-form.loading .btn {
+	cursor: not-allowed;
+}
+
+/* ===== SUCCESS STATES ===== */
+.form-field.success .field-input,
+.form-field.success .field-select,
+.form-field.success .field-textarea {
+	border-color: #38a169;
+	background-color: rgba(56, 161, 105, 0.05);
+}
+
+/* ===== ERROR STATES ===== */
+.form-field.error .field-input,
+.form-field.error .field-select,
+.form-field.error .field-textarea {
+	border-color: #e53e3e;
+	background-color: rgba(229, 62, 62, 0.05);
+}
+
+.error-message {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	background: rgba(239, 68, 68, 0.1);
+	color: #e53e3e;
+	padding: 0.75rem 1rem;
+	border-radius: 12px;
+	border: 1px solid rgba(239, 68, 68, 0.2);
+	font-size: 0.875rem;
+	font-weight: 500;
+	margin-top: 0.5rem;
 }

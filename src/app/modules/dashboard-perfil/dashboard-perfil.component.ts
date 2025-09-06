@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
 	Component,
 	ComponentFactoryResolver,
@@ -11,32 +12,22 @@ import { Router, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { Subject, takeUntil } from 'rxjs';
-import { DashboardLayoutComponent } from '../../layouts/dashboard-layout/dashboard-layout.component';
 import { CreateUserRequest } from '../../models/interfaces/user/CreateUser';
 import { UpdateUserRequest } from '../../models/interfaces/user/UpdateUser';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
-import { FormInputComponent } from '../../shared/components/form-input/form-input.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { SidenavDashboardComponent } from '../../shared/components/sidenav-dashboard/sidenav-dashboard.component';
-import { SidenavTitleDashboardComponent } from '../../shared/components/sidenav-title-dashboard/sidenav-title-dashboard.component';
 import { ToastComponent } from '../../shared/components/toast/toast.component';
-import { ToolbarDashboardComponent } from '../../shared/components/toolbar-dashboard/toolbar-dashboard.component';
 import { UserService } from './../../services/user/user.service';
 
 @Component({
 	selector: 'app-dashboard-perfil',
 	standalone: true,
 	imports: [
-		ToolbarDashboardComponent,
-		SidenavTitleDashboardComponent,
-		SidenavDashboardComponent,
-		DashboardLayoutComponent,
+		CommonModule,
 		ReactiveFormsModule,
-		FormInputComponent,
 		RouterModule,
 		NgxMaskDirective,
 		LoaderComponent,
-		DialogComponent,
 	],
 	templateUrl: './dashboard-perfil.component.html',
 	styleUrl: './dashboard-perfil.component.css',
